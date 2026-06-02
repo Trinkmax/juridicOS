@@ -100,7 +100,7 @@ export function AsistenteIA({
     startResumen(async () => {
       const res = await resumirExpediente(expedienteId);
       if (res.ok) {
-        setResumen(res.data.resumen);
+        setResumen(res.data?.resumen ?? "");
       } else {
         toast.error(res.error);
       }
@@ -114,7 +114,7 @@ export function AsistenteIA({
     startPregunta(async () => {
       const res = await responderExpediente({ expedienteId, pregunta: q });
       if (res.ok) {
-        setHistorial((prev) => [...prev, { pregunta: q, respuesta: res.data.respuesta }]);
+        setHistorial((prev) => [...prev, { pregunta: q, respuesta: res.data?.respuesta ?? "" }]);
       } else {
         toast.error(res.error);
         setPregunta(q);

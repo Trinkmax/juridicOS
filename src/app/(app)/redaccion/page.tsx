@@ -1,7 +1,7 @@
 import { Sparkles, Info } from "lucide-react";
 import { requireEstudio } from "@/lib/session";
 import { createClient } from "@/lib/supabase/server";
-import { iaDisponible } from "@/lib/ai/claude";
+import { iaActivaEstudio } from "@/lib/actions/ia";
 import { PageHeader } from "@/components/ui/page-header";
 import { FadeIn } from "@/components/motion/fade-in";
 import { RedaccionWorkspace } from "@/components/redaccion/redaccion-workspace";
@@ -74,7 +74,7 @@ export default async function RedaccionPage() {
     };
   });
 
-  const iaActiva = iaDisponible();
+  const iaActiva = await iaActivaEstudio(activeEstudio.id);
 
   return (
     <div className="space-y-6">

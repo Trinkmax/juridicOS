@@ -52,7 +52,12 @@ export function CausasFueroChart({ data }: { data: FueroDatum[] }) {
           contentStyle={TOOLTIP_STYLE}
           labelStyle={TOOLTIP_LABEL_STYLE}
           itemStyle={TOOLTIP_ITEM_STYLE}
-          formatter={(value: number) => [`${value} causa${value === 1 ? "" : "s"}`, "Activas"]}
+          formatter={
+            ((value: number | string | (number | string)[]) => [
+              `${value} causa${Number(value) === 1 ? "" : "s"}`,
+              "Activas",
+            ]) as never
+          }
         />
         <Bar dataKey="value" radius={[6, 6, 0, 0]} maxBarSize={56}>
           {data.map((_, i) => (

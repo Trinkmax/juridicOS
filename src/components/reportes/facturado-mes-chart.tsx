@@ -52,7 +52,12 @@ export function FacturadoMesChart({ data }: { data: FacturadoMesDatum[] }) {
           contentStyle={TOOLTIP_STYLE}
           labelStyle={TOOLTIP_LABEL_STYLE}
           itemStyle={TOOLTIP_ITEM_STYLE}
-          formatter={(value: number) => [formatMoney(value), "Facturado"]}
+          formatter={
+            ((value: number | string | (number | string)[]) => [
+              formatMoney(Number(value)),
+              "Facturado",
+            ]) as never
+          }
         />
         <Bar
           dataKey="value"

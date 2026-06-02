@@ -42,10 +42,13 @@ export function PlazosEstadoChart({ data }: { data: PlazoEstadoDatum[] }) {
           contentStyle={TOOLTIP_STYLE}
           labelStyle={TOOLTIP_LABEL_STYLE}
           itemStyle={TOOLTIP_ITEM_STYLE}
-          formatter={(value: number, name: string) => {
-            const pct = total > 0 ? Math.round((value / total) * 100) : 0;
-            return [`${value} (${pct}%)`, name];
-          }}
+          formatter={
+            ((value: number | string | (number | string)[], name: number | string) => {
+              const v = Number(value);
+              const pct = total > 0 ? Math.round((v / total) * 100) : 0;
+              return [`${v} (${pct}%)`, name];
+            }) as never
+          }
         />
         <Legend
           verticalAlign="bottom"

@@ -113,7 +113,10 @@ export default async function ReportesPage() {
       .from("tareas")
       .select("asignado_a")
       .eq("estudio_id", estudioId)
-      .in("estado", ESTADOS_TAREA_ACTIVA),
+      .in(
+        "estado",
+        ESTADOS_TAREA_ACTIVA as ("pendiente" | "en_curso" | "en_revision" | "completada" | "cancelada")[],
+      ),
     supabase
       .from("plazos")
       .select("responsable_id")

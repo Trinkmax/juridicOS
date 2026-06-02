@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, Sparkles } from "lucide-react";
 import { requireEstudio } from "@/lib/session";
 import { createClient } from "@/lib/supabase/server";
-import { iaDisponible } from "@/lib/ai/claude";
+import { iaActivaEstudio } from "@/lib/actions/ia";
 import { PageHeader } from "@/components/ui/page-header";
 import { Button } from "@/components/ui/button";
 import { FadeIn } from "@/components/motion/fade-in";
@@ -101,7 +101,7 @@ export default async function EditarDocumentoPage({
     };
   });
 
-  const iaActiva = iaDisponible();
+  const iaActiva = await iaActivaEstudio(activeEstudio.id);
 
   return (
     <div className="space-y-6">

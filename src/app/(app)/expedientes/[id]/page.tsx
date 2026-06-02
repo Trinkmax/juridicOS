@@ -17,7 +17,7 @@ import { AudienciasPanel } from "@/components/expedientes/audiencias-panel";
 import { AsistenteIA } from "@/components/expedientes/asistente-ia";
 import { EditarExpedienteDialog } from "@/components/expedientes/editar-expediente-dialog";
 import { ExpedienteAcciones } from "@/components/expedientes/expediente-acciones";
-import { iaDisponible } from "@/lib/ai/claude";
+import { iaActivaEstudio } from "@/lib/actions/ia";
 import type {
   Expediente,
   Parte,
@@ -206,7 +206,7 @@ export default async function ExpedienteDetallePage({
           </TabsContent>
 
           <TabsContent value="asistente">
-            <AsistenteIA expedienteId={expediente.id} iaActiva={iaDisponible()} />
+            <AsistenteIA expedienteId={expediente.id} iaActiva={await iaActivaEstudio(activeEstudio.id)} />
           </TabsContent>
         </Tabs>
       </FadeIn>

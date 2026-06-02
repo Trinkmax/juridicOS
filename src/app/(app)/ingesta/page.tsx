@@ -1,7 +1,7 @@
 import { ScanText } from "lucide-react";
 import { requireEstudio } from "@/lib/session";
 import { createClient } from "@/lib/supabase/server";
-import { iaDisponible } from "@/lib/ai/claude";
+import { iaActivaEstudio } from "@/lib/actions/ia";
 import { PageHeader } from "@/components/ui/page-header";
 import { FadeIn } from "@/components/motion/fade-in";
 import { IngestaCliente, type ExpedienteLite } from "@/components/ingesta/ingesta-cliente";
@@ -33,7 +33,7 @@ export default async function IngestaPage() {
       />
 
       <FadeIn>
-        <IngestaCliente expedientes={expedientes} iaActiva={iaDisponible()} />
+        <IngestaCliente expedientes={expedientes} iaActiva={await iaActivaEstudio(activeEstudio.id)} />
       </FadeIn>
     </div>
   );
