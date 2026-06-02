@@ -8,6 +8,9 @@ import {
   CheckSquare,
   FileText,
   Sparkles,
+  ScanText,
+  Receipt,
+  BarChart3,
   UsersRound,
   Settings,
   type LucideIcon,
@@ -38,15 +41,23 @@ export const NAV: NavGroup[] = [
     label: "Herramientas",
     items: [
       { href: "/plazos/calculadora", label: "Calculadora de plazos", icon: Calculator },
+      { href: "/ingesta", label: "Ingesta de cédulas", icon: ScanText },
       { href: "/redaccion", label: "Redacción con IA", icon: Sparkles },
       { href: "/documentos", label: "Documentos", icon: FileText },
+    ],
+  },
+  {
+    label: "Facturación",
+    items: [
+      { href: "/honorarios", label: "Honorarios", icon: Receipt },
+      { href: "/reportes", label: "Reportes", icon: BarChart3 },
     ],
   },
   {
     label: "Estudio",
     items: [
       { href: "/equipo", label: "Equipo", icon: UsersRound },
-      { href: "/configuracion", label: "Configuración", icon: Settings, soon: true },
+      { href: "/configuracion", label: "Configuración", icon: Settings },
     ],
   },
 ];

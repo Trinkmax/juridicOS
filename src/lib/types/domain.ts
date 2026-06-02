@@ -23,6 +23,10 @@ export type Comunicacion = Tables["comunicaciones"]["Row"];
 export type CalendarioJudicial = Tables["calendario_judicial"]["Row"];
 export type CatalogoPlazo = Tables["catalogo_plazos"]["Row"];
 export type AuditLog = Tables["audit_log"]["Row"];
+export type TimeEntry = Tables["time_entries"]["Row"];
+export type Honorario = Tables["honorarios"]["Row"];
+export type Factura = Tables["facturas"]["Row"];
+export type DocumentoGenerado = Tables["documentos_generados"]["Row"];
 
 export type PlazoDetalle = Views["v_plazos_detalle"]["Row"];
 

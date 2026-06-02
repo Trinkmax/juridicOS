@@ -14,8 +14,10 @@ import { PartesPanel } from "@/components/expedientes/partes-panel";
 import { MovimientosPanel } from "@/components/expedientes/movimientos-panel";
 import { PlazosPanel } from "@/components/expedientes/plazos-panel";
 import { AudienciasPanel } from "@/components/expedientes/audiencias-panel";
+import { AsistenteIA } from "@/components/expedientes/asistente-ia";
 import { EditarExpedienteDialog } from "@/components/expedientes/editar-expediente-dialog";
 import { ExpedienteAcciones } from "@/components/expedientes/expediente-acciones";
+import { iaDisponible } from "@/lib/ai/claude";
 import type {
   Expediente,
   Parte,
@@ -171,6 +173,7 @@ export default async function ExpedienteDetallePage({
             <TabsTrigger value="movimientos">Movimientos ({movimientos.length})</TabsTrigger>
             <TabsTrigger value="plazos">Plazos ({plazos.length})</TabsTrigger>
             <TabsTrigger value="audiencias">Audiencias ({audiencias.length})</TabsTrigger>
+            <TabsTrigger value="asistente">Asistente IA</TabsTrigger>
           </TabsList>
 
           <TabsContent value="resumen">
@@ -200,6 +203,10 @@ export default async function ExpedienteDetallePage({
 
           <TabsContent value="audiencias">
             <AudienciasPanel expedienteId={expediente.id} audiencias={audiencias} />
+          </TabsContent>
+
+          <TabsContent value="asistente">
+            <AsistenteIA expedienteId={expediente.id} iaActiva={iaDisponible()} />
           </TabsContent>
         </Tabs>
       </FadeIn>

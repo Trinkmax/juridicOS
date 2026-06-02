@@ -53,21 +53,24 @@ import type {
 
 const SIN_EXPEDIENTE = "__sin__";
 
-export function EditorWorkspace({
-  plantillas,
-  expedientes,
-  iaActiva,
-  documento,
-}: {
-  plantillas: PlantillaItem[];
-  expedientes: ExpedienteContexto[];
-  iaActiva: boolean;
-  /** Si viene, se abre en modo edición de ese documento. */
-  documento?: DocumentoEdicion;
-}) {
+/** API imperativa que el workspace expone a la biblioteca de plantillas. */
+export type EditorHandle = {
+  cargarPlantilla: (p: PlantillaItem) => void;
+};
+
+export const EditorWorkspace = forwardRef<
+  EditorHandle,
+  {
+    plantillas: PlantillaItem[];
+    expedientes: ExpedienteContexto[];
+    iaActiva: boolean;
+    /** Si viene, se abre en modo edición de ese documento. */
+    documento?: DocumentoEdicion;
+  }
+>(function EditorWorkspace({ plantillas, expedientes, iaActiva, documento }, ref) {
   const router = useRouter();
 
-  const [docId, setDocId] = useState<string | null>(documento?.id ?? null);
+  const [docId] = useState<string | null>(documento?.id ?? null);
   const [titulo, setTitulo] = useState(documento?.titulo ?? "");
   const [tipo, setTipo] = useState(documento?.tipo ?? "");
   const [contenido, setContenido] = useState(documento?.contenido ?? "");
@@ -93,9 +96,7 @@ export function EditorWorkspace({
     [contenido],
   );
 
-  function cargarPlantilla(id: string) {
-    const p = plantillas.find((pl) => pl.id === id);
-    if (!p) return;
+  function cargarPlantillaObj(p: PlantillaItem) {
     const reemplazar = () => {
       setPlantillaId(p.id);
       setContenido(p.contenido);
@@ -116,6 +117,13 @@ export function EditorWorkspace({
     }
     reemplazar();
   }
+
+  function cargarPlantillaPorId(id: string) {
+    const p = plantillas.find((pl) => pl.id === id);
+    if (p) cargarPlantillaObj(p);
+  }
+
+  useImperativeHandle(ref, () => ({ cargarPlantilla: cargarPlantillaObj }));
 
   function completarDatos() {
     if (!expedienteSel) {
@@ -220,7 +228,7 @@ export function EditorWorkspace({
           <Field label="Plantilla" htmlFor="sel-plantilla">
             <Select
               value={plantillaId ?? undefined}
-              onValueChange={(v) => cargarPlantilla(v)}
+              onValueChange={(v) => cargarPlantillaPorId(v)}
             >
               <SelectTrigger id="sel-plantilla">
                 <SelectValue placeholder="Cargar una plantilla…" />
@@ -408,7 +416,7 @@ export function EditorWorkspace({
       </Dialog>
     </Card>
   );
-}
+});
 
 /** Textarea grande con tipografía serif para lectura forense cómoda. */
 function EditorTextarea({

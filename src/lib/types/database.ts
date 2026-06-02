@@ -594,6 +594,38 @@ export type Database = {
           },
         ]
       }
+      estudio_ia_config: {
+        Row: {
+          activo: boolean
+          estudio_id: string
+          modelo: string
+          secret_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          activo?: boolean
+          estudio_id: string
+          modelo?: string
+          secret_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          activo?: boolean
+          estudio_id?: string
+          modelo?: string
+          secret_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "estudio_ia_config_estudio_id_fkey"
+            columns: ["estudio_id"]
+            isOneToOne: true
+            referencedRelation: "estudios"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       estudios: {
         Row: {
           color_marca: string | null
@@ -613,6 +645,7 @@ export type Database = {
           telefono: string | null
           timezone: string
           updated_at: string
+          valor_jus: number
           web: string | null
         }
         Insert: {
@@ -633,6 +666,7 @@ export type Database = {
           telefono?: string | null
           timezone?: string
           updated_at?: string
+          valor_jus?: number
           web?: string | null
         }
         Update: {
@@ -653,6 +687,7 @@ export type Database = {
           telefono?: string | null
           timezone?: string
           updated_at?: string
+          valor_jus?: number
           web?: string | null
         }
         Relationships: []
@@ -873,6 +908,184 @@ export type Database = {
             columns: ["estudio_id"]
             isOneToOne: false
             referencedRelation: "estudios"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      facturas: {
+        Row: {
+          cae: string | null
+          cae_vencimiento: string | null
+          cliente_id: string
+          created_at: string
+          created_by: string | null
+          estado: string
+          estudio_id: string
+          expediente_id: string | null
+          fecha: string
+          id: string
+          items: Json
+          iva: number
+          notas: string | null
+          numero: string | null
+          punto_venta: number
+          subtotal: number
+          tipo_comprobante: string
+          total: number
+          updated_at: string
+        }
+        Insert: {
+          cae?: string | null
+          cae_vencimiento?: string | null
+          cliente_id: string
+          created_at?: string
+          created_by?: string | null
+          estado?: string
+          estudio_id: string
+          expediente_id?: string | null
+          fecha?: string
+          id?: string
+          items?: Json
+          iva?: number
+          notas?: string | null
+          numero?: string | null
+          punto_venta?: number
+          subtotal?: number
+          tipo_comprobante?: string
+          total?: number
+          updated_at?: string
+        }
+        Update: {
+          cae?: string | null
+          cae_vencimiento?: string | null
+          cliente_id?: string
+          created_at?: string
+          created_by?: string | null
+          estado?: string
+          estudio_id?: string
+          expediente_id?: string | null
+          fecha?: string
+          id?: string
+          items?: Json
+          iva?: number
+          notas?: string | null
+          numero?: string | null
+          punto_venta?: number
+          subtotal?: number
+          tipo_comprobante?: string
+          total?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "facturas_cliente_id_fkey"
+            columns: ["cliente_id"]
+            isOneToOne: false
+            referencedRelation: "clientes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "facturas_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "usuarios"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "facturas_estudio_id_fkey"
+            columns: ["estudio_id"]
+            isOneToOne: false
+            referencedRelation: "estudios"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "facturas_expediente_id_fkey"
+            columns: ["expediente_id"]
+            isOneToOne: false
+            referencedRelation: "expedientes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      honorarios: {
+        Row: {
+          base: string
+          cliente_id: string | null
+          concepto: string
+          created_at: string
+          created_by: string | null
+          estado: string
+          estudio_id: string
+          expediente_id: string | null
+          id: string
+          jus_cantidad: number | null
+          jus_valor: number | null
+          monto: number
+          notas: string | null
+          porcentaje: number | null
+          updated_at: string
+        }
+        Insert: {
+          base?: string
+          cliente_id?: string | null
+          concepto: string
+          created_at?: string
+          created_by?: string | null
+          estado?: string
+          estudio_id: string
+          expediente_id?: string | null
+          id?: string
+          jus_cantidad?: number | null
+          jus_valor?: number | null
+          monto?: number
+          notas?: string | null
+          porcentaje?: number | null
+          updated_at?: string
+        }
+        Update: {
+          base?: string
+          cliente_id?: string | null
+          concepto?: string
+          created_at?: string
+          created_by?: string | null
+          estado?: string
+          estudio_id?: string
+          expediente_id?: string | null
+          id?: string
+          jus_cantidad?: number | null
+          jus_valor?: number | null
+          monto?: number
+          notas?: string | null
+          porcentaje?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "honorarios_cliente_id_fkey"
+            columns: ["cliente_id"]
+            isOneToOne: false
+            referencedRelation: "clientes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "honorarios_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "usuarios"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "honorarios_estudio_id_fkey"
+            columns: ["estudio_id"]
+            isOneToOne: false
+            referencedRelation: "estudios"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "honorarios_expediente_id_fkey"
+            columns: ["expediente_id"]
+            isOneToOne: false
+            referencedRelation: "expedientes"
             referencedColumns: ["id"]
           },
         ]
@@ -1442,6 +1655,77 @@ export type Database = {
           },
         ]
       }
+      time_entries: {
+        Row: {
+          created_at: string
+          descripcion: string | null
+          estudio_id: string
+          expediente_id: string | null
+          factura_id: string | null
+          facturable: boolean
+          fecha: string
+          id: string
+          minutos: number
+          tarifa_hora: number | null
+          usuario_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          descripcion?: string | null
+          estudio_id: string
+          expediente_id?: string | null
+          factura_id?: string | null
+          facturable?: boolean
+          fecha?: string
+          id?: string
+          minutos: number
+          tarifa_hora?: number | null
+          usuario_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          descripcion?: string | null
+          estudio_id?: string
+          expediente_id?: string | null
+          factura_id?: string | null
+          facturable?: boolean
+          fecha?: string
+          id?: string
+          minutos?: number
+          tarifa_hora?: number | null
+          usuario_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "time_entries_estudio_id_fkey"
+            columns: ["estudio_id"]
+            isOneToOne: false
+            referencedRelation: "estudios"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "time_entries_expediente_id_fkey"
+            columns: ["expediente_id"]
+            isOneToOne: false
+            referencedRelation: "expedientes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "time_entries_factura_fk"
+            columns: ["factura_id"]
+            isOneToOne: false
+            referencedRelation: "facturas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "time_entries_usuario_id_fkey"
+            columns: ["usuario_id"]
+            isOneToOne: false
+            referencedRelation: "usuarios"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       usuarios: {
         Row: {
           apellido: string | null
@@ -1547,6 +1831,7 @@ export type Database = {
       }
     }
     Functions: {
+      borrar_api_key_ia: { Args: { _estudio: string }; Returns: undefined }
       computar_plazo: {
         Args: {
           _dias: number
@@ -1572,6 +1857,17 @@ export type Database = {
         Returns: boolean
       }
       generar_recordatorios: { Args: never; Returns: number }
+      guardar_api_key_ia: {
+        Args: { _estudio: string; _key: string; _modelo?: string }
+        Returns: undefined
+      }
+      obtener_api_key_ia: {
+        Args: { _estudio: string }
+        Returns: {
+          api_key: string
+          modelo: string
+        }[]
+      }
       proximo_dia_habil: {
         Args: { _estudio?: string; _fecha: string; _jurisdiccion?: string }
         Returns: string

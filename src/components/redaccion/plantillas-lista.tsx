@@ -166,6 +166,7 @@ export function PlantillasLista({
 
       {/* Editor de plantilla del estudio */}
       <PlantillaDialog
+        key={editar?.id ?? "nuevo"}
         plantilla={editar ?? undefined}
         open={editar !== null}
         onOpenChange={(v) => !v && setEditar(null)}
