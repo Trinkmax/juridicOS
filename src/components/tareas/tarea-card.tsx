@@ -116,7 +116,7 @@ export function TareaCard({
         <button
           type="button"
           aria-label="Arrastrar tarea"
-          className="mt-0.5 cursor-grab text-muted-foreground/40 opacity-0 transition-opacity group-hover:opacity-100 touch-none"
+          className="mt-0.5 cursor-grab text-muted-foreground/40 opacity-100 transition-opacity touch-none sm:opacity-0 sm:group-hover:opacity-100"
           {...listeners}
           {...attributes}
         >
@@ -172,7 +172,7 @@ export function TareaCard({
               <Button
                 variant="ghost"
                 size="icon-sm"
-                className="opacity-0 transition-opacity group-hover:opacity-100 data-[state=open]:opacity-100"
+                className="opacity-100 transition-opacity data-[state=open]:opacity-100 sm:opacity-0 sm:group-hover:opacity-100"
                 aria-label="Acciones de la tarea"
               >
                 <MoreHorizontal className="size-4" />

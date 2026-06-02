@@ -247,7 +247,7 @@ export function AsistenteIA({
             disabled={preguntando}
             className="resize-none"
           />
-          <div className="flex items-center justify-between gap-2">
+          <div className="flex flex-wrap items-center justify-between gap-2">
             {historial.length > 0 && (
               <ChipsSugerencias onPick={(t) => enviarPregunta(t)} disabled={preguntando} />
             )}

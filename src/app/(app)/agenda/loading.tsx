@@ -28,7 +28,7 @@ export default function LoadingAgenda() {
             {Array.from({ length: 35 }).map((_, i) => (
               <div
                 key={i}
-                className="min-h-[5.5rem] border-b border-r border-border p-1.5 sm:min-h-[7rem] [&:nth-child(7n)]:border-r-0"
+                className="min-h-[5.5rem] border-b border-r border-border p-1 sm:min-h-[7rem] sm:p-1.5 [&:nth-child(7n)]:border-r-0"
               >
                 <div className="mb-1 flex justify-end">
                   <Skeleton className="size-6 rounded-md" />

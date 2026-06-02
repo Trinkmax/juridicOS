@@ -5,6 +5,7 @@ import { iaActivaEstudio } from "@/lib/actions/ia";
 import { PageHeader } from "@/components/ui/page-header";
 import { FadeIn } from "@/components/motion/fade-in";
 import { RedaccionWorkspace } from "@/components/redaccion/redaccion-workspace";
+import { construirMembrete } from "@/components/redaccion/tipos";
 import type {
   PlantillaItem,
   BorradorItem,
@@ -75,6 +76,7 @@ export default async function RedaccionPage() {
   });
 
   const iaActiva = await iaActivaEstudio(activeEstudio.id);
+  const membrete = construirMembrete(activeEstudio);
 
   return (
     <div className="space-y-6">
@@ -106,6 +108,7 @@ export default async function RedaccionPage() {
           expedientes={expedientes}
           borradores={borradores}
           iaActiva={iaActiva}
+          membrete={membrete}
         />
       </FadeIn>
     </div>

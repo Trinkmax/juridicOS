@@ -4,7 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Download, Trash2, MoreVertical, FolderOpen } from "lucide-react";
+import { Download, Trash2, MoreVertical, FolderOpen, Eye } from "lucide-react";
 import {
   urlDescarga,
   eliminarDocumento,
@@ -47,6 +47,34 @@ export function DocumentoFila({ doc }: { doc: DocumentoFilaItem }) {
   const [togglePending, setTogglePending] = React.useState(false);
   const [confirmOpen, setConfirmOpen] = React.useState(false);
   const [eliminando, setEliminando] = React.useState(false);
+  const [vistaOpen, setVistaOpen] = React.useState(false);
+  const [vistaUrl, setVistaUrl] = React.useState<string | null>(null);
+  const [vistaCargando, setVistaCargando] = React.useState(false);
+
+  const mime = (doc.mime ?? "").toLowerCase();
+  const ext = (doc.nombre ?? "").split(".").pop()?.toLowerCase() ?? "";
+  const esImagen =
+    mime.startsWith("image/") ||
+    ["png", "jpg", "jpeg", "gif", "webp", "svg", "avif"].includes(ext);
+  const esPdf = mime === "application/pdf" || ext === "pdf";
+  const previsualizable = esImagen || esPdf;
+
+  async function abrirVistaRapida() {
+    if (!doc.storage_path) {
+      toast.error("Este documento no tiene archivo asociado.");
+      return;
+    }
+    setVistaOpen(true);
+    if (vistaUrl) return;
+    setVistaCargando(true);
+    const res = await urlDescarga(doc.storage_path);
+    setVistaCargando(false);
+    if (!res.ok || !res.data) {
+      toast.error(res.ok ? "No pudimos generar la vista previa." : res.error);
+      return;
+    }
+    setVistaUrl(res.data.url);
+  }
 
   async function descargar() {
     if (!doc.storage_path) {
@@ -149,7 +177,7 @@ export function DocumentoFila({ doc }: { doc: DocumentoFilaItem }) {
         )}
       </div>
 
-      <div className="flex shrink-0 items-center gap-3">
+      <div className="flex shrink-0 items-center gap-1.5 sm:gap-3">
         <label className="hidden items-center gap-2 sm:flex" title="Compartir con el cliente">
           <span className="text-xs text-muted-foreground">Cliente</span>
           <Switch
@@ -159,6 +187,17 @@ export function DocumentoFila({ doc }: { doc: DocumentoFilaItem }) {
             aria-label="Compartir con el cliente"
           />
         </label>
+
+        <Button
+          variant="ghost"
+          size="icon-sm"
+          onClick={abrirVistaRapida}
+          aria-label="Vista rápida"
+          title="Vista rápida"
+          className="size-9 sm:size-8"
+        >
+          <Eye className="size-4" />
+        </Button>
 
         <Button
           variant="ghost"
@@ -174,7 +213,12 @@ export function DocumentoFila({ doc }: { doc: DocumentoFilaItem }) {
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon-sm" aria-label="Más acciones">
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              aria-label="Más acciones"
+              className="size-9 sm:size-8"
+            >
               <MoreVertical className="size-4" />
             </Button>
           </DropdownMenuTrigger>
@@ -220,6 +264,73 @@ export function DocumentoFila({ doc }: { doc: DocumentoFilaItem }) {
             >
               {eliminando ? <Spinner className="size-4" /> : <Trash2 className="size-4" />}
               Eliminar
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={vistaOpen} onOpenChange={setVistaOpen}>
+        <DialogContent className="flex max-h-[90dvh] w-full flex-col gap-4 sm:max-w-3xl">
+          <DialogHeader>
+            <DialogTitle className="truncate pr-8" title={doc.nombre}>
+              {doc.nombre}
+            </DialogTitle>
+            <DialogDescription>
+              {formatTamano(doc.tamano_bytes)} · {formatFechaCorta(doc.created_at)}
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="flex min-h-[40vh] flex-1 items-center justify-center overflow-hidden rounded-md border border-border bg-muted/40">
+            {vistaCargando ? (
+              <Spinner className="size-6 text-muted-foreground" />
+            ) : !previsualizable ? (
+              <div className="flex flex-col items-center gap-3 px-6 py-10 text-center">
+                <div className="flex size-12 items-center justify-center rounded-md bg-muted">
+                  <Icon className={cn("size-6", iconColor)} />
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  No podemos previsualizar este tipo de archivo.
+                </p>
+                <Button type="button" variant="outline" onClick={descargar} disabled={descargando}>
+                  {descargando ? (
+                    <Spinner className="size-4" />
+                  ) : (
+                    <Download className="size-4" />
+                  )}
+                  Descargar
+                </Button>
+              </div>
+            ) : vistaUrl ? (
+              esImagen ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={vistaUrl}
+                  alt={doc.nombre}
+                  className="max-h-[70vh] w-full object-contain"
+                />
+              ) : (
+                <iframe
+                  src={vistaUrl}
+                  title={doc.nombre}
+                  className="h-[70vh] w-full"
+                />
+              )
+            ) : (
+              <p className="px-6 py-10 text-sm text-muted-foreground">
+                No pudimos cargar la vista previa.
+              </p>
+            )}
+          </div>
+
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button type="button" variant="ghost">
+                Cerrar
+              </Button>
+            </DialogClose>
+            <Button type="button" variant="outline" onClick={descargar} disabled={descargando}>
+              {descargando ? <Spinner className="size-4" /> : <Download className="size-4" />}
+              Descargar
             </Button>
           </DialogFooter>
         </DialogContent>

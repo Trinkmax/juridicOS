@@ -75,7 +75,7 @@ function AgregarParteDialog({ expedienteId }: { expedienteId: string }) {
           Agregar parte
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Agregar parte</DialogTitle>
           <DialogDescription>Sumá un litigante o interviniente a la causa.</DialogDescription>

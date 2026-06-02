@@ -62,7 +62,7 @@ export function AgendaCalendario({
         {WEEKDAYS.map((w) => (
           <div
             key={w}
-            className="px-2 py-2 text-center text-[0.6875rem] font-semibold uppercase tracking-wide text-muted-foreground"
+            className="px-1 py-2 text-center text-[0.6875rem] font-semibold uppercase tracking-wide text-muted-foreground sm:px-2"
           >
             {w}
           </div>
@@ -83,7 +83,7 @@ export function AgendaCalendario({
             <div
               key={k}
               className={cn(
-                "min-h-[5.5rem] border-b border-r border-border p-1.5 sm:min-h-[7rem] [&:nth-child(7n)]:border-r-0",
+                "min-h-[5.5rem] border-b border-r border-border p-1 sm:min-h-[7rem] sm:p-1.5 [&:nth-child(7n)]:border-r-0",
                 !inMonth && "bg-muted/30",
                 lastRow && "border-b-0",
               )}
@@ -111,12 +111,12 @@ export function AgendaCalendario({
                       onClick={() => onSelect(it)}
                       title={it.titulo}
                       className={cn(
-                        "flex w-full items-center gap-1 rounded-sm border px-1.5 py-0.5 text-left text-[0.6875rem] leading-tight transition-opacity hover:opacity-80",
+                        "flex w-full items-center gap-1 rounded-sm border px-1 py-0.5 text-left text-[0.6875rem] leading-tight transition-opacity hover:opacity-80 sm:px-1.5",
                         TONE_CHIP[tone],
                       )}
                     >
                       {it.hora && !it.todoElDia && (
-                        <span className="shrink-0 font-mono text-data tabular-nums opacity-80">
+                        <span className="hidden shrink-0 font-mono text-data tabular-nums opacity-80 sm:inline">
                           {format(itemDate(it), "HH:mm")}
                         </span>
                       )}
@@ -130,12 +130,15 @@ export function AgendaCalendario({
                     <PopoverTrigger asChild>
                       <button
                         type="button"
-                        className="w-full rounded-sm px-1.5 py-0.5 text-left text-[0.6875rem] font-medium text-muted-foreground transition-colors hover:bg-accent"
+                        className="w-full rounded-sm px-1 py-0.5 text-left text-[0.6875rem] font-medium text-muted-foreground transition-colors hover:bg-accent sm:px-1.5"
                       >
                         +{overflow} más
                       </button>
                     </PopoverTrigger>
-                    <PopoverContent align="start" className="w-64 p-2">
+                    <PopoverContent
+                      align="start"
+                      className="max-h-[60vh] w-[min(16rem,calc(100vw-1.5rem))] overflow-y-auto p-2"
+                    >
                       <p className="mb-1.5 px-1 font-display text-sm font-semibold capitalize">
                         {capitalizar(format(day, "EEEE d 'de' MMMM", { locale: es }))}
                       </p>

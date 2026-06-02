@@ -105,7 +105,7 @@ export default async function ExpedientesPage({
               <TableBody>
                 {expedientes.map((e) => (
                   <TableRow key={e.id} className="group">
-                    <TableCell className="max-w-[24rem]">
+                    <TableCell className="max-w-[60vw] sm:max-w-[24rem]">
                       <Link
                         href={`/expedientes/${e.id}`}
                         className="font-medium text-foreground hover:text-primary hover:underline underline-offset-4 line-clamp-2"

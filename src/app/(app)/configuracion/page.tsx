@@ -1,4 +1,4 @@
-import { Settings, Sparkles } from "lucide-react";
+import { Settings, Sparkles, Stamp } from "lucide-react";
 import { requireEstudio } from "@/lib/session";
 import { createClient } from "@/lib/supabase/server";
 import { PageHeader } from "@/components/ui/page-header";
@@ -10,6 +10,11 @@ import {
   CardContent,
 } from "@/components/ui/card";
 import { IaConfigForm } from "@/components/configuracion/ia-config-form";
+import {
+  MembreteForm,
+  type MembreteFormValues,
+} from "@/components/configuracion/membrete-form";
+import type { MembreteConfig } from "@/components/redaccion/tipos";
 import { formatMoney } from "@/lib/utils";
 
 export const metadata = { title: "Configuración" };
@@ -38,6 +43,21 @@ export default async function ConfiguracionPage() {
   const configurada = !!iaCfg?.secret_id;
   const modelo = iaCfg?.modelo ?? "claude-opus-4-8";
 
+  const membreteCfg = ((activeEstudio.config as { membrete?: MembreteConfig } | null)
+    ?.membrete ?? {}) as MembreteConfig;
+  const membreteValores: MembreteFormValues = {
+    nombre: activeEstudio.nombre ?? "",
+    cuit: activeEstudio.cuit ?? "",
+    domicilio: activeEstudio.domicilio ?? "",
+    email: activeEstudio.email ?? "",
+    telefono: activeEstudio.telefono ?? "",
+    logoUrl: activeEstudio.logo_url ?? "",
+    abogado: membreteCfg.abogado ?? "",
+    matricula: membreteCfg.matricula ?? "",
+    domicilioElectronico: membreteCfg.domicilio_electronico ?? "",
+    incluirLogo: membreteCfg.incluir_logo ?? false,
+  };
+
   return (
     <div className="mx-auto max-w-3xl space-y-6">
       <PageHeader
@@ -57,6 +77,27 @@ export default async function ConfiguracionPage() {
           <Dato label="Localidad" value={activeEstudio.localidad ?? "—"} />
           <Dato label="Plan" value={PLAN_LABEL[activeEstudio.plan] ?? activeEstudio.plan} />
           <Dato label="Valor del jus" value={formatMoney(activeEstudio.valor_jus)} />
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Stamp className="size-4 text-primary" /> Membrete de escritos
+          </CardTitle>
+          <CardDescription>
+            Encabezado y datos profesionales que aparecen en los documentos PDF
+            generados desde Redacción (estudio, abogado/a, matrícula y domicilios).
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {admin ? (
+            <MembreteForm valores={membreteValores} />
+          ) : (
+            <p className="text-sm text-muted-foreground">
+              Sólo el administrador del estudio puede editar el membrete.
+            </p>
+          )}
         </CardContent>
       </Card>
 

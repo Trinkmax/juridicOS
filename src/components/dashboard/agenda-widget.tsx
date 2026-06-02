@@ -114,7 +114,7 @@ export function AgendaWidget({ audiencias }: { audiencias: AudienciaConExpedient
           if (!o) setSel(null);
         }}
       >
-        <DialogContent className="max-w-lg">
+        <DialogContent className="max-h-[90dvh] max-w-lg overflow-y-auto">
           {sel && <EventoDetalle item={sel} />}
         </DialogContent>
       </Dialog>

@@ -335,7 +335,7 @@ export function ClienteActividad({
           if (!open) setSeleccionado(null);
         }}
       >
-        <DialogContent>
+        <DialogContent className="max-h-[90dvh] overflow-y-auto">
           {seleccionado &&
             (seleccionado.kind === "movimiento" && seleccionado.movimiento ? (
               <DetalleMovimiento

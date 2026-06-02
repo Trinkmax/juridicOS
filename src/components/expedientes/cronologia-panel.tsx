@@ -470,7 +470,7 @@ export function CronologiaPanel({
           if (!open) setSeleccionado(null);
         }}
       >
-        <DialogContent>
+        <DialogContent className="max-h-[90vh] overflow-y-auto">
           {seleccionado && <CronologiaDetalle item={seleccionado} />}
         </DialogContent>
       </Dialog>

@@ -71,7 +71,7 @@ export function ExpedientesFiltros() {
           value={fuero || TODOS}
           onValueChange={(v) => aplicar({ fuero: v === TODOS ? null : v })}
         >
-          <SelectTrigger className="w-[180px]" aria-label="Filtrar por fuero">
+          <SelectTrigger className="min-w-0 flex-1 sm:w-[180px] sm:flex-none" aria-label="Filtrar por fuero">
             <SelectValue placeholder="Fuero" />
           </SelectTrigger>
           <SelectContent>
@@ -88,7 +88,7 @@ export function ExpedientesFiltros() {
           value={estado || TODOS}
           onValueChange={(v) => aplicar({ estado: v === TODOS ? null : v })}
         >
-          <SelectTrigger className="w-[170px]" aria-label="Filtrar por estado">
+          <SelectTrigger className="min-w-0 flex-1 sm:w-[170px] sm:flex-none" aria-label="Filtrar por estado">
             <SelectValue placeholder="Estado" />
           </SelectTrigger>
           <SelectContent>

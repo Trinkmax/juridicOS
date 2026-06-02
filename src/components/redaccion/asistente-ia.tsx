@@ -73,7 +73,7 @@ export function AsistenteIA({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="secondary" size="sm" disabled={!iaActiva}>
+        <Button variant="secondary" size="sm" disabled={!iaActiva} className="h-9 sm:h-8">
           <Sparkles className="size-4" />
           Asistente IA
         </Button>

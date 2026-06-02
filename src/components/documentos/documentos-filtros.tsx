@@ -74,7 +74,10 @@ export function DocumentosFiltros({
           value={expediente || TODOS}
           onValueChange={(v) => aplicar({ expediente: v === TODOS ? null : v })}
         >
-          <SelectTrigger className="w-[220px]" aria-label="Filtrar por expediente">
+          <SelectTrigger
+            className="min-w-0 flex-1 sm:w-[220px] sm:flex-none"
+            aria-label="Filtrar por expediente"
+          >
             <SelectValue placeholder="Expediente" />
           </SelectTrigger>
           <SelectContent>
@@ -97,6 +100,7 @@ export function DocumentosFiltros({
             }}
             aria-label="Limpiar filtros"
             title="Limpiar filtros"
+            className="shrink-0"
           >
             <X />
           </Button>

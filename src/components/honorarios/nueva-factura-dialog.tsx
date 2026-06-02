@@ -210,12 +210,13 @@ export function NuevaFacturaDialog({
                 return (
                   <div
                     key={it.key}
-                    className="grid grid-cols-[1fr_4.5rem_7rem_auto] items-center gap-2"
+                    className="flex flex-wrap items-center gap-2 sm:grid sm:grid-cols-[1fr_4.5rem_7rem_auto]"
                   >
                     <Input
                       value={it.descripcion}
                       onChange={(e) => actualizarItem(it.key, "descripcion", e.target.value)}
                       placeholder="Descripción"
+                      className="basis-full sm:basis-auto"
                     />
                     <Input
                       type="number"
@@ -224,7 +225,7 @@ export function NuevaFacturaDialog({
                       value={it.cantidad}
                       onChange={(e) => actualizarItem(it.key, "cantidad", e.target.value)}
                       placeholder="Cant."
-                      className="text-right"
+                      className="w-16 flex-1 text-right sm:w-auto sm:flex-none"
                     />
                     <Input
                       type="number"
@@ -233,7 +234,7 @@ export function NuevaFacturaDialog({
                       value={it.precio_unitario}
                       onChange={(e) => actualizarItem(it.key, "precio_unitario", e.target.value)}
                       placeholder="Precio"
-                      className="text-right"
+                      className="w-24 flex-1 text-right sm:w-auto sm:flex-none"
                     />
                     <Button
                       type="button"
@@ -245,7 +246,7 @@ export function NuevaFacturaDialog({
                     >
                       <Trash2 className="size-4 text-destructive" />
                     </Button>
-                    <div className="col-span-4 -mt-1 text-data text-right text-xs text-muted-foreground">
+                    <div className="w-full -mt-1 text-data text-right text-xs text-muted-foreground sm:col-span-4">
                       Subtotal ítem: {formatMoney(sub)}
                     </div>
                   </div>

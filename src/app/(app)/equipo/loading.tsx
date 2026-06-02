@@ -20,14 +20,21 @@ export default function LoadingEquipo() {
 
       <div className="grid gap-3">
         {Array.from({ length: 4 }).map((_, i) => (
-          <Card key={i} className="flex items-center gap-4 p-4">
-            <Skeleton className="size-10 rounded-full" />
-            <div className="flex-1 space-y-2">
-              <Skeleton className="h-4 w-40" />
-              <Skeleton className="h-3 w-56" />
+          <Card
+            key={i}
+            className="flex flex-col gap-4 p-4 lg:flex-row lg:items-center"
+          >
+            <div className="flex flex-1 items-center gap-4">
+              <Skeleton className="size-10 shrink-0 rounded-full" />
+              <div className="min-w-0 flex-1 space-y-2">
+                <Skeleton className="h-4 w-40 max-w-full" />
+                <Skeleton className="h-3 w-56 max-w-full" />
+              </div>
             </div>
-            <Skeleton className="h-6 w-24 rounded-sm" />
-            <Skeleton className="h-9 w-44 rounded-md" />
+            <div className="flex flex-wrap items-center gap-3">
+              <Skeleton className="h-6 w-24 rounded-sm" />
+              <Skeleton className="h-9 w-44 max-w-full rounded-md" />
+            </div>
           </Card>
         ))}
       </div>

@@ -19,13 +19,15 @@ function SheetContent({
 }) {
   const sideClasses = {
     right:
-      "inset-y-0 right-0 h-full w-full max-w-md border-l animate-[slide-down_0.3s_cubic-bezier(0.16,1,0.3,1)]",
-    left: "inset-y-0 left-0 h-full w-full max-w-md border-r",
-    bottom: "inset-x-0 bottom-0 max-h-[85vh] rounded-t-lg border-t",
+      "inset-y-0 right-0 h-full w-full max-w-md border-l data-[state=open]:animate-[sheet-in-right_0.35s_cubic-bezier(0.32,0.72,0,1)] data-[state=closed]:animate-[sheet-out-right_0.25s_cubic-bezier(0.32,0.72,0,1)]",
+    left:
+      "inset-y-0 left-0 h-full w-full max-w-md border-r data-[state=open]:animate-[sheet-in-left_0.35s_cubic-bezier(0.32,0.72,0,1)] data-[state=closed]:animate-[sheet-out-left_0.25s_cubic-bezier(0.32,0.72,0,1)]",
+    bottom:
+      "inset-x-0 bottom-0 max-h-[85vh] rounded-t-lg border-t data-[state=open]:animate-[sheet-in-bottom_0.35s_cubic-bezier(0.32,0.72,0,1)] data-[state=closed]:animate-[sheet-out-bottom_0.25s_cubic-bezier(0.32,0.72,0,1)]",
   };
   return (
     <DialogPrimitive.Portal>
-      <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-foreground/30 backdrop-blur-sm animate-fade-in" />
+      <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-foreground/30 backdrop-blur-sm data-[state=open]:animate-[overlay-in_0.3s_ease] data-[state=closed]:animate-[overlay-out_0.25s_ease]" />
       <DialogPrimitive.Content
         className={cn(
           "fixed z-50 flex flex-col gap-4 bg-card p-6 shadow-xl border-border",

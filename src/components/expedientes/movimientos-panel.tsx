@@ -67,7 +67,7 @@ function NuevoMovimientoDialog({ expedienteId }: { expedienteId: string }) {
           Nuevo movimiento
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Nuevo movimiento</DialogTitle>
           <DialogDescription>Registrá una actuación en la cronología de la causa.</DialogDescription>

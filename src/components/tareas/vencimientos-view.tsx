@@ -151,7 +151,7 @@ function TareaFila({
               onClick={reabrir}
               disabled={pending}
               aria-label="Reabrir tarea"
-              className="grid size-5 shrink-0 place-items-center rounded-full border border-success bg-success text-success-foreground transition-colors hover:bg-success-soft hover:text-success"
+              className="grid size-7 shrink-0 place-items-center rounded-full border border-success bg-success text-success-foreground transition-colors hover:bg-success-soft hover:text-success sm:size-5"
             >
               <Check className="size-3" />
             </button>
@@ -166,7 +166,7 @@ function TareaFila({
               onClick={completar}
               disabled={pending}
               aria-label={`Completar tarea: ${tarea.titulo}`}
-              className="grid size-5 shrink-0 place-items-center rounded-full border border-border text-transparent transition-colors hover:border-success hover:bg-success-soft hover:text-success focus-visible:border-success focus-visible:text-success"
+              className="grid size-7 shrink-0 place-items-center rounded-full border border-border text-transparent transition-colors hover:border-success hover:bg-success-soft hover:text-success focus-visible:border-success focus-visible:text-success sm:size-5"
             >
               <Check className="size-3" />
             </button>
@@ -252,7 +252,7 @@ function TareaFila({
           <Button
             variant="ghost"
             size="icon-sm"
-            className="shrink-0 opacity-0 transition-opacity group-hover:opacity-100 focus-visible:opacity-100 data-[state=open]:opacity-100"
+            className="shrink-0 opacity-100 transition-opacity focus-visible:opacity-100 data-[state=open]:opacity-100 sm:opacity-0 sm:group-hover:opacity-100"
             aria-label="Acciones de la tarea"
           >
             <MoreHorizontal className="size-4" />

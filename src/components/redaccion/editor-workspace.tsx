@@ -18,6 +18,9 @@ import {
   Wand2,
   Replace,
   Info,
+  FileDown,
+  Printer,
+  ShieldCheck,
 } from "lucide-react";
 import { guardarDocumentoGenerado } from "@/lib/actions/ia";
 import { Button } from "@/components/ui/button";
@@ -49,6 +52,7 @@ import type {
   PlantillaItem,
   ExpedienteContexto,
   DocumentoEdicion,
+  Membrete,
 } from "./tipos";
 
 const SIN_EXPEDIENTE = "__sin__";
@@ -66,8 +70,13 @@ export const EditorWorkspace = forwardRef<
     iaActiva: boolean;
     /** Si viene, se abre en modo edición de ese documento. */
     documento?: DocumentoEdicion;
+    /** Membrete del estudio para el encabezado del PDF. Opcional. */
+    membrete?: Membrete;
   }
->(function EditorWorkspace({ plantillas, expedientes, iaActiva, documento }, ref) {
+>(function EditorWorkspace(
+  { plantillas, expedientes, iaActiva, documento, membrete },
+  ref,
+) {
   const router = useRouter();
 
   const [docId] = useState<string | null>(documento?.id ?? null);
@@ -84,6 +93,8 @@ export const EditorWorkspace = forwardRef<
   const [tituloDialog, setTituloDialog] = useState(false);
   const [tituloPendiente, setTituloPendiente] = useState("");
   const [guardando, startGuardar] = useTransition();
+  const [generandoPdf, setGenerandoPdf] = useState(false);
+  const [imprimiendo, setImprimiendo] = useState(false);
 
   const expedienteSel = useMemo(
     () => expedientes.find((e) => e.id === expedienteId) ?? null,
@@ -159,6 +170,86 @@ export const EditorWorkspace = forwardRef<
     a.click();
     a.remove();
     URL.revokeObjectURL(url);
+  }
+
+  function nombreArchivo() {
+    return (
+      (titulo.trim() || "documento").replace(/[^\w\-áéíóúñ ]+/gi, "").trim() ||
+      "documento"
+    );
+  }
+
+  /** Membrete para el PDF; null si no hay datos cargados (se omite el encabezado). */
+  const membreteValido = membrete ?? undefined;
+
+  async function generarBlob(): Promise<Blob> {
+    // Import dinámico: @react-pdf/renderer no entra al bundle del editor.
+    const { generarPDFBlob } = await import("./documento-pdf");
+    return generarPDFBlob({
+      contenido,
+      titulo: titulo.trim() || null,
+      tipo: tipo.trim() || null,
+      membrete: membreteValido,
+    });
+  }
+
+  async function descargarPdf() {
+    if (contenido.trim().length === 0) {
+      toast.error("No hay texto para descargar.");
+      return;
+    }
+    setGenerandoPdf(true);
+    try {
+      const blob = await generarBlob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${nombreArchivo()}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    } catch {
+      toast.error("No pudimos generar el PDF. Probá de nuevo.");
+    } finally {
+      setGenerandoPdf(false);
+    }
+  }
+
+  async function imprimir() {
+    if (contenido.trim().length === 0) {
+      toast.error("No hay texto para imprimir.");
+      return;
+    }
+    setImprimiendo(true);
+    try {
+      // Imprimimos el MISMO PDF que se descarga (fidelidad total al texto).
+      const blob = await generarBlob();
+      const url = URL.createObjectURL(blob);
+      const ventana = window.open(url, "_blank");
+      if (!ventana) {
+        // Bloqueador de pop-ups: caemos a descarga para no dejar al usuario sin salida.
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `${nombreArchivo()}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+        toast.info("Permití las ventanas emergentes para imprimir; descargamos el PDF.");
+        return;
+      }
+      ventana.addEventListener("load", () => {
+        ventana.focus();
+        ventana.print();
+      });
+      // Liberamos la URL después de que la pestaña la haya cargado.
+      setTimeout(() => URL.revokeObjectURL(url), 60_000);
+    } catch {
+      toast.error("No pudimos preparar la impresión. Probá de nuevo.");
+    } finally {
+      setImprimiendo(false);
+    }
   }
 
   async function copiar() {
@@ -283,6 +374,7 @@ export const EditorWorkspace = forwardRef<
             size="sm"
             onClick={completarDatos}
             disabled={!expedienteSel || contenido.trim().length === 0}
+            className="h-9 sm:h-8"
           >
             <Replace className="size-4" />
             Completar datos del expediente
@@ -302,16 +394,56 @@ export const EditorWorkspace = forwardRef<
             }}
           />
 
-          <div className="ml-auto flex flex-wrap items-center gap-2">
-            <Button type="button" variant="ghost" size="sm" onClick={copiar}>
+          <div className="flex w-full flex-wrap items-center gap-2 sm:ml-auto sm:w-auto">
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={copiar}
+              className="h-9 sm:h-8"
+            >
               {copiado ? <Check className="size-4" /> : <Copy className="size-4" />}
               Copiar
             </Button>
-            <Button type="button" variant="ghost" size="sm" onClick={descargarTxt}>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={descargarTxt}
+              className="h-9 sm:h-8"
+            >
               <Download className="size-4" />
               .txt
             </Button>
-            <Button type="button" size="sm" onClick={intentarGuardar} disabled={guardando}>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={imprimir}
+              disabled={contenido.trim().length === 0 || imprimiendo}
+              className="h-9 sm:h-8"
+            >
+              {imprimiendo ? <Spinner /> : <Printer className="size-4" />}
+              Imprimir
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={descargarPdf}
+              disabled={contenido.trim().length === 0 || generandoPdf}
+              className="h-9 sm:h-8"
+            >
+              {generandoPdf ? <Spinner /> : <FileDown className="size-4" />}
+              Descargar PDF
+            </Button>
+            <Button
+              type="button"
+              size="sm"
+              onClick={intentarGuardar}
+              disabled={guardando}
+              className="h-9 sm:h-8"
+            >
               {guardando ? <Spinner /> : docId ? <Save className="size-4" /> : <FilePlus2 className="size-4" />}
               {docId ? "Guardar" : "Guardar borrador"}
             </Button>
@@ -361,12 +493,22 @@ export const EditorWorkspace = forwardRef<
 
         <EditorTextarea contenido={contenido} setContenido={setContenido} />
 
-        <div className="flex items-start gap-2 text-xs text-muted-foreground">
-          <Info className="mt-0.5 size-3.5 shrink-0" />
-          <p>
-            La IA asiste; revisá y aprobá el documento. No constituye asesoramiento
-            jurídico. Verificá normas, citas y datos antes de presentar el escrito.
-          </p>
+        <div className="space-y-2 rounded-md border border-border bg-muted/30 p-3">
+          <div className="flex items-start gap-2 text-xs text-muted-foreground">
+            <ShieldCheck className="mt-0.5 size-3.5 shrink-0" />
+            <p>
+              La validez surge de la presentación firmada en el SAC (tu usuario es tu
+              firma electrónica) o de la firma de puño y letra. Revisá el documento
+              antes de presentar.
+            </p>
+          </div>
+          <div className="flex items-start gap-2 text-xs text-muted-foreground">
+            <Info className="mt-0.5 size-3.5 shrink-0" />
+            <p>
+              La IA asiste; revisá y aprobá el documento. No constituye asesoramiento
+              jurídico. Verificá normas, citas y datos antes de presentar el escrito.
+            </p>
+          </div>
         </div>
       </div>
 

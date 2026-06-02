@@ -44,7 +44,7 @@ export function PlazoAcciones({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon-sm" aria-label="Acciones del plazo" disabled={pending}>
+        <Button variant="ghost" size="icon-sm" aria-label="Acciones del plazo" disabled={pending} className="size-9 sm:size-8">
           {pending ? <Spinner /> : <MoreHorizontal className="size-4" />}
         </Button>
       </DropdownMenuTrigger>

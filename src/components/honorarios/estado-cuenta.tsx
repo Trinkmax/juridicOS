@@ -95,7 +95,7 @@ export function EstadoCuenta({ cuentas }: { cuentas: CuentaCliente[] }) {
                   <span className={`size-1.5 shrink-0 rounded-full ${c.dot}`} aria-hidden />
                   {c.label}
                 </dt>
-                <dd className={`font-display text-data text-2xl font-semibold tracking-tight ${c.valueClass}`}>
+                <dd className={`font-display text-data text-xl font-semibold tracking-tight sm:text-2xl ${c.valueClass}`}>
                   {formatMoney(c.value)}
                 </dd>
               </div>

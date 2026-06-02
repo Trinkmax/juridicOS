@@ -99,8 +99,10 @@ export default async function TareasPage({
         }
         icon={<ListTodo className="size-5" />}
       >
-        <VistaToggle vista={vista} />
-        <NuevaTareaDialog miembros={miembros} expedientes={expedientes} />
+        <div className="flex flex-wrap items-center gap-2">
+          <VistaToggle vista={vista} />
+          <NuevaTareaDialog miembros={miembros} expedientes={expedientes} />
+        </div>
       </PageHeader>
 
       <FadeIn>

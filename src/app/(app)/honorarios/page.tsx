@@ -161,7 +161,7 @@ export default async function HonorariosPage() {
         icon={<Receipt className="size-5" />}
       />
 
-      <Stagger className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <Stagger className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         <StaggerItem>
           <StatCard
             icon={FileCheck2}

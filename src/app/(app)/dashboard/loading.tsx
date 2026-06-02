@@ -3,7 +3,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 function StatCardSkeleton() {
   return (
-    <Card className="p-5">
+    <Card className="p-4 sm:p-5">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0 space-y-2.5">
           <Skeleton className="h-4 w-24" />
@@ -40,7 +40,7 @@ export default function DashboardLoading() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
         {Array.from({ length: 4 }).map((_, i) => (
           <StatCardSkeleton key={i} />
         ))}

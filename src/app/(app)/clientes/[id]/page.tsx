@@ -42,7 +42,7 @@ function MetricaTile({
 }) {
   return (
     <div className="rounded-lg border border-border p-4">
-      <p className="font-display text-data text-2xl font-semibold tracking-tight">
+      <p className="font-display text-data text-xl font-semibold tracking-tight sm:text-2xl">
         {value}
       </p>
       <p className="mt-1 text-xs font-medium uppercase tracking-wide text-muted-foreground">
@@ -303,7 +303,7 @@ export default async function ClienteDetallePage({
                   <li key={e.id}>
                     <Link
                       href={`/expedientes/${e.id}`}
-                      className="-mx-3 flex items-center justify-between gap-3 rounded-lg px-3 py-3 transition-colors hover:bg-muted/40"
+                      className="-mx-3 flex flex-col gap-2 rounded-lg px-3 py-3 transition-colors hover:bg-muted/40 sm:flex-row sm:items-center sm:justify-between sm:gap-3"
                     >
                       <div className="min-w-0">
                         <p className="truncate text-sm font-medium">
@@ -316,7 +316,7 @@ export default async function ClienteDetallePage({
                             : "Sin fecha de inicio"}
                         </p>
                       </div>
-                      <div className="flex shrink-0 items-center gap-2">
+                      <div className="flex flex-wrap items-center gap-2 sm:shrink-0 sm:flex-nowrap">
                         <OptionBadge option={FUERO[e.fuero]} />
                         <OptionBadge option={ESTADO_EXPEDIENTE[e.estado]} dot />
                       </div>

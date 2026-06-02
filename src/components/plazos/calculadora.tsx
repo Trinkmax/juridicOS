@@ -256,7 +256,6 @@ export function Calculadora({
         <ResultadoCard
           resultado={resultado}
           calculando={calculando}
-          dias={dias}
           diasRest={dr}
         />
 
@@ -281,7 +280,7 @@ export function Calculadora({
                     Guardar como plazo
                   </Button>
                 </DialogTrigger>
-                <DialogContent>
+                <DialogContent className="max-h-[90vh] max-w-[calc(100vw-2rem)] overflow-y-auto sm:max-w-lg">
                   <DialogHeader>
                     <DialogTitle>Guardar plazo</DialogTitle>
                     <DialogDescription>
@@ -369,12 +368,10 @@ export function Calculadora({
 function ResultadoCard({
   resultado,
   calculando,
-  dias,
   diasRest,
 }: {
   resultado: ComputoPlazo | null;
   calculando: boolean;
-  dias: number;
   diasRest: number | null;
 }) {
   const venc = resultado?.fecha_vencimiento ?? null;

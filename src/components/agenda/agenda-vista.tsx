@@ -86,7 +86,7 @@ export function AgendaVista({
               href={href(mes, "mes")}
               scroll={false}
               className={cn(
-                "flex items-center gap-1.5 rounded-sm px-2.5 py-1 text-sm transition-colors",
+                "flex items-center gap-1.5 rounded-sm px-2.5 py-2 text-sm transition-colors sm:py-1",
                 vista === "mes"
                   ? "bg-secondary font-medium text-foreground"
                   : "text-muted-foreground hover:text-foreground",
@@ -99,7 +99,7 @@ export function AgendaVista({
               href={href(mes, "lista")}
               scroll={false}
               className={cn(
-                "flex items-center gap-1.5 rounded-sm px-2.5 py-1 text-sm transition-colors",
+                "flex items-center gap-1.5 rounded-sm px-2.5 py-2 text-sm transition-colors sm:py-1",
                 vista === "lista"
                   ? "bg-secondary font-medium text-foreground"
                   : "text-muted-foreground hover:text-foreground",
@@ -119,7 +119,7 @@ export function AgendaVista({
       )}
 
       <Dialog open={!!sel} onOpenChange={(o) => { if (!o) setSel(null); }}>
-        <DialogContent className="max-w-lg">
+        <DialogContent className="max-h-[90vh] max-w-lg overflow-y-auto">
           {sel && <EventoDetalle item={sel} />}
         </DialogContent>
       </Dialog>

@@ -1,4 +1,4 @@
-import type { Plantilla } from "@/lib/types/domain";
+import type { Plantilla, Estudio } from "@/lib/types/domain";
 
 /** Plantilla con un flag derivado: las globales (estudio_id null) son de solo lectura. */
 export type PlantillaItem = Plantilla & { esGlobal: boolean };
@@ -27,6 +27,54 @@ export type ExpedienteContexto = {
   cliente_nombre: string | null;
   cliente_documento: string | null;
 };
+
+/**
+ * Datos del membrete profesional para el encabezado de los escritos en PDF.
+ * Se arma en la page (RSC) desde `estudios` + `estudios.config` y se pasa al
+ * editor. Todo opcional: el PDF renderiza sólo lo que tenga.
+ */
+export type Membrete = {
+  estudio?: string | null;
+  abogado?: string | null;
+  matricula?: string | null;
+  domicilio?: string | null;
+  domicilioElectronico?: string | null;
+  telefono?: string | null;
+  email?: string | null;
+  cuit?: string | null;
+  logoUrl?: string | null;
+  incluirLogo?: boolean;
+};
+
+/** Claves del membrete guardadas en `estudios.config.membrete` (JSON). */
+export type MembreteConfig = {
+  abogado?: string;
+  matricula?: string;
+  domicilio_electronico?: string;
+  incluir_logo?: boolean;
+};
+
+/**
+ * Arma el objeto `Membrete` para el PDF combinando columnas de `estudios`
+ * (nombre, cuit, domicilio, email, telefono, logo_url) con los extras
+ * guardados en `estudios.config.membrete`. Pura: corre en RSC o cliente.
+ */
+export function construirMembrete(estudio: Estudio): Membrete {
+  const cfg = ((estudio.config as { membrete?: MembreteConfig } | null)?.membrete ??
+    {}) as MembreteConfig;
+  return {
+    estudio: estudio.nombre ?? null,
+    abogado: cfg.abogado ?? null,
+    matricula: cfg.matricula ?? null,
+    domicilio: estudio.domicilio ?? null,
+    domicilioElectronico: cfg.domicilio_electronico ?? null,
+    telefono: estudio.telefono ?? null,
+    email: estudio.email ?? null,
+    cuit: estudio.cuit ?? null,
+    logoUrl: estudio.logo_url ?? null,
+    incluirLogo: cfg.incluir_logo ?? false,
+  };
+}
 
 /** Documento que el editor abre para editar (modo edición). */
 export type DocumentoEdicion = {

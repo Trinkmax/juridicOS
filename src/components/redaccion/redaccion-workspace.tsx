@@ -12,6 +12,7 @@ import type {
   ExpedienteContexto,
   BorradorItem,
   DocumentoEdicion,
+  Membrete,
 } from "./tipos";
 
 export function RedaccionWorkspace({
@@ -20,6 +21,7 @@ export function RedaccionWorkspace({
   borradores,
   iaActiva,
   documento,
+  membrete,
 }: {
   plantillas: PlantillaItem[];
   expedientes: ExpedienteContexto[];
@@ -27,6 +29,8 @@ export function RedaccionWorkspace({
   iaActiva: boolean;
   /** Si viene, el editor abre ese documento en modo edición. */
   documento?: DocumentoEdicion;
+  /** Membrete del estudio para el encabezado del PDF. */
+  membrete?: Membrete;
 }) {
   const editorRef = useRef<EditorHandle>(null);
   const [tab, setTab] = useState("editor");
@@ -62,6 +66,7 @@ export function RedaccionWorkspace({
           expedientes={expedientes}
           iaActiva={iaActiva}
           documento={documento}
+          membrete={membrete}
         />
       </TabsContent>
 

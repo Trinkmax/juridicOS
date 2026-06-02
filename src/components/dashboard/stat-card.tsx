@@ -59,7 +59,7 @@ export function StatCard({
       >
         <Link
           href={href}
-          className="block rounded-lg p-5 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="block rounded-lg p-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:p-5"
           aria-label={`${label}: ${value}`}
         >
           {body}
@@ -75,7 +75,7 @@ export function StatCard({
   return (
     <Card
       className={cn(
-        "group relative overflow-hidden p-5 transition-colors hover:border-foreground/20",
+        "group relative overflow-hidden p-4 transition-colors hover:border-foreground/20 sm:p-5",
         className,
       )}
     >
