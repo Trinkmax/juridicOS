@@ -90,15 +90,16 @@ export default async function LandingPage() {
           </FadeIn>
           
           <FadeIn delay={0.08}>
-            <h1 className="flex justify-center py-2">
-              <span className="sr-only">juridicOS</span>
-              <Logo priority className="h-16 sm:h-24 md:h-28 lg:h-32 w-auto" />
+            <h1 className="mx-auto max-w-3xl text-balance font-display text-4xl font-semibold leading-[1.06] tracking-tight sm:text-5xl md:text-6xl">
+              El sistema operativo de tu{" "}
+              <span className="text-primary">estudio jurídico</span>
             </h1>
           </FadeIn>
-          
+
           <FadeIn delay={0.16}>
             <p className="mt-6 max-w-2xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
-              juridicOS es el sistema operativo del estudio jurídico moderno. Gestioná expedientes, calculá plazos automatizados bajo la justicia de Córdoba, redactá escritos con IA y mantené a todo tu equipo coordinado en una sola pantalla.
+              Calculá plazos bajo la justicia de Córdoba, redactá escritos con IA y coordiná a todo el estudio —{" "}
+              <span className="font-medium text-foreground">sin perder un solo vencimiento</span>, en una sola pantalla.
             </p>
           </FadeIn>
           

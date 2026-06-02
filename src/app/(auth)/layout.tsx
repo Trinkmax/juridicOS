@@ -1,58 +1,65 @@
 import Link from "next/link";
+import { Scale } from "lucide-react";
 import { Logo } from "@/components/brand/logo";
 import { ThemeToggle } from "@/components/app/theme-toggle";
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="grid min-h-dvh lg:grid-cols-2">
-      {/* Brand panel (Left Column, styled after SHARP panel) */}
+      {/* Brand panel — isla siempre oscura. `dark` fuerza que los tokens
+          resuelvan claro-sobre-oscuro sin importar el tema de la app. */}
       <div
-        className="relative hidden flex-col justify-between p-16 text-background lg:flex overflow-hidden"
+        className="dark relative hidden flex-col justify-between overflow-hidden p-16 lg:flex"
         style={{
           background: `
-            radial-gradient(circle at 100% 0%, oklch(0.455 0.155 260 / 0.25) 0%, transparent 60%),
-            radial-gradient(circle at 0% 100%, oklch(0.760 0.135 75 / 0.18) 0%, transparent 65%),
-            oklch(0.145 0.008 260)
+            radial-gradient(circle at 100% 0%, oklch(0.55 0.15 262 / 0.28) 0%, transparent 55%),
+            radial-gradient(circle at 0% 100%, oklch(0.50 0.07 262 / 0.20) 0%, transparent 62%),
+            oklch(0.165 0.012 262)
           `,
         }}
       >
+        <div className="pointer-events-none absolute inset-0 bg-grid opacity-[0.05]" />
+
         {/* Top Tag */}
-        <div className="relative z-10 flex items-center gap-2 font-mono text-[10px] font-bold tracking-widest text-warning-foreground/90 uppercase">
-          <span>⚖️</span>
-          <span>juridicOS</span>
-          <span className="opacity-40">·</span>
-          <span className="text-muted-foreground/80">Panel Interno</span>
+        <div className="relative z-10 flex items-center gap-2 font-mono text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+          <Scale className="size-3.5 text-primary" />
+          <span className="text-foreground/90">juridicOS</span>
+          <span className="text-muted-foreground/40">·</span>
+          <span>Panel interno</span>
         </div>
 
-        {/* Center Content: Giant Logo + Pitch */}
+        {/* Center Content: Logo + Pitch */}
         <div className="relative z-10 space-y-7">
-          <Link href="/" className="inline-block transition-transform duration-300 hover:scale-102">
-            <Logo forceWhite priority className="h-16 sm:h-20 w-auto select-none object-contain" />
+          <Link
+            href="/"
+            className="inline-block transition-transform duration-300 hover:scale-[1.02]"
+          >
+            <Logo forceWhite priority className="h-16 w-auto select-none object-contain sm:h-20" />
           </Link>
-          
-          <p className="max-w-md font-display text-xl leading-relaxed text-foreground/90">
-            El sistema operativo de juridicOS.{" "}
-            <span className="font-semibold text-warning-foreground underline underline-offset-4 decoration-warning-foreground/30">
+
+          <p className="max-w-md font-display text-xl leading-relaxed text-foreground/85">
+            El sistema operativo de tu estudio jurídico.{" "}
+            <span className="font-semibold text-primary underline decoration-primary/40 underline-offset-4">
               Plazos procesales
             </span>
             , expedientes, agenda y{" "}
-            <span className="font-semibold text-warning-foreground underline underline-offset-4 decoration-warning-foreground/30">
+            <span className="font-semibold text-primary underline decoration-primary/40 underline-offset-4">
               redacción con IA
             </span>{" "}
-            — todo en la nube, en una sola pantalla.
+            — todo en una sola pantalla.
           </p>
 
           <div className="flex items-center gap-2.5 pt-2">
-            <div className="h-px w-8 bg-warning-foreground/40" />
-            <span className="font-mono text-[9px] font-bold tracking-widest text-warning-foreground/80 uppercase">
-              Poder Judicial de Córdoba
+            <div className="h-px w-8 bg-primary/50" />
+            <span className="font-mono text-[9px] font-bold uppercase tracking-widest text-muted-foreground">
+              Calculado para la justicia de Córdoba
             </span>
           </div>
         </div>
 
         {/* Bottom Footer */}
-        <p className="relative z-10 font-mono text-[10px] text-muted-foreground/60 tracking-wider">
-          ✨ Hecho con jurisprudencia — © {new Date().getFullYear()}
+        <p className="relative z-10 font-mono text-[10px] tracking-wider text-muted-foreground/60">
+          © {new Date().getFullYear()} juridicOS · Córdoba, Argentina
         </p>
       </div>
 
