@@ -82,7 +82,7 @@ export function NotificationsBell() {
               Sin novedades por ahora
             </div>
           ) : (
-            <ul className="divide-y divide-border/70">
+            <ul className="divide-y divide-border">
               {items.map((n) => (
                 <li
                   key={n.id}

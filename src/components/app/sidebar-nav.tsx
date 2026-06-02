@@ -48,7 +48,7 @@ export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
                 />
                 <span className="truncate">{item.label}</span>
                 {item.soon && (
-                  <span className="ml-auto rounded-full bg-muted px-1.5 py-0.5 text-[0.625rem] font-medium text-muted-foreground">
+                  <span className="ml-auto rounded-sm bg-muted px-1.5 py-0.5 text-[0.625rem] font-medium text-muted-foreground">
                     Pronto
                   </span>
                 )}

@@ -5,7 +5,7 @@ export default function LoadingEquipo() {
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3">
-        <Skeleton className="size-10 rounded-xl" />
+        <Skeleton className="size-10 rounded-md" />
         <div className="space-y-2">
           <Skeleton className="h-6 w-48" />
           <Skeleton className="h-4 w-72" />
@@ -14,7 +14,7 @@ export default function LoadingEquipo() {
 
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">
         {Array.from({ length: 3 }).map((_, i) => (
-          <Skeleton key={i} className="h-28 rounded-xl" />
+          <Skeleton key={i} className="h-28 rounded-lg" />
         ))}
       </div>
 
@@ -26,7 +26,7 @@ export default function LoadingEquipo() {
               <Skeleton className="h-4 w-40" />
               <Skeleton className="h-3 w-56" />
             </div>
-            <Skeleton className="h-6 w-24 rounded-full" />
+            <Skeleton className="h-6 w-24 rounded-sm" />
             <Skeleton className="h-9 w-44 rounded-md" />
           </Card>
         ))}

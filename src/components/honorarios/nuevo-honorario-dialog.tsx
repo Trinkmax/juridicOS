@@ -168,10 +168,10 @@ export function NuevoHonorarioDialog({
                 <input type="hidden" name="jus_valor" value={valorJus} />
                 <Input value={formatMoney(valorJus)} readOnly disabled />
               </Field>
-              <div className="sm:col-span-2 rounded-lg border border-border bg-muted/40 px-3 py-2.5 text-sm">
+              <div className="sm:col-span-2 rounded-md border border-border bg-muted/40 px-3 py-2.5 text-sm">
                 <span className="text-muted-foreground">Monto estimado: </span>
-                <span className="font-semibold tabular-nums">{formatMoney(previewJus)}</span>
-                <span className="text-muted-foreground"> ({jusCantidad || 0} JUS × {formatMoney(valorJus)})</span>
+                <span className="text-data font-semibold">{formatMoney(previewJus)}</span>
+                <span className="text-data text-muted-foreground"> ({jusCantidad || 0} JUS × {formatMoney(valorJus)})</span>
               </div>
             </div>
           )}

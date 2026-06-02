@@ -223,7 +223,7 @@ export const EditorWorkspace = forwardRef<
   return (
     <Card className="overflow-hidden">
       {/* Toolbar superior */}
-      <div className="flex flex-col gap-3 border-b border-border/70 bg-muted/30 p-3 sm:p-4">
+      <div className="flex flex-col gap-3 border-b border-border bg-muted/30 p-3 sm:p-4">
         <div className="grid gap-3 sm:grid-cols-2">
           <Field label="Plantilla" htmlFor="sel-plantilla">
             <Select

@@ -231,13 +231,13 @@ export function DocumentoUploader({
               agregarArchivos(e.dataTransfer.files);
             }}
             className={cn(
-              "flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed px-6 py-8 text-center transition-colors",
+              "flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border border-dashed px-6 py-8 text-center transition-colors",
               arrastrando
                 ? "border-primary bg-primary-soft"
-                : "border-border bg-muted/40 hover:border-primary/50 hover:bg-accent",
+                : "border-border bg-muted/40 hover:border-foreground/20 hover:bg-accent/60",
             )}
           >
-            <div className="flex size-10 items-center justify-center rounded-full bg-primary-soft text-primary">
+            <div className="flex size-10 items-center justify-center rounded-md bg-primary-soft text-primary">
               <Upload className="size-5" />
             </div>
             <p className="text-sm font-medium">

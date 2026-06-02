@@ -39,7 +39,7 @@ export function LogoMark({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "flex items-center justify-center rounded-[0.55rem] bg-gradient-to-br from-primary to-[oklch(0.5_0.24_296)] text-white shadow-sm",
+        "flex items-center justify-center rounded-md bg-foreground text-background",
         className,
       )}
     >

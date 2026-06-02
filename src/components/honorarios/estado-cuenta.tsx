@@ -32,7 +32,7 @@ export function EstadoCuenta({ cuentas }: { cuentas: CuentaCliente[] }) {
   return (
     <div className="grid gap-3 sm:grid-cols-2">
       {cuentas.map((c) => (
-        <Card key={c.clienteId} className="transition-all hover:-translate-y-0.5 hover:shadow-md">
+        <Card key={c.clienteId} className="transition-colors hover:border-foreground/20">
           <CardContent className="space-y-3 p-5">
             <div className="flex items-center gap-3">
               <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-primary-soft text-sm font-semibold text-primary">
@@ -50,19 +50,19 @@ export function EstadoCuenta({ cuentas }: { cuentas: CuentaCliente[] }) {
             <dl className="space-y-1.5 text-sm">
               <div className="flex items-center justify-between">
                 <dt className="text-muted-foreground">Honorarios pendientes</dt>
-                <dd className="tabular-nums">{formatMoney(c.honorariosPendientes)}</dd>
+                <dd className="text-data">{formatMoney(c.honorariosPendientes)}</dd>
               </div>
               <div className="flex items-center justify-between">
                 <dt className="text-muted-foreground">Facturas emitidas (impagas)</dt>
-                <dd className="tabular-nums">{formatMoney(c.facturasEmitidas)}</dd>
+                <dd className="text-data">{formatMoney(c.facturasEmitidas)}</dd>
               </div>
               <div className="flex items-center justify-between">
                 <dt className="text-muted-foreground">Facturas pagadas</dt>
-                <dd className="tabular-nums text-success">{formatMoney(c.facturasPagadas)}</dd>
+                <dd className="text-data text-success">{formatMoney(c.facturasPagadas)}</dd>
               </div>
               <div className="flex items-center justify-between border-t border-border pt-1.5 font-semibold">
                 <dt>Total adeudado</dt>
-                <dd className="tabular-nums">{formatMoney(c.adeudado)}</dd>
+                <dd className="text-data">{formatMoney(c.adeudado)}</dd>
               </div>
             </dl>
           </CardContent>

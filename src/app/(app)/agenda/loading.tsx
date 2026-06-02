@@ -4,7 +4,7 @@ export default function LoadingAgenda() {
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3">
-        <Skeleton className="size-10 rounded-xl" />
+        <Skeleton className="size-10 rounded-lg" />
         <div className="space-y-2">
           <Skeleton className="h-6 w-40" />
           <Skeleton className="h-4 w-72" />
@@ -15,7 +15,7 @@ export default function LoadingAgenda() {
           <Skeleton className="h-5 w-48" />
           <div className="space-y-2">
             {Array.from({ length: 2 }).map((_, i) => (
-              <Skeleton key={i} className="h-16 rounded-xl" />
+              <Skeleton key={i} className="h-16 rounded-lg" />
             ))}
           </div>
         </div>

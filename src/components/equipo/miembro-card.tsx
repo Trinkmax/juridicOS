@@ -71,7 +71,7 @@ export function MiembroCard({
   return (
     <Card
       className={cn(
-        "flex flex-col gap-4 p-4 transition-all hover:-translate-y-0.5 hover:shadow-md lg:flex-row lg:items-center",
+        "flex flex-col gap-4 p-4 transition-colors hover:border-foreground/20 lg:flex-row lg:items-center",
         !miembro.activo && "opacity-60",
       )}
     >

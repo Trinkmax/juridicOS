@@ -43,9 +43,9 @@ export function EstudioSwitcher({
     <DropdownMenu>
       <DropdownMenuTrigger
         disabled={pending}
-        className="flex w-full items-center gap-2.5 rounded-xl border border-border/70 bg-card p-2 text-left transition-colors hover:bg-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-ring/40 disabled:opacity-60"
+        className="flex w-full items-center gap-2.5 rounded-lg border border-border bg-card p-2 text-left transition-colors hover:bg-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-ring/40 disabled:opacity-60"
       >
-        <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-[oklch(0.5_0.24_296)] text-sm font-semibold text-white">
+        <span className="flex size-9 shrink-0 items-center justify-center rounded-md bg-foreground text-sm font-semibold text-background">
           {initials(active.nombre)}
         </span>
         <span className="min-w-0 flex-1">

@@ -26,7 +26,7 @@ export default async function PortalLayout({
       />
 
       <div className="relative flex min-h-dvh flex-col">
-        <header className="sticky top-0 z-20 border-b border-border/70 bg-background/80 backdrop-blur-md">
+        <header className="sticky top-0 z-20 border-b border-border bg-background/80 backdrop-blur-md">
           <div className="mx-auto flex h-16 w-full max-w-4xl items-center justify-between gap-3 px-4 sm:px-6">
             <Link
               href="/portal"
@@ -64,7 +64,7 @@ export default async function PortalLayout({
           <div className="mx-auto w-full max-w-4xl">{children}</div>
         </main>
 
-        <footer className="border-t border-border/60 py-6">
+        <footer className="border-t border-border py-6">
           <div className="mx-auto w-full max-w-4xl px-4 text-center text-xs text-muted-foreground sm:px-6">
             {nombreEstudio ? `${nombreEstudio} · ` : ""}Portal de clientes · Información
             de carácter referencial.

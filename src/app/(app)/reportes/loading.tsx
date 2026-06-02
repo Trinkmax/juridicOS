@@ -10,7 +10,7 @@ function StatCardSkeleton() {
           <Skeleton className="h-8 w-20" />
           <Skeleton className="h-3 w-24" />
         </div>
-        <Skeleton className="size-10 rounded-xl" />
+        <Skeleton className="size-10 rounded-md" />
       </div>
     </Card>
   );
@@ -34,7 +34,7 @@ export default function ReportesLoading() {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-center gap-3">
-        <Skeleton className="size-10 rounded-xl" />
+        <Skeleton className="size-10 rounded-md" />
         <div className="space-y-2">
           <Skeleton className="h-6 w-36" />
           <Skeleton className="h-4 w-64" />

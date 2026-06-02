@@ -22,7 +22,7 @@ export default function LoadingClienteDetalle() {
           <CardContent className="grid gap-5 sm:grid-cols-2">
             {Array.from({ length: 6 }).map((_, i) => (
               <div key={i} className="flex items-start gap-3">
-                <Skeleton className="size-8 rounded-lg" />
+                <Skeleton className="size-8 rounded-md" />
                 <div className="space-y-1.5">
                   <Skeleton className="h-3 w-20" />
                   <Skeleton className="h-4 w-32" />

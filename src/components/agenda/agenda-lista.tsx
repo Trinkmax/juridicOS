@@ -51,7 +51,7 @@ export function AgendaLista({ items }: { items: AgendaItem[] }) {
         return (
           <StaggerItem key={dia}>
             <div className="space-y-3">
-              <h3 className="sticky top-0 z-10 -mx-1 bg-background/80 px-1 py-1 text-sm font-semibold capitalize backdrop-blur">
+              <h3 className="sticky top-0 z-10 -mx-1 bg-background/80 px-1 py-1 font-display text-sm font-semibold capitalize backdrop-blur">
                 {capitalizar(formatFecha(dia, "EEEE d 'de' MMMM"))}
               </h3>
               <div className="space-y-2">
@@ -69,14 +69,14 @@ export function AgendaLista({ items }: { items: AgendaItem[] }) {
 
 function AgendaRow({ item }: { item: AgendaItem }) {
   return (
-    <div className="group flex items-start gap-3 rounded-xl border border-border/70 bg-card p-3.5 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md">
+    <div className="group flex items-start gap-3 rounded-lg border border-border bg-card p-4 transition-colors hover:bg-accent/60">
       <span className="mt-1.5 flex flex-col items-center gap-1">
         <span className={cn("size-2.5 rounded-full", TIPO_DOT[item.tipo])} />
       </span>
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
           {item.hora && (
-            <span className="font-mono text-sm font-medium tabular-nums text-foreground">
+            <span className="font-mono text-data text-sm font-medium text-foreground">
               {formatHora(item.hora)}
             </span>
           )}

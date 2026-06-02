@@ -24,7 +24,7 @@ export default async function PortalHomePage() {
     <div className="space-y-8">
       <FadeIn>
         <header className="space-y-1.5">
-          <h1 className="text-2xl font-semibold tracking-tight">
+          <h1 className="font-display text-2xl font-semibold tracking-tight">
             {nombre ? `Hola, ${nombre}` : "Hola"}
           </h1>
           <p className="text-muted-foreground">
@@ -44,7 +44,7 @@ export default async function PortalHomePage() {
           />
         </FadeIn>
       ) : (
-        <Stagger className="grid gap-4 sm:grid-cols-2">
+        <Stagger className="grid gap-3 sm:grid-cols-2">
           {causas.map((causa) => (
             <StaggerItem key={causa.id}>
               <CausaCard causa={causa} />

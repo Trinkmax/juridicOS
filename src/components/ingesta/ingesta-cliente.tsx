@@ -128,7 +128,7 @@ export function IngestaCliente({
             <Info className="mt-0.5 size-4 shrink-0 text-warning-foreground" />
             <p className="text-warning-foreground">
               Configurá{" "}
-              <code className="rounded bg-background/60 px-1 py-0.5 text-xs">
+              <code className="rounded-sm bg-background/60 px-1 py-0.5 text-xs">
                 ANTHROPIC_API_KEY
               </code>{" "}
               para activar la lectura con IA.
@@ -201,7 +201,7 @@ export function IngestaCliente({
         {/* ── Resultado ────────────────────────────────────────────────── */}
         <div className="space-y-4">
           {analizando ? (
-            <Card className="border-border/70">
+            <Card className="border border-border">
               <CardContent className="flex flex-col items-center justify-center gap-3 py-16 text-center">
                 <Spinner className="size-6 text-primary" />
                 <p className="text-sm text-muted-foreground">Analizando la cédula…</p>
@@ -218,9 +218,9 @@ export function IngestaCliente({
               }}
             />
           ) : (
-            <Card className="border-dashed border-border/70 bg-muted/20">
+            <Card className="border border-dashed border-border bg-muted/20">
               <CardContent className="flex flex-col items-center justify-center gap-3 py-16 text-center">
-                <div className="flex size-12 items-center justify-center rounded-2xl bg-primary-soft text-primary">
+                <div className="flex size-12 items-center justify-center rounded-md bg-primary-soft text-primary">
                   <ScanText className="size-6" />
                 </div>
                 <div className="space-y-1">
@@ -265,19 +265,15 @@ function ResultadoCard({
 
   return (
     <FadeIn y={6}>
-      <Card className="relative overflow-hidden border-border/70">
-        <div
-          className="absolute right-0 top-0 size-40 rounded-full bg-primary-soft opacity-40 blur-3xl"
-          aria-hidden
-        />
-        <CardContent className="relative space-y-5 p-6">
+      <Card className="border border-border">
+        <CardContent className="space-y-5 p-5">
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0 space-y-1">
               <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">
                 <Gavel className="size-3.5 text-primary" />
                 Acto detectado
               </div>
-              <h2 className="text-2xl font-semibold leading-tight tracking-tight">
+              <h2 className="font-display text-2xl font-semibold leading-tight tracking-tight">
                 {capitalizar(extraccion.tipo_acto)}
               </h2>
             </div>
@@ -287,7 +283,7 @@ function ResultadoCard({
           </div>
 
           <div className="flex flex-wrap items-center gap-2 text-sm">
-            <Badge tone="muted" className="gap-1.5">
+            <Badge tone="muted" className="gap-1.5 text-data">
               <CalendarClock className="size-3" />
               {extraccion.fecha_notificacion
                 ? `Notificada el ${formatFechaCorta(extraccion.fecha_notificacion)}`
@@ -322,13 +318,13 @@ function ResultadoCard({
           )}
 
           {hayPlazo && (
-            <div className="rounded-xl border border-primary/20 bg-primary-soft/60 p-4">
+            <div className="rounded-lg border border-primary/20 bg-primary-soft/60 p-4">
               <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-primary">
                 <CalendarClock className="size-3.5" />
                 Plazo sugerido
               </div>
               <p className="mt-1.5 text-base font-semibold text-foreground">
-                {capitalizar(actoSugerido)} — {diasSugerido} {modalidadLabel(modalidadSugerida)}
+                {capitalizar(actoSugerido)} — <span className="text-data">{diasSugerido}</span> {modalidadLabel(modalidadSugerida)}
               </p>
               {catalogoMatch && (
                 <p className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground">

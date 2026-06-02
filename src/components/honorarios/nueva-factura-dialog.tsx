@@ -245,7 +245,7 @@ export function NuevaFacturaDialog({
                     >
                       <Trash2 className="size-4 text-destructive" />
                     </Button>
-                    <div className="col-span-4 -mt-1 text-right text-xs text-muted-foreground">
+                    <div className="col-span-4 -mt-1 text-data text-right text-xs text-muted-foreground">
                       Subtotal ítem: {formatMoney(sub)}
                     </div>
                   </div>
@@ -258,18 +258,18 @@ export function NuevaFacturaDialog({
             </Button>
           </div>
 
-          <div className="space-y-1 rounded-lg border border-border bg-muted/40 px-4 py-3 text-sm">
+          <div className="space-y-1 rounded-md border border-border bg-muted/40 px-4 py-3 text-sm">
             <div className="flex items-center justify-between text-muted-foreground">
               <span>Subtotal</span>
-              <span className="tabular-nums">{formatMoney(subtotal)}</span>
+              <span className="text-data">{formatMoney(subtotal)}</span>
             </div>
             <div className="flex items-center justify-between text-muted-foreground">
               <span>IVA</span>
-              <span className="tabular-nums">{formatMoney(0)}</span>
+              <span className="text-data">{formatMoney(0)}</span>
             </div>
             <div className="flex items-center justify-between border-t border-border pt-1 text-base font-semibold">
               <span>Total</span>
-              <span className="tabular-nums">{formatMoney(total)}</span>
+              <span className="text-data">{formatMoney(total)}</span>
             </div>
           </div>
 

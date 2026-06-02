@@ -38,9 +38,9 @@ export function AccesosRapidos({ className }: { className?: string }) {
         <Link
           key={a.href}
           href={a.href}
-          className="group flex items-center gap-3 rounded-xl border border-border/70 bg-card p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-md"
+          className="group flex items-center gap-3 rounded-lg border border-border bg-card p-4 transition-colors hover:border-foreground/20"
         >
-          <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary-soft text-primary transition-transform group-hover:scale-105">
+          <div className="flex size-10 shrink-0 items-center justify-center rounded-md bg-primary-soft text-primary">
             <a.icon className="size-5" />
           </div>
           <div className="min-w-0">

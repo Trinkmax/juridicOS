@@ -23,12 +23,12 @@ function PageHeader({
     >
       <div className="flex items-center gap-3 min-w-0">
         {icon && (
-          <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary-soft text-primary">
+          <div className="flex size-10 shrink-0 items-center justify-center rounded-md bg-primary-soft text-primary">
             {icon}
           </div>
         )}
         <div className="min-w-0">
-          <h1 className="truncate text-xl font-semibold tracking-tight sm:text-2xl">
+          <h1 className="truncate font-display text-2xl font-semibold sm:text-[1.75rem]">
             {title}
           </h1>
           {description && (

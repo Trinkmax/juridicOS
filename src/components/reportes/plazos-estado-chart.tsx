@@ -9,6 +9,7 @@ import {
   Tooltip,
 } from "recharts";
 import {
+  LEGEND_ITEM_STYLE,
   TOOLTIP_ITEM_STYLE,
   TOOLTIP_LABEL_STYLE,
   TOOLTIP_STYLE,
@@ -55,9 +56,7 @@ export function PlazosEstadoChart({ data }: { data: PlazoEstadoDatum[] }) {
           iconType="circle"
           iconSize={9}
           formatter={(value: string) => (
-            <span style={{ color: "var(--muted-foreground, oklch(0.55 0.014 286))", fontSize: 12 }}>
-              {value}
-            </span>
+            <span style={LEGEND_ITEM_STYLE}>{value}</span>
           )}
         />
       </PieChart>

@@ -129,14 +129,14 @@ export default async function ExpedienteDetallePage({
                 </Badge>
               )}
             </div>
-            <h1 className="text-2xl font-semibold tracking-tight text-balance">
+            <h1 className="font-display text-2xl font-semibold tracking-tight text-balance">
               {expediente.caratula}
             </h1>
             <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
               {expediente.nro_sac && (
                 <span>
                   SAC{" "}
-                  <span className="font-mono font-medium text-foreground">
+                  <span className="font-mono text-data font-medium text-foreground">
                     {expediente.nro_sac}
                   </span>
                 </span>

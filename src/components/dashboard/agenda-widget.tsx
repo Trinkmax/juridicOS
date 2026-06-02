@@ -46,14 +46,14 @@ export function AgendaWidget({ audiencias }: { audiencias: AudienciaConExpedient
               return (
                 <li
                   key={a.id}
-                  className="group rounded-lg border border-border/60 bg-card p-3 transition-all hover:-translate-y-0.5 hover:border-border hover:shadow-sm"
+                  className="group rounded-lg border border-border bg-card p-3 transition-colors hover:border-foreground/20"
                 >
                   <div className="flex items-center justify-between gap-2">
                     <span className="text-xs font-medium tabular-nums text-primary">
                       {capitalizar(formatFechaHora(a.fecha_hora))}
                     </span>
                     {a.tipo && (
-                      <span className="shrink-0 rounded-full bg-muted px-2 py-0.5 text-[0.6875rem] font-medium text-muted-foreground">
+                      <span className="shrink-0 rounded-sm bg-muted px-2 py-0.5 text-[0.6875rem] font-medium text-muted-foreground">
                         {capitalizar(a.tipo)}
                       </span>
                     )}

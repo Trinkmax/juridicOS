@@ -23,7 +23,7 @@ function Dato({ label, children }: { label: string; children: React.ReactNode })
 function MiniStat({ value, label }: { value: number; label: string }) {
   return (
     <Card className="p-4">
-      <p className="text-2xl font-semibold tracking-tight">{value}</p>
+      <p className="font-display text-data text-2xl font-semibold tracking-tight">{value}</p>
       <p className="text-xs text-muted-foreground">{label}</p>
     </Card>
   );
@@ -48,7 +48,7 @@ export function ResumenPanel({
       </div>
 
       <Card className="p-5">
-        <h3 className="mb-4 text-base font-semibold">Datos de la causa</h3>
+        <h3 className="mb-4 font-display text-base font-semibold">Datos de la causa</h3>
         <dl className="grid gap-x-6 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
           <Dato label="Materia">{expediente.materia ?? "—"}</Dato>
           <Dato label="Jurisdicción">{capitalizar(expediente.jurisdiccion) || "—"}</Dato>
@@ -85,7 +85,7 @@ export function ResumenPanel({
 
       {expediente.observaciones && (
         <Card className="p-5">
-          <h3 className="mb-2 text-base font-semibold">Observaciones</h3>
+          <h3 className="mb-2 font-display text-base font-semibold">Observaciones</h3>
           <p className="text-sm text-muted-foreground whitespace-pre-line">
             {expediente.observaciones}
           </p>

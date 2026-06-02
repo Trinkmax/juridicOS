@@ -17,7 +17,7 @@ export function PlazoCard({ plazo }: { plazo: PlazoDetalle }) {
   return (
     <Card
       className={cn(
-        "border-l-4 p-4 transition-all hover:-translate-y-0.5 hover:shadow-md",
+        "border-l-4 p-4 transition-colors hover:border-foreground/20",
         TONE_BORDER[tono],
       )}
     >
@@ -54,7 +54,7 @@ export function PlazoCard({ plazo }: { plazo: PlazoDetalle }) {
               </Link>
             )}
             {plazo.fuero && <OptionBadge option={FUERO[plazo.fuero]} />}
-            {plazo.nro_sac && <span>SAC {plazo.nro_sac}</span>}
+            {plazo.nro_sac && <span className="text-data">SAC {plazo.nro_sac}</span>}
           </div>
         </div>
 

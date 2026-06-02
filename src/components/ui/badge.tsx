@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import type { Tone } from "@/lib/constants";
 
 const badgeVariants = cva(
-  "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-medium transition-colors whitespace-nowrap",
+  "inline-flex items-center gap-1.5 rounded-sm border px-2 py-0.5 text-xs font-medium transition-colors whitespace-nowrap",
   {
     variants: {
       tone: {

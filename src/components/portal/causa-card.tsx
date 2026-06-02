@@ -12,15 +12,15 @@ export function CausaCard({ causa }: { causa: CausaPortal }) {
   return (
     <Link
       href={`/portal/${causa.id}`}
-      className="group block rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+      className="group block rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
     >
-      <Card className="h-full p-5 transition-all group-hover:-translate-y-0.5 group-hover:shadow-md">
+      <Card className="h-full p-5 transition-colors group-hover:border-foreground/20">
         <div className="flex flex-wrap items-center gap-2">
           <OptionBadge option={FUERO[causa.fuero]} />
           <OptionBadge option={ESTADO_EXPEDIENTE[causa.estado]} dot />
         </div>
 
-        <h2 className="mt-3 text-base font-semibold leading-snug text-balance">
+        <h2 className="mt-3 font-display text-base font-semibold leading-snug text-balance">
           {causa.caratula}
         </h2>
 
@@ -28,7 +28,7 @@ export function CausaCard({ causa }: { causa: CausaPortal }) {
           {causa.nro_sac && (
             <span>
               SAC{" "}
-              <span className="font-mono font-medium text-foreground">
+              <span className="font-mono text-data font-medium text-foreground">
                 {causa.nro_sac}
               </span>
             </span>

@@ -49,7 +49,7 @@ function SectionTitle({
   children: React.ReactNode;
 }) {
   return (
-    <h2 className="flex items-center gap-2 text-base font-semibold">
+    <h2 className="flex items-center gap-2 font-display text-base font-semibold">
       <Icon className="size-4 text-primary" />
       {children}
     </h2>
@@ -125,14 +125,14 @@ export default async function PortalCausaPage({
             <OptionBadge option={FUERO[expediente.fuero]} />
             <OptionBadge option={ESTADO_EXPEDIENTE[expediente.estado]} dot />
           </div>
-          <h1 className="mt-3 text-xl font-semibold tracking-tight text-balance sm:text-2xl">
+          <h1 className="mt-3 font-display text-xl font-semibold tracking-tight text-balance sm:text-2xl">
             {expediente.caratula}
           </h1>
           <dl className="mt-4 grid gap-x-6 gap-y-3 text-sm sm:grid-cols-2">
             {expediente.nro_sac && (
               <div>
                 <dt className="text-xs text-muted-foreground">Nº de expediente (SAC)</dt>
-                <dd className="font-mono font-medium">{expediente.nro_sac}</dd>
+                <dd className="font-mono text-data font-medium">{expediente.nro_sac}</dd>
               </div>
             )}
             {expediente.juzgado && (
@@ -181,11 +181,11 @@ export default async function PortalCausaPage({
                 const virtual = ES_VIRTUAL.has(a.modalidad?.toLowerCase() ?? "");
                 return (
                   <Card key={a.id} className="flex items-start gap-3 p-4">
-                    <div className="flex w-14 shrink-0 flex-col items-center rounded-lg bg-primary-soft py-1.5 text-center text-primary">
-                      <span className="text-[0.7rem] font-medium uppercase">
+                    <div className="flex w-14 shrink-0 flex-col items-center rounded-md border border-border bg-muted py-1.5 text-center">
+                      <span className="text-[0.7rem] font-medium uppercase text-muted-foreground">
                         {formatFecha(a.fecha_hora, "MMM")}
                       </span>
-                      <span className="text-lg font-semibold leading-none">
+                      <span className="font-display text-data text-lg font-semibold leading-none">
                         {formatFecha(a.fecha_hora, "d")}
                       </span>
                     </div>

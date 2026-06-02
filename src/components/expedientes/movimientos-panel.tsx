@@ -119,7 +119,7 @@ export function MovimientosPanel({
     <Card className="p-5 space-y-4">
       <div className="flex items-center justify-between gap-2">
         <div>
-          <h3 className="text-base font-semibold">Cronología</h3>
+          <h3 className="font-display text-base font-semibold">Cronología</h3>
           <p className="text-sm text-muted-foreground">
             {movimientos.length}{" "}
             {movimientos.length === 1 ? "movimiento registrado" : "movimientos registrados"}
@@ -150,7 +150,7 @@ export function MovimientosPanel({
                 className="absolute -left-[1.4rem] top-1 size-2.5 rounded-full border-2 border-card bg-primary ring-2 ring-primary/20"
               />
               <div className="flex flex-wrap items-center gap-2">
-                <time className="text-xs font-medium text-muted-foreground">
+                <time className="text-data text-xs font-medium text-muted-foreground">
                   {capitalizar(formatFecha(m.fecha))}
                 </time>
                 {m.tipo && (

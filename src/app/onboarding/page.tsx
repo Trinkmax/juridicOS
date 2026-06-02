@@ -16,8 +16,8 @@ export default async function OnboardingPage() {
 
   return (
     <div className="relative flex min-h-dvh flex-col items-center justify-center overflow-hidden px-6 py-12">
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-grid mask-fade-b opacity-40" />
-      <div className="pointer-events-none absolute -top-32 left-1/2 -z-10 size-[480px] -translate-x-1/2 rounded-full bg-primary/15 blur-[120px]" />
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-grid mask-fade-b opacity-[0.25]" />
+      <div className="pointer-events-none absolute -top-32 left-1/2 -z-10 size-[480px] -translate-x-1/2 rounded-full bg-foreground/5 blur-[120px]" />
 
       <div className="absolute right-5 top-5 flex items-center gap-2">
         <ThemeToggle />
@@ -31,14 +31,14 @@ export default async function OnboardingPage() {
       <div className="w-full max-w-md animate-in-up">
         <div className="mb-8 flex flex-col items-center text-center">
           <Logo className="mb-6 h-8" />
-          <h1 className="text-2xl font-semibold tracking-tight">
+          <h1 className="font-display text-2xl font-semibold tracking-tight">
             {nombre ? `Hola, ${nombre}` : "Casi listo"} 👋
           </h1>
           <p className="mt-1.5 text-sm text-muted-foreground">
             Creá tu estudio para empezar a cargar causas y controlar tus plazos.
           </p>
         </div>
-        <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+        <div className="rounded-lg border border-border bg-card p-6">
           <OnboardingForm />
         </div>
       </div>

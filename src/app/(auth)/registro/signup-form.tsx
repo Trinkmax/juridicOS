@@ -26,7 +26,7 @@ export function SignupForm() {
 
   if (state?.ok && state.data?.needsConfirmation) {
     return (
-      <div className="rounded-xl border border-border bg-card p-6 text-center">
+      <div className="rounded-lg border border-border bg-card p-6 text-center">
         <div className="mx-auto mb-4 flex size-12 items-center justify-center rounded-full bg-success-soft text-success">
           <MailCheck className="size-6" />
         </div>

@@ -13,6 +13,7 @@ import { formatMoney } from "@/lib/utils";
 import {
   AXIS_STYLE,
   CHART_COLORS,
+  CURSOR_FILL,
   GRID_STROKE,
   TOOLTIP_ITEM_STYLE,
   TOOLTIP_LABEL_STYLE,
@@ -48,7 +49,7 @@ export function FacturadoMesChart({ data }: { data: FacturadoMesDatum[] }) {
           tickFormatter={compacto}
         />
         <Tooltip
-          cursor={{ fill: "var(--accent, oklch(0.96 0.004 286))", opacity: 0.5 }}
+          cursor={{ fill: CURSOR_FILL, opacity: 0.5 }}
           contentStyle={TOOLTIP_STYLE}
           labelStyle={TOOLTIP_LABEL_STYLE}
           itemStyle={TOOLTIP_ITEM_STYLE}
@@ -61,7 +62,7 @@ export function FacturadoMesChart({ data }: { data: FacturadoMesDatum[] }) {
         />
         <Bar
           dataKey="value"
-          radius={[6, 6, 0, 0]}
+          radius={[2, 2, 0, 0]}
           maxBarSize={48}
           fill={CHART_COLORS.primary}
         />

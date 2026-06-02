@@ -93,7 +93,7 @@ export function HonorariosTabla({ honorarios }: { honorarios: HonorarioRow[] }) 
   }
 
   return (
-    <div className="overflow-hidden rounded-xl border border-border">
+    <div className="overflow-hidden rounded-lg border border-border">
       <Table>
         <TableHeader>
           <TableRow>
@@ -113,7 +113,7 @@ export function HonorariosTabla({ honorarios }: { honorarios: HonorarioRow[] }) 
               <TableRow key={h.id} data-pending={pendingId === h.id || undefined} className="data-[pending]:opacity-50">
                 <TableCell>
                   <p className="font-medium text-foreground">{h.concepto}</p>
-                  <p className="text-xs text-muted-foreground">{formatFechaCorta(h.created_at)}</p>
+                  <p className="text-data text-xs text-muted-foreground">{formatFechaCorta(h.created_at)}</p>
                 </TableCell>
                 <TableCell className="max-w-[16rem]">
                   <p className="truncate text-sm">{h.cliente ?? "—"}</p>
@@ -122,13 +122,13 @@ export function HonorariosTabla({ honorarios }: { honorarios: HonorarioRow[] }) 
                 <TableCell>
                   <Badge tone={baseOpt?.tone ?? "muted"}>{baseOpt?.label ?? h.base}</Badge>
                   {h.base === "pacto_cuota_litis" && h.porcentaje != null && (
-                    <span className="ml-1.5 text-xs text-muted-foreground">{h.porcentaje}%</span>
+                    <span className="text-data ml-1.5 text-xs text-muted-foreground">{h.porcentaje}%</span>
                   )}
                   {h.base === "jus" && h.jus_cantidad != null && (
-                    <span className="ml-1.5 text-xs text-muted-foreground">{h.jus_cantidad} JUS</span>
+                    <span className="text-data ml-1.5 text-xs text-muted-foreground">{h.jus_cantidad} JUS</span>
                   )}
                 </TableCell>
-                <TableCell className="text-right font-medium tabular-nums">
+                <TableCell className="text-data text-right font-medium">
                   {formatMoney(h.monto)}
                 </TableCell>
                 <TableCell>

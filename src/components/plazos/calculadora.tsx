@@ -266,7 +266,7 @@ export function Calculadora({
 
         {resultado?.fecha_vencimiento && (
           <FadeIn>
-            <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border/70 bg-card p-4 shadow-sm">
+            <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border bg-card p-4">
               <div className="flex items-start gap-2 text-xs text-muted-foreground">
                 <Info className="mt-0.5 size-3.5 shrink-0" />
                 <p className="max-w-md leading-relaxed">
@@ -380,10 +380,8 @@ function ResultadoCard({
   const venc = resultado?.fecha_vencimiento ?? null;
 
   return (
-    <Card className="relative overflow-hidden border-border/70">
-      <div className="absolute inset-0 bg-grid opacity-[0.4]" aria-hidden />
-      <div className="absolute right-0 top-0 size-40 rounded-full bg-primary-soft blur-3xl opacity-40" aria-hidden />
-      <CardContent className="relative p-6">
+    <Card>
+      <CardContent className="p-6">
         <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">
           <CalendarClock className="size-4 text-primary" />
           Vencimiento
@@ -400,10 +398,10 @@ function ResultadoCard({
           <FadeIn key={`${venc}-${resultado?.dias_contados}`} y={6}>
             <div className="mt-3 space-y-4">
               <div className="flex flex-wrap items-end gap-x-4 gap-y-2">
-                <p className="text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
+                <p className="font-display text-data text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
                   {capitalizar(formatFecha(venc, "EEEE d 'de' MMMM"))}
                 </p>
-                <span className="pb-1 text-lg text-muted-foreground">
+                <span className="text-data pb-1 text-lg text-muted-foreground">
                   {formatFecha(venc, "yyyy")}
                 </span>
               </div>
@@ -414,13 +412,13 @@ function ResultadoCard({
                   estado="pendiente"
                   fechaVencimiento={venc}
                 />
-                <Badge tone="success" className="gap-1.5">
+                <Badge tone="success" className="gap-1.5 text-data">
                   <CheckCircle2 className="size-3" />
                   {resultado.dias_contados} días{" "}
                   {resultado.modalidad === "corridos" ? "corridos" : "hábiles"}
                 </Badge>
                 {resultado.dias_inhabiles_salteados > 0 && (
-                  <Badge tone="muted" className="gap-1.5">
+                  <Badge tone="muted" className="gap-1.5 text-data">
                     <CircleOff className="size-3" />
                     {resultado.dias_inhabiles_salteados} inhábiles salteados
                   </Badge>
@@ -428,7 +426,7 @@ function ResultadoCard({
               </div>
 
               {resultado.vencimiento_con_gracia && (
-                <div className="flex items-center gap-2 rounded-lg border border-border/60 bg-muted/40 px-3 py-2.5 text-sm">
+                <div className="flex items-center gap-2 rounded-lg border border-border bg-muted/40 px-3 py-2.5 text-sm">
                   <ShieldCheck className="size-4 shrink-0 text-info" />
                   <span className="text-muted-foreground">
                     Plazo de gracia (cargo de las 2 primeras horas):
@@ -457,11 +455,11 @@ function DesgloseCard({
       <Card>
         <CardContent className="p-5">
           <div className="mb-1 flex items-center justify-between">
-            <h3 className="flex items-center gap-2 text-sm font-semibold">
+            <h3 className="flex items-center gap-2 font-display text-sm font-semibold">
               <CalendarCheck2 className="size-4 text-primary" />
               Desglose del cómputo
             </h3>
-            <span className="text-xs text-muted-foreground">
+            <span className="text-data text-xs text-muted-foreground">
               {detalle.length} día{detalle.length === 1 ? "" : "s"}
             </span>
           </div>
@@ -492,7 +490,7 @@ function DiaRow({ dia }: { dia: ComputoPlazo["detalle"][number] }) {
         "flex items-center gap-3 rounded-lg border px-3 py-2 text-sm transition-colors",
         habil
           ? "border-success/20 bg-success-soft/40"
-          : "border-border/50 bg-muted/30",
+          : "border-border bg-muted/30",
       )}
     >
       <span

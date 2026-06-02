@@ -166,7 +166,7 @@ export function TimeTrackingPanel({
               />
             </Field>
 
-            <div className="flex items-center justify-between rounded-lg border border-border px-3 py-2">
+            <div className="flex items-center justify-between rounded-md border border-border px-3 py-2">
               <Label htmlFor="facturable-switch" className="cursor-pointer text-sm">
                 Facturable
               </Label>
@@ -184,7 +184,7 @@ export function TimeTrackingPanel({
             <CardTitle className="text-base">Entradas de tiempo</CardTitle>
             <CardDescription>Registro de horas del estudio.</CardDescription>
           </div>
-          <Badge tone="primary" className="text-sm">
+          <Badge tone="primary" className="text-data text-sm">
             <Clock className="size-3.5" />
             {horas(totalMinutos)} h
           </Badge>
@@ -197,7 +197,7 @@ export function TimeTrackingPanel({
               description="Empezá a cargar las horas trabajadas para llevar el control y facturarlas."
             />
           ) : (
-            <div className="overflow-hidden rounded-xl border border-border">
+            <div className="overflow-hidden rounded-lg border border-border">
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -215,7 +215,7 @@ export function TimeTrackingPanel({
                       data-pending={pendingId === e.id || undefined}
                       className="data-[pending]:opacity-50"
                     >
-                      <TableCell className="whitespace-nowrap text-sm">
+                      <TableCell className="text-data whitespace-nowrap text-sm">
                         {formatFechaCorta(e.fecha)}
                       </TableCell>
                       <TableCell className="max-w-[18rem]">
@@ -230,7 +230,7 @@ export function TimeTrackingPanel({
                           {e.expediente ?? "Sin expediente"}
                         </span>
                       </TableCell>
-                      <TableCell className="text-right font-medium tabular-nums">
+                      <TableCell className="text-data text-right font-medium">
                         {horas(e.minutos)}
                       </TableCell>
                       <TableCell>

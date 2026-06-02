@@ -12,7 +12,7 @@ export default async function LoginPage({
   const { next, error } = await searchParams;
   return (
     <div className="animate-in-up">
-      <h1 className="text-2xl font-semibold tracking-tight">Bienvenido de nuevo</h1>
+      <h1 className="font-display text-2xl font-semibold tracking-tight">Bienvenido de nuevo</h1>
       <p className="mt-1.5 text-sm text-muted-foreground">
         Ingresá para gestionar tu estudio.
       </p>

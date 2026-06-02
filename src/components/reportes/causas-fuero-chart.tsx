@@ -14,7 +14,9 @@ import {
 import {
   AXIS_STYLE,
   colorAt,
+  CURSOR_FILL,
   GRID_STROKE,
+  LABEL_STYLE,
   TOOLTIP_ITEM_STYLE,
   TOOLTIP_LABEL_STYLE,
   TOOLTIP_STYLE,
@@ -48,7 +50,7 @@ export function CausasFueroChart({ data }: { data: FueroDatum[] }) {
           width={36}
         />
         <Tooltip
-          cursor={{ fill: "var(--accent, oklch(0.96 0.004 286))", opacity: 0.5 }}
+          cursor={{ fill: CURSOR_FILL, opacity: 0.5 }}
           contentStyle={TOOLTIP_STYLE}
           labelStyle={TOOLTIP_LABEL_STYLE}
           itemStyle={TOOLTIP_ITEM_STYLE}
@@ -59,15 +61,11 @@ export function CausasFueroChart({ data }: { data: FueroDatum[] }) {
             ]) as never
           }
         />
-        <Bar dataKey="value" radius={[6, 6, 0, 0]} maxBarSize={56}>
+        <Bar dataKey="value" radius={[2, 2, 0, 0]} maxBarSize={56}>
           {data.map((_, i) => (
             <Cell key={i} fill={colorAt(i)} />
           ))}
-          <LabelList
-            dataKey="value"
-            position="top"
-            style={{ fontSize: 12, fontWeight: 600, fill: "var(--foreground, oklch(0.21 0.006 286))" }}
-          />
+          <LabelList dataKey="value" position="top" style={LABEL_STYLE} />
         </Bar>
       </BarChart>
     </ResponsiveContainer>

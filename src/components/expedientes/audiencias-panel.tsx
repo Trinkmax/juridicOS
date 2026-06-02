@@ -37,7 +37,7 @@ export function AudienciasPanel({
     <Card className="p-5 space-y-4">
       <div className="flex items-center justify-between gap-2">
         <div>
-          <h3 className="text-base font-semibold">Audiencias</h3>
+          <h3 className="font-display text-base font-semibold">Audiencias</h3>
           <p className="text-sm text-muted-foreground">
             {audiencias.length}{" "}
             {audiencias.length === 1 ? "audiencia agendada" : "audiencias agendadas"}
@@ -73,13 +73,13 @@ export function AudienciasPanel({
             return (
               <div
                 key={a.id}
-                className="flex items-start gap-3 rounded-lg border border-border/70 bg-card p-4 transition-all hover:shadow-sm"
+                className="flex items-start gap-3 rounded-md border border-border bg-card p-4 transition-colors hover:border-foreground/20"
               >
-                <div className="flex w-14 shrink-0 flex-col items-center rounded-lg bg-muted/60 py-1.5 text-center">
+                <div className="flex w-14 shrink-0 flex-col items-center rounded-md bg-muted/60 py-1.5 text-center">
                   <span className="text-[0.7rem] font-medium uppercase text-muted-foreground">
                     {formatFecha(a.fecha_hora, "MMM")}
                   </span>
-                  <span className="text-lg font-semibold leading-none">
+                  <span className="text-data text-lg font-semibold leading-none">
                     {formatFecha(a.fecha_hora, "d")}
                   </span>
                 </div>

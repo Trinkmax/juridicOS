@@ -73,8 +73,8 @@ function Columna({
               tono === "success" && "bg-success",
             )}
           />
-          <h2 className="text-sm font-semibold text-foreground">{label}</h2>
-          <Badge tone="muted" className="tabular-nums">
+          <h2 className="font-display text-sm font-semibold text-foreground">{label}</h2>
+          <Badge tone="muted" className="text-data">
             {tareas.length}
           </Badge>
         </div>
@@ -83,12 +83,12 @@ function Columna({
       <div
         ref={setNodeRef}
         className={cn(
-          "flex min-h-32 flex-1 flex-col gap-2.5 rounded-2xl border border-dashed border-transparent p-2 transition-colors",
+          "flex min-h-32 flex-1 flex-col gap-2.5 rounded-lg border border-dashed border-transparent p-2 transition-colors",
           activo && "border-primary/40 bg-primary-soft/40",
         )}
       >
         {tareas.length === 0 ? (
-          <div className="flex flex-1 items-center justify-center rounded-xl py-8 text-center text-xs text-muted-foreground/70">
+          <div className="flex flex-1 items-center justify-center rounded-md py-8 text-center text-xs text-muted-foreground/70">
             {activo ? "Soltá acá" : "Sin tareas"}
           </div>
         ) : (

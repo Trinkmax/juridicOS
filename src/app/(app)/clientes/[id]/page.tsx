@@ -36,7 +36,7 @@ type DatoProps = {
 function Dato({ icon: Icon, label, value }: DatoProps) {
   return (
     <div className="flex items-start gap-3">
-      <div className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground">
+      <div className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground">
         <Icon className="size-4" />
       </div>
       <div className="min-w-0">
@@ -95,7 +95,7 @@ export default async function ClienteDetallePage({
           <div className="flex items-center gap-4 min-w-0">
             <Avatar name={cliente.nombre} size="lg" />
             <div className="min-w-0">
-              <h1 className="truncate text-xl font-semibold tracking-tight sm:text-2xl">
+              <h1 className="truncate font-display text-xl font-semibold tracking-tight sm:text-2xl">
                 {cliente.nombre}
               </h1>
               <div className="mt-1.5 flex items-center gap-2">
@@ -188,7 +188,7 @@ export default async function ClienteDetallePage({
                 description="Cuando crees un expediente para este cliente vas a verlo acá."
               />
             ) : (
-              <ul className="divide-y divide-border/70">
+              <ul className="divide-y divide-border">
                 {expedientes.map((e) => (
                   <li key={e.id}>
                     <Link

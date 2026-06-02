@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import * as AvatarPrimitive from "@radix-ui/react-avatar";
-import { cn, initials, hashHue } from "@/lib/utils";
+import { cn, initials } from "@/lib/utils";
 
 const sizes = {
   xs: "size-6 text-[0.625rem]",
@@ -22,11 +22,10 @@ function Avatar({
   size?: keyof typeof sizes;
   className?: string;
 }) {
-  const hue = hashHue(name ?? "?");
   return (
     <AvatarPrimitive.Root
       className={cn(
-        "relative flex shrink-0 items-center justify-center overflow-hidden rounded-full",
+        "relative flex shrink-0 items-center justify-center overflow-hidden rounded-full border border-border",
         sizes[size],
         className,
       )}
@@ -38,12 +37,7 @@ function Avatar({
           className="aspect-square size-full object-cover"
         />
       )}
-      <AvatarPrimitive.Fallback
-        className="flex size-full items-center justify-center font-semibold text-white"
-        style={{
-          backgroundImage: `linear-gradient(135deg, oklch(0.62 0.17 ${hue}), oklch(0.52 0.21 ${(hue + 45) % 360}))`,
-        }}
-      >
+      <AvatarPrimitive.Fallback className="flex size-full items-center justify-center bg-secondary font-semibold text-secondary-foreground">
         {initials(name)}
       </AvatarPrimitive.Fallback>
     </AvatarPrimitive.Root>

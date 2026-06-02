@@ -25,8 +25,8 @@ export function BorradoresLista({ borradores }: { borradores: BorradorItem[] }) 
       {borradores.map((b) => (
         <StaggerItem key={b.id}>
           <Link href={`/redaccion/${b.id}`} className="block">
-            <Card className="group flex items-center gap-4 p-4 transition-all hover:-translate-y-0.5 hover:shadow-md">
-              <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground">
+            <Card className="group flex items-center gap-4 p-4 transition-colors hover:border-foreground/20 hover:bg-accent/60">
+              <div className="flex size-10 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground">
                 <FileSignature className="size-5" />
               </div>
               <div className="min-w-0 flex-1">
@@ -50,7 +50,7 @@ export function BorradoresLista({ borradores }: { borradores: BorradorItem[] }) 
                   {formatFechaHora(b.updated_at)}
                 </p>
               </div>
-              <ChevronRight className="size-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
+              <ChevronRight className="size-4 shrink-0 text-muted-foreground transition-colors group-hover:text-primary" />
             </Card>
           </Link>
         </StaggerItem>

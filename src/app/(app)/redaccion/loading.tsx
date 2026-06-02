@@ -4,7 +4,7 @@ export default function LoadingRedaccion() {
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3">
-        <Skeleton className="size-10 rounded-xl" />
+        <Skeleton className="size-10 rounded-md" />
         <div className="space-y-2">
           <Skeleton className="h-6 w-52" />
           <Skeleton className="h-4 w-80" />
@@ -15,7 +15,7 @@ export default function LoadingRedaccion() {
         <Skeleton className="h-9 w-32" />
         <Skeleton className="h-9 w-36" />
       </div>
-      <div className="space-y-4 rounded-xl border border-border/70 p-4">
+      <div className="space-y-4 rounded-lg border border-border p-4">
         <div className="grid gap-3 sm:grid-cols-2">
           <Skeleton className="h-16 rounded-lg" />
           <Skeleton className="h-16 rounded-lg" />

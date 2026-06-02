@@ -3,12 +3,12 @@
 import * as React from "react";
 import { motion, type Variants } from "motion/react";
 
-const EASE = [0.16, 1, 0.3, 1] as const;
+const EASE = [0.22, 1, 0.36, 1] as const;
 
 export function FadeIn({
   children,
   delay = 0,
-  y = 10,
+  y = 6,
   className,
 }: {
   children: React.ReactNode;
@@ -20,7 +20,7 @@ export function FadeIn({
     <motion.div
       initial={{ opacity: 0, y }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.45, delay, ease: EASE }}
+      transition={{ duration: 0.4, delay, ease: EASE }}
       className={className}
     >
       {children}
@@ -30,11 +30,11 @@ export function FadeIn({
 
 const container: Variants = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.06, delayChildren: 0.04 } },
+  show: { transition: { staggerChildren: 0.05, delayChildren: 0.03 } },
 };
 const item: Variants = {
-  hidden: { opacity: 0, y: 12 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.45, ease: EASE } },
+  hidden: { opacity: 0, y: 8 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: EASE } },
 };
 
 export function Stagger({

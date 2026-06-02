@@ -7,7 +7,7 @@ export const metadata: Metadata = { title: "Crear estudio" };
 export default function RegistroPage() {
   return (
     <div className="animate-in-up">
-      <h1 className="text-2xl font-semibold tracking-tight">Creá tu estudio</h1>
+      <h1 className="font-display text-2xl font-semibold tracking-tight">Creá tu estudio</h1>
       <p className="mt-1.5 text-sm text-muted-foreground">
         Empezá gratis. En menos de un minuto tenés tu estudio funcionando.
       </p>

@@ -40,8 +40,8 @@ export function DocumentoDescarga({
   }
 
   return (
-    <div className="flex items-center gap-3 rounded-lg border border-border/70 bg-card p-3.5 transition-all hover:shadow-sm">
-      <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary-soft text-primary">
+    <div className="flex items-center gap-3 rounded-lg border border-border bg-card p-3.5 transition-colors hover:border-foreground/20">
+      <div className="flex size-10 shrink-0 items-center justify-center rounded-md bg-primary-soft text-primary">
         <FileText className="size-5" />
       </div>
 

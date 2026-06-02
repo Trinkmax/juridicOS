@@ -113,7 +113,7 @@ export default async function ExpedientesPage({
                         {e.caratula}
                       </Link>
                     </TableCell>
-                    <TableCell className="hidden md:table-cell font-mono text-xs text-muted-foreground">
+                    <TableCell className="hidden md:table-cell font-mono text-xs text-muted-foreground text-data">
                       {e.nro_sac ?? "—"}
                     </TableCell>
                     <TableCell className="hidden sm:table-cell">

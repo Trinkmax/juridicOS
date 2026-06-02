@@ -55,7 +55,7 @@ export default async function LandingPage() {
     <div className="relative flex min-h-dvh flex-col overflow-hidden">
       {/* Ambient background */}
       <div className="pointer-events-none absolute inset-0 -z-10 bg-grid mask-fade-b opacity-[0.4]" />
-      <div className="pointer-events-none absolute -top-40 left-1/2 -z-10 h-[520px] w-[820px] -translate-x-1/2 rounded-full bg-primary/20 blur-[120px]" />
+      <div className="pointer-events-none absolute -top-40 left-1/2 -z-10 h-[520px] w-[820px] -translate-x-1/2 rounded-full bg-primary/8 blur-[120px]" />
 
       {/* Nav */}
       <header className="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-5">
@@ -91,8 +91,8 @@ export default async function LandingPage() {
             </Badge>
           </FadeIn>
           <FadeIn delay={0.05}>
-            <h1 className="max-w-3xl text-balance text-4xl font-semibold leading-[1.05] tracking-tight sm:text-6xl">
-              Nunca más un <span className="text-gradient">plazo vencido</span>.
+            <h1 className="max-w-3xl text-balance font-display text-4xl font-semibold leading-[1.05] tracking-tight sm:text-6xl">
+              Nunca más un <span className="text-destructive">plazo vencido</span>.
             </h1>
           </FadeIn>
           <FadeIn delay={0.12}>
@@ -127,11 +127,11 @@ export default async function LandingPage() {
         <section className="grid gap-4 pb-24 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((f, i) => (
             <FadeIn key={f.title} delay={0.05 * i}>
-              <div className="group h-full rounded-2xl border border-border/70 bg-card p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md">
-                <div className="mb-4 flex size-11 items-center justify-center rounded-xl bg-primary-soft text-primary transition-transform group-hover:scale-105">
+              <div className="h-full rounded-lg border border-border bg-card p-5 transition-colors hover:border-foreground/20">
+                <div className="mb-4 flex size-11 items-center justify-center rounded-md bg-primary-soft text-primary">
                   <f.icon className="size-5" />
                 </div>
-                <h3 className="text-base font-semibold">{f.title}</h3>
+                <h3 className="font-display text-base font-semibold">{f.title}</h3>
                 <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
                   {f.desc}
                 </p>
@@ -141,7 +141,7 @@ export default async function LandingPage() {
         </section>
       </main>
 
-      <footer className="border-t border-border/60">
+      <footer className="border-t border-border">
         <div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-between gap-3 px-6 py-6 text-sm text-muted-foreground sm:flex-row">
           <Logo className="h-5" />
           <p>© {new Date().getFullYear()} juridicOS · Córdoba, Argentina</p>

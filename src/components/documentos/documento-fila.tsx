@@ -100,8 +100,8 @@ export function DocumentoFila({ doc }: { doc: DocumentoFilaItem }) {
   const etiquetas = doc.etiquetas ?? [];
 
   return (
-    <div className="group flex items-start gap-3 rounded-xl border border-border bg-card px-4 py-3 transition-all hover:-translate-y-0.5 hover:shadow-md">
-      <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-muted">
+    <div className="group flex items-start gap-3 rounded-lg border border-border bg-card px-4 py-3 transition-colors hover:bg-accent/60">
+      <div className="flex size-10 shrink-0 items-center justify-center rounded-md bg-muted">
         <Icon className={cn("size-5", iconColor)} />
       </div>
 
@@ -120,9 +120,9 @@ export function DocumentoFila({ doc }: { doc: DocumentoFilaItem }) {
         </div>
 
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
-          <span>{formatTamano(doc.tamano_bytes)}</span>
+          <span className="text-data">{formatTamano(doc.tamano_bytes)}</span>
           <span aria-hidden>·</span>
-          <span>{formatFechaCorta(doc.created_at)}</span>
+          <span className="text-data">{formatFechaCorta(doc.created_at)}</span>
           {doc.expediente_id && doc.expedientes && (
             <>
               <span aria-hidden>·</span>

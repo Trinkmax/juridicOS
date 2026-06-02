@@ -14,13 +14,13 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
     <div className="grid min-h-dvh lg:grid-cols-2">
       {/* Brand panel */}
       <div className="relative hidden flex-col justify-between overflow-hidden bg-foreground p-12 text-background lg:flex dark:bg-card">
-        <div className="pointer-events-none absolute inset-0 bg-dots opacity-[0.08]" />
-        <div className="pointer-events-none absolute -bottom-32 -left-24 size-[480px] rounded-full bg-primary/30 blur-[120px]" />
+        <div className="pointer-events-none absolute inset-0 bg-dots opacity-[0.06]" />
+        <div className="pointer-events-none absolute -bottom-32 -left-24 size-[480px] rounded-full bg-background/10 blur-[120px]" />
         <Link href="/" className="relative z-10">
           <Logo forceWhite priority className="h-8" />
         </Link>
         <div className="relative z-10 space-y-8">
-          <p className="max-w-md text-2xl font-medium leading-snug tracking-tight">
+          <p className="max-w-md font-display text-2xl leading-snug tracking-tight">
             “El estudio entero coordinado, los plazos bajo control y la redacción a la
             mitad de tiempo.”
           </p>

@@ -21,7 +21,7 @@ function SheetContent({
     right:
       "inset-y-0 right-0 h-full w-full max-w-md border-l animate-[slide-down_0.3s_cubic-bezier(0.16,1,0.3,1)]",
     left: "inset-y-0 left-0 h-full w-full max-w-md border-r",
-    bottom: "inset-x-0 bottom-0 max-h-[85vh] rounded-t-2xl border-t",
+    bottom: "inset-x-0 bottom-0 max-h-[85vh] rounded-t-lg border-t",
   };
   return (
     <DialogPrimitive.Portal>
@@ -54,7 +54,7 @@ function SheetTitle({
 }: React.ComponentProps<typeof DialogPrimitive.Title>) {
   return (
     <DialogPrimitive.Title
-      className={cn("text-lg font-semibold tracking-tight", className)}
+      className={cn("font-display text-lg font-semibold tracking-tight", className)}
       {...props}
     />
   );

@@ -49,7 +49,7 @@ export function ClientesTabla({ clientes }: { clientes: ClienteConCausas[] }) {
                 <TableCell>
                   <OptionBadge option={TIPO_CLIENTE[c.tipo]} dot />
                 </TableCell>
-                <TableCell className="text-muted-foreground">
+                <TableCell className="text-data text-muted-foreground">
                   {c.documento || "—"}
                 </TableCell>
                 <TableCell>
@@ -84,7 +84,7 @@ export function ClientesTabla({ clientes }: { clientes: ClienteConCausas[] }) {
       <div className="grid gap-3 md:hidden">
         {clientes.map((c) => (
           <Link key={c.id} href={`/clientes/${c.id}`}>
-            <Card className="flex items-center gap-3 p-4 transition-all hover:-translate-y-0.5 hover:shadow-md">
+            <Card className="flex items-center gap-3 p-4 transition-colors hover:border-foreground/20">
               <Avatar name={c.nombre} />
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
@@ -95,7 +95,7 @@ export function ClientesTabla({ clientes }: { clientes: ClienteConCausas[] }) {
                   {c.documento || c.email || c.telefono || "Sin datos de contacto"}
                 </p>
               </div>
-              <span className="flex shrink-0 items-center gap-1 text-sm text-muted-foreground">
+              <span className="flex shrink-0 items-center gap-1 text-sm text-data text-muted-foreground">
                 <Folder className="size-4" />
                 {c.causas}
               </span>

@@ -34,7 +34,7 @@ function Metrica({
   return (
     <div className="flex items-center gap-1.5" title={label}>
       <Icon className="size-3.5 shrink-0" style={{ color }} />
-      <span className="text-sm font-semibold tabular-nums">{value}</span>
+      <span className="text-data text-sm font-semibold">{value}</span>
     </div>
   );
 }
@@ -52,8 +52,8 @@ export function CargaAbogados({ data }: { data: CargaAbogado[] }) {
           <div
             key={a.usuarioId}
             className={cn(
-              "rounded-xl border border-border/70 bg-card p-3.5",
-              "transition-all hover:-translate-y-0.5 hover:shadow-md",
+              "rounded-lg border border-border bg-card p-4",
+              "transition-colors hover:border-foreground/20",
             )}
           >
             <div className="flex items-center justify-between gap-3">
@@ -82,12 +82,12 @@ export function CargaAbogados({ data }: { data: CargaAbogado[] }) {
                 />
               </div>
             </div>
-            <div className="mt-2.5 h-1.5 w-full overflow-hidden rounded-full bg-muted">
+            <div className="mt-2.5 h-1.5 w-full overflow-hidden rounded-sm bg-muted">
               <div
-                className="h-full rounded-full transition-all"
+                className="h-full rounded-sm transition-all"
                 style={{
                   width: `${Math.max(pct, carga > 0 ? 6 : 0)}%`,
-                  background: `linear-gradient(90deg, ${CHART_COLORS.primary}, ${CHART_COLORS.info})`,
+                  background: CHART_COLORS.primary,
                 }}
               />
             </div>

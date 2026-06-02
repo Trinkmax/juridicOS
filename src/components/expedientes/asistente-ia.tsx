@@ -44,8 +44,8 @@ function ChipsSugerencias({
           disabled={disabled}
           onClick={() => onPick(s)}
           className={cn(
-            "rounded-full border border-border bg-card px-3 py-1.5 text-xs font-medium text-muted-foreground",
-            "transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:text-foreground hover:shadow-sm",
+            "rounded-md border border-border bg-card px-3 py-1.5 text-xs font-medium text-muted-foreground",
+            "transition-colors hover:border-foreground/20 hover:bg-accent/60 hover:text-foreground",
             "disabled:pointer-events-none disabled:opacity-50",
           )}
         >
@@ -86,7 +86,7 @@ export function AsistenteIA({
           <Sparkles className="size-6" />
         </div>
         <div className="space-y-1">
-          <h3 className="text-sm font-semibold">Asistente IA no disponible</h3>
+          <h3 className="font-display text-sm font-semibold">Asistente IA no disponible</h3>
           <p className="max-w-sm text-sm text-muted-foreground">
             Configurá <code className="font-mono text-xs">ANTHROPIC_API_KEY</code> para activar
             el asistente IA.
@@ -140,11 +140,11 @@ export function AsistenteIA({
       <Card className="p-5 space-y-4">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="flex items-center gap-2">
-            <div className="flex size-9 items-center justify-center rounded-xl bg-primary-soft text-primary">
+            <div className="flex size-9 items-center justify-center rounded-md bg-primary-soft text-primary">
               <Sparkles className="size-5" />
             </div>
             <div>
-              <h3 className="text-base font-semibold">Copiloto de la causa</h3>
+              <h3 className="font-display text-base font-semibold">Copiloto de la causa</h3>
               <p className="text-sm text-muted-foreground">
                 Resumí el expediente y consultá lo que necesites.
               </p>
@@ -157,14 +157,14 @@ export function AsistenteIA({
         </div>
 
         {resumiendo && !resumen && (
-          <div className="flex items-center gap-2 rounded-xl border border-border bg-muted/40 px-4 py-3 text-sm text-muted-foreground">
+          <div className="flex items-center gap-2 rounded-md border border-border bg-muted/40 px-4 py-3 text-sm text-muted-foreground">
             <Spinner />
             Analizando el expediente…
           </div>
         )}
 
         {resumen && (
-          <div className="rounded-xl border border-border bg-primary-soft/30 p-4">
+          <div className="rounded-md border border-border bg-primary-soft/30 p-4">
             <div className="mb-2 flex items-center gap-1.5 text-xs font-medium text-primary">
               <Sparkles className="size-3.5" />
               Resumen generado por IA
@@ -179,7 +179,7 @@ export function AsistenteIA({
       {/* Preguntas y respuestas */}
       <Card className="flex flex-col p-5">
         <div className="mb-3">
-          <h3 className="text-base font-semibold">Preguntale al expediente</h3>
+          <h3 className="font-display text-base font-semibold">Preguntale al expediente</h3>
           <p className="text-sm text-muted-foreground">
             Respondo según los datos cargados de la causa.
           </p>
@@ -195,7 +195,7 @@ export function AsistenteIA({
               <div key={i} className="space-y-3">
                 {/* Pregunta del usuario */}
                 <div className="flex justify-end gap-2">
-                  <div className="max-w-[80%] rounded-2xl rounded-tr-sm bg-primary px-3.5 py-2 text-sm text-primary-foreground">
+                  <div className="max-w-[80%] rounded-lg rounded-tr-sm bg-primary px-3.5 py-2 text-sm text-primary-foreground">
                     {t.pregunta}
                   </div>
                   <div className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary">
@@ -207,7 +207,7 @@ export function AsistenteIA({
                   <div className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full bg-accent text-foreground">
                     <Bot className="size-3.5" />
                   </div>
-                  <div className="max-w-[80%] whitespace-pre-wrap rounded-2xl rounded-tl-sm border border-border bg-card px-3.5 py-2 text-sm leading-relaxed text-foreground">
+                  <div className="max-w-[80%] whitespace-pre-wrap rounded-lg rounded-tl-sm border border-border bg-card px-3.5 py-2 text-sm leading-relaxed text-foreground">
                     {t.respuesta}
                   </div>
                 </div>
@@ -219,7 +219,7 @@ export function AsistenteIA({
                 <div className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full bg-accent text-foreground">
                   <Bot className="size-3.5" />
                 </div>
-                <div className="flex items-center gap-2 rounded-2xl rounded-tl-sm border border-border bg-card px-3.5 py-2 text-sm text-muted-foreground">
+                <div className="flex items-center gap-2 rounded-lg rounded-tl-sm border border-border bg-card px-3.5 py-2 text-sm text-muted-foreground">
                   <Spinner />
                   Pensando…
                 </div>

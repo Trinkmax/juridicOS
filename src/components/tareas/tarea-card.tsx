@@ -107,9 +107,9 @@ export function TareaCard({
       ref={setNodeRef}
       style={style}
       className={cn(
-        "group rounded-xl border border-border bg-card p-3 shadow-sm transition-all",
-        "hover:-translate-y-0.5 hover:shadow-md",
-        dragging && "rotate-1 cursor-grabbing shadow-lg",
+        "group rounded-lg border border-border bg-card p-3 transition-colors",
+        "hover:border-foreground/20 hover:bg-accent/60",
+        dragging && "cursor-grabbing shadow-lg",
       )}
     >
       <div className="flex items-start gap-2">
@@ -142,7 +142,7 @@ export function TareaCard({
                 <TooltipTrigger asChild>
                   <span
                     className={cn(
-                      "inline-flex items-center gap-1 text-xs",
+                      "inline-flex items-center gap-1 text-data text-xs",
                       vencido ? "text-destructive font-medium" : "text-muted-foreground",
                     )}
                   >

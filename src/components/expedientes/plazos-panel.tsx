@@ -22,7 +22,7 @@ export function PlazosPanel({
     <Card className="p-5 space-y-4">
       <div className="flex items-center justify-between gap-2">
         <div>
-          <h3 className="text-base font-semibold">Plazos</h3>
+          <h3 className="font-display text-base font-semibold">Plazos</h3>
           <p className="text-sm text-muted-foreground">
             {plazos.length} {plazos.length === 1 ? "plazo asociado" : "plazos asociados"}
           </p>
@@ -59,7 +59,7 @@ export function PlazosPanel({
               <div
                 key={p.id ?? p.acto_procesal ?? Math.random()}
                 className={cn(
-                  "flex items-start justify-between gap-3 rounded-lg border border-border/70 border-l-4 bg-card p-4 transition-all hover:shadow-sm",
+                  "flex items-start justify-between gap-3 rounded-md border border-border border-l-4 bg-card p-4 transition-colors hover:bg-accent/40",
                   TONE_BORDER[tono],
                 )}
               >

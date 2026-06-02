@@ -73,7 +73,7 @@ export function CommandPalette() {
                   key={a.href}
                   value={a.label}
                   onSelect={() => run(a.href)}
-                  className="flex cursor-pointer items-center gap-3 rounded-md px-2.5 py-2 text-sm aria-selected:bg-accent aria-selected:text-accent-foreground"
+                  className="flex cursor-pointer items-center gap-3 rounded-md px-2.5 py-1.5 text-sm aria-selected:bg-accent aria-selected:text-accent-foreground"
                 >
                   <a.icon className="size-4 text-muted-foreground" />
                   {a.label}
@@ -87,7 +87,7 @@ export function CommandPalette() {
                     key={item.href}
                     value={`${item.label} ${group.label ?? ""}`}
                     onSelect={() => run(item.href)}
-                    className="flex cursor-pointer items-center gap-3 rounded-md px-2.5 py-2 text-sm aria-selected:bg-accent aria-selected:text-accent-foreground"
+                    className="flex cursor-pointer items-center gap-3 rounded-md px-2.5 py-1.5 text-sm aria-selected:bg-accent aria-selected:text-accent-foreground"
                   >
                     <item.icon className="size-4 text-muted-foreground" />
                     {item.label}

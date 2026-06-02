@@ -9,8 +9,8 @@ export default function Loading() {
       <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
         <div className="space-y-3">
           <div className="flex gap-2">
-            <Skeleton className="h-6 w-28 rounded-full" />
-            <Skeleton className="h-6 w-24 rounded-full" />
+            <Skeleton className="h-6 w-28 rounded-sm" />
+            <Skeleton className="h-6 w-24 rounded-sm" />
           </div>
           <Skeleton className="h-8 w-[28rem] max-w-full" />
           <Skeleton className="h-4 w-72" />

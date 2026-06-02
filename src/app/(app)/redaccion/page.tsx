@@ -86,7 +86,7 @@ export default async function RedaccionPage() {
 
       {!iaActiva && (
         <FadeIn>
-          <div className="flex items-start gap-3 rounded-xl border border-border/70 bg-muted/40 p-4 text-sm">
+          <div className="flex items-start gap-3 rounded-lg border border-border bg-muted/40 p-4 text-sm">
             <Info className="mt-0.5 size-4 shrink-0 text-muted-foreground" />
             <div className="space-y-0.5">
               <p className="font-medium">La IA está desactivada</p>

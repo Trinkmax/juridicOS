@@ -1,13 +1,28 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Source_Serif_4, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
 import { APP_NAME, APP_TAGLINE } from "@/lib/constants";
 
-const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
-const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
+// Tipografía "Tinta": serif editorial en títulos, sans limpia en cuerpo/datos,
+// monoespaciada para identificadores (nº SAC, CAE, variables de plantilla).
+const fontSans = Inter({
+  variable: "--font-inter",
+  subsets: ["latin", "latin-ext"],
+  display: "swap",
+});
+const fontSerif = Source_Serif_4({
+  variable: "--font-source-serif",
+  subsets: ["latin", "latin-ext"],
+  display: "swap",
+});
+const fontMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
+  subsets: ["latin"],
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: { default: `${APP_NAME} — ${APP_TAGLINE}`, template: `%s · ${APP_NAME}` },
@@ -19,7 +34,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#16151c" },
+    { media: "(prefers-color-scheme: dark)", color: "#1b1c20" },
   ],
 };
 
@@ -28,7 +43,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html
       lang="es"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} h-full`}
+      className={`${fontSans.variable} ${fontSerif.variable} ${fontMono.variable} h-full`}
     >
       <body className="min-h-full">
         <ThemeProvider

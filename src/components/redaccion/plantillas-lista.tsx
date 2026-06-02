@@ -95,7 +95,7 @@ export function PlantillasLista({
         <Stagger className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
           {plantillas.map((p) => (
             <StaggerItem key={p.id}>
-              <Card className="group flex h-full flex-col gap-3 p-4 transition-all hover:-translate-y-0.5 hover:shadow-md">
+              <Card className="group flex h-full flex-col gap-3 p-4 transition-colors hover:border-foreground/20 hover:bg-accent/60">
                 <div className="flex items-start justify-between gap-2">
                   <button
                     type="button"

@@ -93,7 +93,7 @@ export function FacturasTabla({ facturas }: { facturas: FacturaRow[] }) {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-start gap-3 rounded-xl border border-warning/40 bg-warning-soft px-4 py-3 text-sm text-warning-foreground">
+      <div className="flex items-start gap-3 rounded-md border border-warning/40 bg-warning-soft px-4 py-3 text-sm text-warning-foreground">
         <Info className="mt-0.5 size-4 shrink-0" />
         <p>
           Facturación electrónica ARCA/AFIP (CAE): integración pendiente — por
@@ -108,7 +108,7 @@ export function FacturasTabla({ facturas }: { facturas: FacturaRow[] }) {
           description="Creá una factura interna, cargá sus ítems y, cuando esté la integración, solicitá el CAE ante ARCA."
         />
       ) : (
-        <div className="overflow-hidden rounded-xl border border-border">
+        <div className="overflow-hidden rounded-lg border border-border">
           <Table>
             <TableHeader>
               <TableRow>
@@ -130,16 +130,16 @@ export function FacturasTabla({ facturas }: { facturas: FacturaRow[] }) {
                     data-pending={pendingId === f.id || undefined}
                     className="data-[pending]:opacity-50"
                   >
-                    <TableCell className="font-medium tabular-nums">
+                    <TableCell className="text-data font-medium">
                       {f.numero ?? "—"}
                     </TableCell>
                     <TableCell className="max-w-[14rem]">
                       <span className="truncate text-sm">{f.cliente ?? "—"}</span>
                     </TableCell>
-                    <TableCell className="whitespace-nowrap text-sm">
+                    <TableCell className="text-data whitespace-nowrap text-sm">
                       {formatFechaCorta(f.fecha)}
                     </TableCell>
-                    <TableCell className="text-right font-medium tabular-nums">
+                    <TableCell className="text-data text-right font-medium">
                       {formatMoney(f.total)}
                     </TableCell>
                     <TableCell>

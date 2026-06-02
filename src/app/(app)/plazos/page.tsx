@@ -84,7 +84,7 @@ export default async function PlazosPage({
 
       {requierenAtencion > 0 && (
         <Card className="flex items-center gap-3 border-destructive/25 bg-destructive-soft p-4">
-          <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-destructive/15 text-destructive">
+          <div className="flex size-9 shrink-0 items-center justify-center rounded-md bg-destructive/15 text-destructive">
             <AlertTriangle className="size-5" />
           </div>
           <div className="text-sm">
