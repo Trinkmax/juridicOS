@@ -12,6 +12,7 @@ import { FUERO, ESTADO_EXPEDIENTE } from "@/lib/constants";
 import { ResumenPanel } from "@/components/expedientes/resumen-panel";
 import { PartesPanel } from "@/components/expedientes/partes-panel";
 import { MovimientosPanel } from "@/components/expedientes/movimientos-panel";
+import { CronologiaPanel } from "@/components/expedientes/cronologia-panel";
 import { PlazosPanel } from "@/components/expedientes/plazos-panel";
 import { AudienciasPanel } from "@/components/expedientes/audiencias-panel";
 import { AsistenteIA } from "@/components/expedientes/asistente-ia";
@@ -169,6 +170,7 @@ export default async function ExpedienteDetallePage({
         <Tabs defaultValue="resumen">
           <TabsList className="flex-wrap">
             <TabsTrigger value="resumen">Resumen</TabsTrigger>
+            <TabsTrigger value="cronologia">Cronología</TabsTrigger>
             <TabsTrigger value="partes">Partes ({partes.length})</TabsTrigger>
             <TabsTrigger value="movimientos">Movimientos ({movimientos.length})</TabsTrigger>
             <TabsTrigger value="plazos">Plazos ({plazos.length})</TabsTrigger>
@@ -186,6 +188,15 @@ export default async function ExpedienteDetallePage({
                 plazos: plazos.length,
                 audiencias: audiencias.length,
               }}
+            />
+          </TabsContent>
+
+          <TabsContent value="cronologia">
+            <CronologiaPanel
+              movimientos={movimientos}
+              audiencias={audiencias}
+              plazos={plazos}
+              expedienteId={expediente.id}
             />
           </TabsContent>
 

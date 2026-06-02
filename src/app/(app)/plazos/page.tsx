@@ -10,6 +10,8 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { Stagger, StaggerItem } from "@/components/motion/fade-in";
 import { PlazoCard } from "@/components/plazos/plazo-card";
 import { PlazosFiltros } from "@/components/plazos/plazos-filtros";
+import { PlazosTablero } from "@/components/plazos/plazos-tablero";
+import { PlazosVistaToggle } from "@/components/plazos/plazos-vista-toggle";
 
 export const metadata = { title: "Plazos" };
 
@@ -24,10 +26,11 @@ function toOne<T>(rel: T | T[] | null | undefined): T | null {
 export default async function PlazosPage({
   searchParams,
 }: {
-  searchParams: Promise<{ estado?: string; responsable?: string }>;
+  searchParams: Promise<{ estado?: string; responsable?: string; vista?: string }>;
 }) {
   const sp = await searchParams;
   const estado = sp.estado ?? "pendiente";
+  const vista: "tablero" | "lista" = sp.vista === "lista" ? "lista" : "tablero";
   const { activeEstudio } = await requireEstudio();
   const supabase = await createClient();
 
@@ -80,7 +83,10 @@ export default async function PlazosPage({
         </Button>
       </PageHeader>
 
-      <PlazosFiltros responsables={responsables} />
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+        <PlazosFiltros responsables={responsables} />
+        <PlazosVistaToggle vista={vista} />
+      </div>
 
       {requierenAtencion > 0 && (
         <Card className="flex items-center gap-3 border-destructive/25 bg-destructive-soft p-4">
@@ -113,11 +119,13 @@ export default async function PlazosPage({
             </Button>
           }
         />
+      ) : vista === "tablero" ? (
+        <PlazosTablero plazos={plazos} />
       ) : (
         <Stagger className="space-y-3">
           {plazos.map((p) => (
             <StaggerItem key={p.id}>
-              <PlazoCard plazo={p} />
+              <PlazoCard plazo={p} quickAction />
             </StaggerItem>
           ))}
         </Stagger>

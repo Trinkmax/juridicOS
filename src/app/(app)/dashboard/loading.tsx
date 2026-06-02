@@ -59,6 +59,18 @@ export default function DashboardLoading() {
         </Card>
 
         <div className="flex flex-col gap-6">
+          <Card>
+            <CardHeader>
+              <Skeleton className="h-5 w-36" />
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-7 gap-1.5">
+                {Array.from({ length: 42 }).map((_, i) => (
+                  <Skeleton key={i} className="size-6 rounded-md justify-self-center" />
+                ))}
+              </div>
+            </CardContent>
+          </Card>
           {Array.from({ length: 2 }).map((_, card) => (
             <Card key={card}>
               <CardHeader>

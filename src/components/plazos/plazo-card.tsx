@@ -8,8 +8,16 @@ import { Avatar } from "@/components/ui/avatar";
 import { OptionBadge } from "@/components/ui/status-badge";
 import { PlazoUrgenciaBadge, plazoTono } from "@/components/shared/plazo-badge";
 import { PlazoAcciones } from "@/components/plazos/plazo-acciones";
+import { CumplirRapido } from "@/components/plazos/cumplir-rapido";
 
-export function PlazoCard({ plazo }: { plazo: PlazoDetalle }) {
+export function PlazoCard({
+  plazo,
+  quickAction = false,
+}: {
+  plazo: PlazoDetalle;
+  /** Muestra el botón rápido "Cumplir" (tablero de triaje) en plazos pendientes. */
+  quickAction?: boolean;
+}) {
   const estado = (plazo.estado ?? "pendiente") as EstadoPlazo;
   const dr = plazo.dias_restantes ?? null;
   const tono = plazoTono(dr, estado);
@@ -65,6 +73,9 @@ export function PlazoCard({ plazo }: { plazo: PlazoDetalle }) {
               src={plazo.responsable_avatar}
               size="sm"
             />
+          )}
+          {quickAction && estado === "pendiente" && plazo.id && (
+            <CumplirRapido id={plazo.id} />
           )}
           {plazo.id && <PlazoAcciones id={plazo.id} estado={estado} />}
         </div>

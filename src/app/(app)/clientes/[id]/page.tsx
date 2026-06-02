@@ -10,10 +10,17 @@ import {
   Folder,
   IdCard,
   Building2,
+  History,
 } from "lucide-react";
 import { requireEstudio } from "@/lib/session";
 import { createClient } from "@/lib/supabase/server";
-import type { Cliente, Expediente } from "@/lib/types/domain";
+import type {
+  Cliente,
+  Expediente,
+  Movimiento,
+  Audiencia,
+  PlazoDetalle,
+} from "@/lib/types/domain";
 import { TIPO_CLIENTE, FUERO, ESTADO_EXPEDIENTE } from "@/lib/constants";
 import { formatFechaCorta } from "@/lib/format";
 import { Avatar } from "@/components/ui/avatar";
@@ -24,6 +31,26 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
 import { FadeIn } from "@/components/motion/fade-in";
 import { EditarClienteDialog } from "@/components/clientes/editar-cliente-dialog";
+import { ClienteActividad } from "@/components/clientes/cliente-actividad";
+
+function MetricaTile({
+  label,
+  value,
+}: {
+  label: string;
+  value: string | number;
+}) {
+  return (
+    <div className="rounded-lg border border-border p-4">
+      <p className="font-display text-data text-2xl font-semibold tracking-tight">
+        {value}
+      </p>
+      <p className="mt-1 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+        {label}
+      </p>
+    </div>
+  );
+}
 
 export const metadata = { title: "Cliente" };
 
@@ -79,6 +106,72 @@ export default async function ClienteDetallePage({
     "id" | "caratula" | "fuero" | "estado" | "nro_sac" | "fecha_inicio"
   >[];
 
+  const expedienteIds = expedientes.map((e) => e.id);
+  const caratulaPorExpediente: Record<string, string> = Object.fromEntries(
+    expedientes.map((e) => [e.id, e.caratula]),
+  );
+
+  // Actividad reciente unificada de las causas del cliente (sólo si hay causas).
+  let movimientos: Movimiento[] = [];
+  let audiencias: Audiencia[] = [];
+  let plazos: PlazoDetalle[] = [];
+
+  if (expedienteIds.length > 0) {
+    const [
+      { data: movimientosData },
+      { data: audienciasData },
+      { data: plazosData },
+    ] = await Promise.all([
+      supabase
+        .from("movimientos")
+        .select("id, expediente_id, titulo, descripcion, fecha, tipo, origen")
+        .eq("estudio_id", activeEstudio.id)
+        .in("expediente_id", expedienteIds)
+        .order("fecha", { ascending: false })
+        .limit(12),
+      supabase
+        .from("audiencias")
+        .select(
+          "id, expediente_id, titulo, fecha_hora, estado, modalidad, lugar, juzgado, enlace, duracion_min, tipo",
+        )
+        .eq("estudio_id", activeEstudio.id)
+        .in("expediente_id", expedienteIds)
+        .order("fecha_hora", { ascending: false })
+        .limit(12),
+      supabase
+        .from("v_plazos_detalle")
+        .select("*")
+        .eq("estudio_id", activeEstudio.id)
+        .in("expediente_id", expedienteIds)
+        .order("fecha_vencimiento", { ascending: false })
+        .limit(12),
+    ]);
+
+    movimientos = (movimientosData ?? []) as Movimiento[];
+    audiencias = (audienciasData ?? []) as Audiencia[];
+    plazos = (plazosData ?? []) as PlazoDetalle[];
+  }
+
+  // Métricas.
+  const totalCausas = expedientes.length;
+  const causasActivas = expedientes.filter(
+    (e) => e.estado !== "archivado",
+  ).length;
+  const plazosPendientes = plazos.filter(
+    (p) => p.estado === "pendiente",
+  ).length;
+  const ahora = new Date().getTime();
+  const proximaAudiencia = audiencias
+    .filter(
+      (a) =>
+        a.estado === "programada" &&
+        new Date(a.fecha_hora).getTime() >= ahora,
+    )
+    .sort(
+      (a, b) =>
+        new Date(a.fecha_hora).getTime() - new Date(b.fecha_hora).getTime(),
+    )[0];
+
   const esJuridica = cliente.tipo === "juridica";
 
   return (
@@ -111,6 +204,23 @@ export default async function ClienteDetallePage({
           <div className="shrink-0">
             <EditarClienteDialog cliente={cliente} />
           </div>
+        </div>
+      </FadeIn>
+
+      {/* Métricas */}
+      <FadeIn delay={0.03}>
+        <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+          <MetricaTile label="Causas activas" value={causasActivas} />
+          <MetricaTile label="Total causas" value={totalCausas} />
+          <MetricaTile label="Plazos pendientes" value={plazosPendientes} />
+          <MetricaTile
+            label="Próxima audiencia"
+            value={
+              proximaAudiencia
+                ? formatFechaCorta(proximaAudiencia.fecha_hora)
+                : "—"
+            }
+          />
         </div>
       </FadeIn>
 
@@ -214,6 +324,34 @@ export default async function ClienteDetallePage({
                   </li>
                 ))}
               </ul>
+            )}
+          </CardContent>
+        </Card>
+      </FadeIn>
+
+      {/* Actividad reciente */}
+      <FadeIn delay={0.2}>
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <History className="size-4 text-muted-foreground" />
+              Actividad reciente
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {expedientes.length === 0 ? (
+              <EmptyState
+                icon={History}
+                title="Sin actividad"
+                description="Cuando este cliente tenga causas con movimientos, audiencias o plazos, vas a ver su actividad reciente acá."
+              />
+            ) : (
+              <ClienteActividad
+                movimientos={movimientos}
+                audiencias={audiencias}
+                plazos={plazos}
+                caratulaPorExpediente={caratulaPorExpediente}
+              />
             )}
           </CardContent>
         </Card>

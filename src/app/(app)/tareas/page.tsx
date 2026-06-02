@@ -8,6 +8,11 @@ import {
   type TareaConRelaciones,
 } from "@/components/tareas/kanban-board";
 import { NuevaTareaDialog } from "@/components/tareas/nueva-tarea-dialog";
+import { VencimientosView } from "@/components/tareas/vencimientos-view";
+import {
+  VistaToggle,
+  type VistaTareas,
+} from "@/components/tareas/vista-toggle";
 import type {
   MiembroOption,
   ExpedienteOption,
@@ -21,7 +26,15 @@ function toOne<T>(rel: T | T[] | null | undefined): T | null {
   return rel ?? null;
 }
 
-export default async function TareasPage() {
+export default async function TareasPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ vista?: string }>;
+}) {
+  const sp = await searchParams;
+  const vista: VistaTareas =
+    sp.vista === "vencimientos" ? "vencimientos" : "tablero";
+
   const { activeEstudio } = await requireEstudio();
   const supabase = await createClient();
 
@@ -79,18 +92,31 @@ export default async function TareasPage() {
     <div className="space-y-6">
       <PageHeader
         title="Tareas"
-        description="El tablero del estudio: arrastrá tareas entre columnas para avanzarlas."
+        description={
+          vista === "vencimientos"
+            ? "Tus tareas ordenadas por vencimiento: lo urgente primero."
+            : "El tablero del estudio: arrastrá tareas entre columnas para avanzarlas."
+        }
         icon={<ListTodo className="size-5" />}
       >
+        <VistaToggle vista={vista} />
         <NuevaTareaDialog miembros={miembros} expedientes={expedientes} />
       </PageHeader>
 
       <FadeIn>
-        <KanbanBoard
-          tareasIniciales={tareas}
-          miembros={miembros}
-          expedientes={expedientes}
-        />
+        {vista === "vencimientos" ? (
+          <VencimientosView
+            tareas={tareas}
+            miembros={miembros}
+            expedientes={expedientes}
+          />
+        ) : (
+          <KanbanBoard
+            tareasIniciales={tareas}
+            miembros={miembros}
+            expedientes={expedientes}
+          />
+        )}
       </FadeIn>
     </div>
   );
