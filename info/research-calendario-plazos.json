@@ -1,0 +1,38 @@
+{
+  "_meta": "Resultado de la investigación automatizada (workflow) para el seed de juridicOS. Calendario judicial Córdoba 2026 + catálogo de plazos CPCC. CONFIANZA: feriados nacionales ALTA (verificados); feria de invierno julio ESTIMADA; plazos MEDIA — DEBEN ser validados por un abogado. Fuentes en cada nota.",
+  "generado": "2026-06-01",
+  "calendario": {
+    "dias_inhabiles_2026": [
+      { "fecha": "2026-01-01", "tipo": "feriado_nacional", "descripcion": "Año Nuevo" },
+      { "fecha": "2026-02-16", "tipo": "feriado_nacional", "descripcion": "Lunes de Carnaval" },
+      { "fecha": "2026-02-17", "tipo": "feriado_nacional", "descripcion": "Martes de Carnaval" },
+      { "fecha": "2026-03-23", "tipo": "no_laborable", "descripcion": "Día no laborable turístico (Res. 164/2025 PEN)" },
+      { "fecha": "2026-03-24", "tipo": "feriado_nacional", "descripcion": "Día de la Memoria por la Verdad y la Justicia" },
+      { "fecha": "2026-04-02", "tipo": "feriado_nacional", "descripcion": "Día del Veterano y Caídos en Malvinas (coincide con Jueves Santo)" },
+      { "fecha": "2026-04-03", "tipo": "feriado_nacional", "descripcion": "Viernes Santo (Pascua 05/04/2026)" },
+      { "fecha": "2026-05-01", "tipo": "feriado_nacional", "descripcion": "Día del Trabajador" },
+      { "fecha": "2026-05-25", "tipo": "feriado_nacional", "descripcion": "Día de la Revolución de Mayo" },
+      { "fecha": "2026-06-15", "tipo": "feriado_nacional", "descripcion": "Gral. Güemes (trasladado del 17/06)" },
+      { "fecha": "2026-06-20", "tipo": "feriado_nacional", "descripcion": "Gral. Belgrano - Día de la Bandera" },
+      { "fecha": "2026-07-09", "tipo": "feriado_nacional", "descripcion": "Día de la Independencia" },
+      { "fecha": "2026-07-10", "tipo": "no_laborable", "descripcion": "Día no laborable turístico (Res. 164/2025 PEN)" },
+      { "fecha": "2026-08-17", "tipo": "feriado_nacional", "descripcion": "Gral. San Martín" },
+      { "fecha": "2026-10-12", "tipo": "feriado_nacional", "descripcion": "Día del Respeto a la Diversidad Cultural" },
+      { "fecha": "2026-11-23", "tipo": "feriado_nacional", "descripcion": "Día de la Soberanía Nacional (trasladado del 20/11)" },
+      { "fecha": "2026-12-07", "tipo": "no_laborable", "descripcion": "Día no laborable turístico (Res. 164/2025 PEN)" },
+      { "fecha": "2026-12-08", "tipo": "feriado_nacional", "descripcion": "Inmaculada Concepción de María" },
+      { "fecha": "2026-12-25", "tipo": "feriado_nacional", "descripcion": "Navidad" }
+    ],
+    "ferias_judiciales_2026": [
+      { "desde": "2026-01-01", "hasta": "2026-01-31", "descripcion": "Feria judicial de verano (enero completo) — Poder Judicial de Córdoba. CONFIRMADA." },
+      { "desde": "2026-07-06", "hasta": "2026-07-17", "descripcion": "Feria judicial de invierno (receso invernal) — ESTIMADA (coincide con receso escolar). VALIDAR rango exacto en Acordada del TSJ." }
+    ],
+    "confianza": "feriados nacionales ALTA; feria invierno MEDIA/BAJA en fechas exactas",
+    "fuentes": [
+      "https://www.argentina.gob.ar/jefatura/feriados-nacionales-2026",
+      "https://www.justiciacordoba.gob.ar/justiciacordoba/servicios/DiasInhabiles.aspx",
+      "https://www.justicia.ar/novedades/2982/2025/12/el-tsj-establecio-la-feria-judicial-de-verano"
+    ]
+  },
+  "plazos_catalogo": "Ver migración de seed (08_seed) — 22 actos de CPCC Córdoba (Ley 8465), Laboral (Ley 7987) y Familia (Ley 10305) con cita de artículo. CONFIANZA MEDIA. Validar numeración contra texto consolidado (Ley 8465 mod. por Ley 10906/2023; Ley 7987 mod. por Ley 10596/2018)."
+}
