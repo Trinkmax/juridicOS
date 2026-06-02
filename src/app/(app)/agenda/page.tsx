@@ -1,15 +1,21 @@
 import { Calendar } from "lucide-react";
+import {
+  startOfMonth,
+  endOfMonth,
+  startOfWeek,
+  endOfWeek,
+  addDays,
+  format as fmtDate,
+} from "date-fns";
 import { requireEstudio } from "@/lib/session";
 import { createClient } from "@/lib/supabase/server";
 import type { PlazoDetalle } from "@/lib/types/domain";
 import { PageHeader } from "@/components/ui/page-header";
-import { EmptyState } from "@/components/ui/empty-state";
 import { NuevaAudienciaDialog } from "@/components/agenda/nueva-audiencia-dialog";
-import { AgendaLista, type AgendaItem } from "@/components/agenda/agenda-lista";
+import { AgendaVista } from "@/components/agenda/agenda-vista";
+import type { AgendaItem } from "@/components/agenda/tipos";
 
 export const metadata = { title: "Agenda" };
-
-const HORIZONTE_DIAS = 30;
 
 /** Normaliza una relación to-one embebida (objeto o array) a un objeto o null. */
 function toOne<T>(rel: T | T[] | null | undefined): T | null {
@@ -20,28 +26,40 @@ function toOne<T>(rel: T | T[] | null | undefined): T | null {
 export default async function AgendaPage({
   searchParams,
 }: {
-  searchParams: Promise<{ nueva?: string; expediente?: string }>;
+  searchParams: Promise<{ nueva?: string; expediente?: string; mes?: string; vista?: string }>;
 }) {
   const sp = await searchParams;
   const { activeEstudio } = await requireEstudio();
   const supabase = await createClient();
 
-  const ahora = new Date();
-  const desde = new Date(ahora);
-  desde.setHours(0, 0, 0, 0);
-  const hasta = new Date(desde);
-  hasta.setDate(hasta.getDate() + HORIZONTE_DIAS);
+  // Mes visible (YYYY-MM) y rango de la grilla del calendario (semanas completas).
+  const mesValido = typeof sp.mes === "string" && /^\d{4}-\d{2}$/.test(sp.mes);
+  const anchor = mesValido
+    ? new Date(`${sp.mes}-01T12:00:00`)
+    : (() => {
+        const n = new Date();
+        return new Date(n.getFullYear(), n.getMonth(), 1, 12);
+      })();
+  const mes = fmtDate(anchor, "yyyy-MM");
+  const vista: "mes" | "lista" = sp.vista === "lista" ? "lista" : "mes";
 
-  const desdeISO = desde.toISOString();
-  const hastaISO = hasta.toISOString();
-  const hoyFecha = desde.toISOString().slice(0, 10);
-  const hastaFecha = hasta.toISOString().slice(0, 10);
+  const gridStart = startOfWeek(startOfMonth(anchor), { weekStartsOn: 1 });
+  const gridEnd = endOfWeek(endOfMonth(anchor), { weekStartsOn: 1 });
+  // Buffer de ±1-2 días para evitar cortes por zona horaria.
+  const fetchDesde = addDays(gridStart, -1);
+  const fetchHasta = addDays(gridEnd, 2);
+  const desdeISO = fetchDesde.toISOString();
+  const hastaISO = fetchHasta.toISOString();
+  const desdeFecha = fmtDate(fetchDesde, "yyyy-MM-dd");
+  const hastaFecha = fmtDate(fetchHasta, "yyyy-MM-dd");
 
   const [{ data: audiencias }, { data: plazos }, { data: eventos }, { data: expedientes }] =
     await Promise.all([
       supabase
         .from("audiencias")
-        .select("id, titulo, fecha_hora, expediente_id, expedientes(caratula)")
+        .select(
+          "id, titulo, fecha_hora, duracion_min, modalidad, lugar, juzgado, enlace, expediente_id, expedientes(caratula)",
+        )
         .eq("estudio_id", activeEstudio.id)
         .eq("estado", "programada")
         .gte("fecha_hora", desdeISO)
@@ -52,12 +70,14 @@ export default async function AgendaPage({
         .select("*")
         .eq("estudio_id", activeEstudio.id)
         .eq("estado", "pendiente")
-        .gte("fecha_vencimiento", hoyFecha)
+        .gte("fecha_vencimiento", desdeFecha)
         .lte("fecha_vencimiento", hastaFecha)
         .order("fecha_vencimiento", { ascending: true }),
       supabase
         .from("eventos_agenda")
-        .select("id, titulo, inicio, expediente_id, expedientes(caratula)")
+        .select(
+          "id, titulo, inicio, fin, todo_el_dia, descripcion, expediente_id, expedientes(caratula)",
+        )
         .eq("estudio_id", activeEstudio.id)
         .gte("inicio", desdeISO)
         .lte("inicio", hastaISO)
@@ -82,6 +102,11 @@ export default async function AgendaPage({
       titulo: a.titulo,
       expedienteId: a.expediente_id,
       expediente: exp?.caratula ?? null,
+      modalidadAud: a.modalidad,
+      lugar: a.lugar,
+      juzgado: a.juzgado,
+      enlace: a.enlace,
+      duracionMin: a.duracion_min,
     });
   }
 
@@ -94,6 +119,10 @@ export default async function AgendaPage({
       titulo: p.acto_procesal ?? "Vencimiento de plazo",
       expedienteId: p.expediente_id,
       expediente: p.caratula,
+      diasRestantes: p.dias_restantes,
+      prioridad: p.prioridad,
+      modalidadPlazo: p.modalidad,
+      fuero: p.fuero,
     });
   }
 
@@ -102,11 +131,14 @@ export default async function AgendaPage({
     items.push({
       id: e.id,
       fecha: e.inicio,
-      hora: e.inicio,
+      hora: e.todo_el_dia ? null : e.inicio,
       tipo: "evento",
       titulo: e.titulo,
       expedienteId: e.expediente_id,
       expediente: exp?.caratula ?? null,
+      descripcion: e.descripcion,
+      fin: e.fin,
+      todoElDia: e.todo_el_dia,
     });
   }
 
@@ -116,7 +148,7 @@ export default async function AgendaPage({
     <div className="space-y-6">
       <PageHeader
         title="Agenda"
-        description={`Audiencias, plazos y eventos de los próximos ${HORIZONTE_DIAS} días.`}
+        description="Audiencias, plazos y eventos del estudio en un solo calendario."
         icon={<Calendar className="size-5" />}
       >
         <NuevaAudienciaDialog
@@ -126,15 +158,7 @@ export default async function AgendaPage({
         />
       </PageHeader>
 
-      {items.length === 0 ? (
-        <EmptyState
-          icon={Calendar}
-          title="Agenda despejada"
-          description="No hay audiencias, plazos ni eventos en los próximos días. Cuando agendes algo, va a aparecer acá."
-        />
-      ) : (
-        <AgendaLista items={items} />
-      )}
+      <AgendaVista items={items} mes={mes} vista={vista} />
     </div>
   );
 }
