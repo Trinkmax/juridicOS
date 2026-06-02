@@ -28,7 +28,6 @@ export const metadata: Metadata = {
   title: { default: `${APP_NAME} — ${APP_TAGLINE}`, template: `%s · ${APP_NAME}` },
   description:
     "Gestión integral para estudios jurídicos: motor de plazos procesales, expedientes, agenda, redacción con IA y portal del cliente. Pensado para Córdoba, Argentina.",
-  icons: { icon: "/juridicos-logo.png" },
 };
 
 export const viewport: Viewport = {
