@@ -6,6 +6,7 @@ import { PageHeader } from "@/components/ui/page-header";
 import { Button } from "@/components/ui/button";
 import { FadeIn } from "@/components/motion/fade-in";
 import { ExpedienteForm } from "@/components/expedientes/expediente-form";
+import { getLocalidadesOptions } from "@/lib/localidades";
 
 export const metadata = { title: "Nuevo expediente" };
 
@@ -13,12 +14,15 @@ export default async function NuevoExpedientePage() {
   const { activeEstudio } = await requireEstudio();
   const supabase = await createClient();
 
-  const { data } = await supabase
-    .from("clientes")
-    .select("id, nombre")
-    .eq("estudio_id", activeEstudio.id)
-    .eq("activo", true)
-    .order("nombre", { ascending: true });
+  const [{ data }, localidades] = await Promise.all([
+    supabase
+      .from("clientes")
+      .select("id, nombre")
+      .eq("estudio_id", activeEstudio.id)
+      .eq("activo", true)
+      .order("nombre", { ascending: true }),
+    getLocalidadesOptions(),
+  ]);
 
   const clientes = data ?? [];
 
@@ -39,7 +43,7 @@ export default async function NuevoExpedientePage() {
 
       <FadeIn>
         <div className="max-w-3xl">
-          <ExpedienteForm clientes={clientes} />
+          <ExpedienteForm clientes={clientes} localidades={localidades} />
         </div>
       </FadeIn>
     </div>

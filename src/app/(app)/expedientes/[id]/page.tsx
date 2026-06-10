@@ -19,6 +19,7 @@ import { AsistenteIA } from "@/components/expedientes/asistente-ia";
 import { EditarExpedienteDialog } from "@/components/expedientes/editar-expediente-dialog";
 import { ExpedienteAcciones } from "@/components/expedientes/expediente-acciones";
 import { iaActivaEstudio } from "@/lib/actions/ia";
+import { getLocalidadesOptions } from "@/lib/localidades";
 import type {
   Expediente,
   Parte,
@@ -70,6 +71,7 @@ export default async function ExpedienteDetallePage({
     { data: movimientosData },
     { data: plazosData },
     { data: audienciasData },
+    localidades,
   ] = await Promise.all([
     supabase
       .from("clientes")
@@ -97,6 +99,7 @@ export default async function ExpedienteDetallePage({
       .select("*")
       .eq("expediente_id", id)
       .order("fecha_hora", { ascending: true }),
+    getLocalidadesOptions(),
   ]);
 
   const clientes = clientesData ?? [];
@@ -159,7 +162,11 @@ export default async function ExpedienteDetallePage({
           </div>
 
           <div className="flex shrink-0 items-center gap-2">
-            <EditarExpedienteDialog expediente={expediente} clientes={clientes} />
+            <EditarExpedienteDialog
+              expediente={expediente}
+              clientes={clientes}
+              localidades={localidades}
+            />
             <ExpedienteAcciones id={expediente.id} archivado={expediente.archivado} />
           </div>
         </div>

@@ -65,6 +65,7 @@ export const expedienteSchema = z.object({
       z.string().trim().optional(),
     )
     .transform((v) => v ?? "cordoba"),
+  localidad: optionalText,
   etapa: optionalText,
   estado: z.enum(ESTADO_EXPEDIENTE_VALUES).default("en_tramite"),
   cliente_id: optionalId,
@@ -85,6 +86,7 @@ export const parteSchema = z.object({
   tipo: z.enum(TIPO_PARTE_VALUES).default("actor"),
   nombre: z.string().trim().min(2, "El nombre de la parte es obligatorio."),
   documento: optionalText,
+  domicilio: optionalText,
   caracter: optionalText,
   patrocinante: optionalText,
   es_propio: z.preprocess(

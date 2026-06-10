@@ -22,6 +22,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Combobox, type ComboboxOption } from "@/components/ui/combobox";
 import {
   Select,
   SelectTrigger,
@@ -51,9 +52,11 @@ function Enviar() {
 export function EditarExpedienteDialog({
   expediente,
   clientes,
+  localidades,
 }: {
   expediente: Expediente;
   clientes: ClienteOpcion[];
+  localidades: ComboboxOption[];
 }) {
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
@@ -70,6 +73,7 @@ export function EditarExpedienteDialog({
   const [caracter, setCaracter] = React.useState(
     expediente.caracter_cliente ?? SIN_CARACTER,
   );
+  const [localidad, setLocalidad] = React.useState(expediente.localidad ?? "");
 
   React.useEffect(() => {
     if (state?.ok) {
@@ -90,17 +94,17 @@ export function EditarExpedienteDialog({
           Editar
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-2xl">
+      <DialogContent className="flex max-h-[90vh] max-w-2xl flex-col overflow-hidden">
         <DialogHeader>
           <DialogTitle>Editar expediente</DialogTitle>
           <DialogDescription>Actualizá los datos de la causa.</DialogDescription>
         </DialogHeader>
 
-        <form action={action} className="space-y-4">
+        <form action={action} className="flex min-h-0 flex-1 flex-col gap-4">
           <FormError>{state && !state.ok ? state.error : undefined}</FormError>
 
-          <ScrollArea className="max-h-[60vh] pr-4">
-            <div className="grid gap-4 sm:grid-cols-2">
+          <ScrollArea className="-mx-6 min-h-0 flex-1 px-6">
+            <div className="grid gap-4 py-1 sm:grid-cols-2">
               <Field
                 className="sm:col-span-2"
                 label="Carátula"
@@ -172,15 +176,22 @@ export function EditarExpedienteDialog({
                 />
               </Field>
 
+              <input type="hidden" name="jurisdiccion" value={expediente.jurisdiccion} />
               <Field
-                label="Jurisdicción"
-                htmlFor="edit-jurisdiccion"
-                error={fieldError("jurisdiccion")}
+                label="Localidad / Sede judicial"
+                htmlFor="edit-localidad"
+                error={fieldError("localidad")}
+                hint="Dónde está radicada la causa."
               >
-                <Input
-                  id="edit-jurisdiccion"
-                  name="jurisdiccion"
-                  defaultValue={expediente.jurisdiccion}
+                <Combobox
+                  id="edit-localidad"
+                  name="localidad"
+                  value={localidad}
+                  onValueChange={setLocalidad}
+                  options={localidades}
+                  placeholder="Elegí una localidad"
+                  searchPlaceholder="Buscar localidad…"
+                  emptyText="No se encontró la localidad."
                 />
               </Field>
 
@@ -277,7 +288,7 @@ export function EditarExpedienteDialog({
             </div>
           </ScrollArea>
 
-          <DialogFooter>
+          <DialogFooter className="border-t border-border pt-4">
             <DialogClose asChild>
               <Button type="button" variant="ghost">
                 Cancelar

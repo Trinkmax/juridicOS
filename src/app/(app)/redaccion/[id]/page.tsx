@@ -63,7 +63,7 @@ export default async function EditarDocumentoPage({
     supabase
       .from("expedientes")
       .select(
-        "id, caratula, nro_sac, juzgado, secretaria, fuero, estado, etapa, clientes(nombre, documento, domicilio_real), partes(nombre, documento, es_propio)",
+        "id, caratula, nro_sac, juzgado, secretaria, fuero, estado, etapa, monto_reclamado, clientes(nombre, documento, domicilio_real, localidad), partes(nombre, documento, domicilio, es_propio)",
       )
       .eq("estudio_id", estudioId)
       .eq("archivado", false)
@@ -93,6 +93,7 @@ export default async function EditarDocumentoPage({
       nombre: string;
       documento: string | null;
       domicilio_real: string | null;
+      localidad: string | null;
     } | null;
     const partes = (e.partes ?? []) as ParteJoin[];
     const contraparte = partes.find((p) => !p.es_propio) ?? null;
@@ -105,11 +106,14 @@ export default async function EditarDocumentoPage({
       fuero: e.fuero,
       estado: e.estado,
       etapa: e.etapa,
+      monto_reclamado: e.monto_reclamado,
       cliente_nombre: cliente?.nombre ?? null,
       cliente_documento: cliente?.documento ?? null,
       cliente_domicilio: cliente?.domicilio_real ?? null,
+      cliente_localidad: cliente?.localidad ?? null,
       contraparte_nombre: contraparte?.nombre ?? null,
       contraparte_documento: contraparte?.documento ?? null,
+      contraparte_domicilio: contraparte?.domicilio ?? null,
     };
   });
 

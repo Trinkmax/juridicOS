@@ -24,18 +24,28 @@ export type ExpedienteContexto = {
   fuero: string;
   estado: string;
   etapa: string | null;
+  /**
+   * Monto reclamado → {{monto}} y {{monto_letras}}. La columna es `numeric`:
+   * PostgREST la serializa como string en runtime (aunque el tipo generado diga
+   * number), por eso aceptamos ambos y coercemos en el mail-merge.
+   */
+  monto_reclamado: number | string | null;
   cliente_nombre: string | null;
   cliente_documento: string | null;
   cliente_domicilio: string | null;
+  /** Localidad del cliente → {{localidad}} (lugar de los escritos). */
+  cliente_localidad: string | null;
   /** Primera parte ajena (es_propio = false): la contraparte del pleito. */
   contraparte_nombre: string | null;
   contraparte_documento: string | null;
+  contraparte_domicilio: string | null;
 };
 
 /** Fila de `partes` embebida en la consulta de expedientes (para la contraparte). */
 export type ParteJoin = {
   nombre: string;
   documento: string | null;
+  domicilio: string | null;
   es_propio: boolean;
 };
 

@@ -834,6 +834,7 @@ export type Database = {
           id: string
           jurisdiccion: string
           juzgado: string | null
+          localidad: string | null
           materia: string | null
           monto_reclamado: number | null
           nro_sac: string | null
@@ -856,6 +857,7 @@ export type Database = {
           id?: string
           jurisdiccion?: string
           juzgado?: string | null
+          localidad?: string | null
           materia?: string | null
           monto_reclamado?: number | null
           nro_sac?: string | null
@@ -878,6 +880,7 @@ export type Database = {
           id?: string
           jurisdiccion?: string
           juzgado?: string | null
+          localidad?: string | null
           materia?: string | null
           monto_reclamado?: number | null
           nro_sac?: string | null
@@ -1087,6 +1090,36 @@ export type Database = {
           },
         ]
       }
+      localidades: {
+        Row: {
+          activo: boolean
+          cabecera: string
+          circunscripcion: number
+          created_at: string
+          es_cabecera: boolean
+          id: string
+          nombre: string
+        }
+        Insert: {
+          activo?: boolean
+          cabecera: string
+          circunscripcion: number
+          created_at?: string
+          es_cabecera?: boolean
+          id?: string
+          nombre: string
+        }
+        Update: {
+          activo?: boolean
+          cabecera?: string
+          circunscripcion?: number
+          created_at?: string
+          es_cabecera?: boolean
+          id?: string
+          nombre?: string
+        }
+        Relationships: []
+      }
       miembros_estudio: {
         Row: {
           activo: boolean
@@ -1272,6 +1305,7 @@ export type Database = {
           caracter: string | null
           created_at: string
           documento: string | null
+          domicilio: string | null
           es_propio: boolean
           estudio_id: string
           expediente_id: string
@@ -1284,6 +1318,7 @@ export type Database = {
           caracter?: string | null
           created_at?: string
           documento?: string | null
+          domicilio?: string | null
           es_propio?: boolean
           estudio_id: string
           expediente_id: string
@@ -1296,6 +1331,7 @@ export type Database = {
           caracter?: string | null
           created_at?: string
           documento?: string | null
+          domicilio?: string | null
           es_propio?: boolean
           estudio_id?: string
           expediente_id?: string

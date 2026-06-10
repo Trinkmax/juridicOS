@@ -11,6 +11,7 @@ import { Field, FormError } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { Combobox, type ComboboxOption } from "@/components/ui/combobox";
 import {
   Select,
   SelectTrigger,
@@ -36,7 +37,13 @@ function Enviar() {
 }
 
 /** Alta de expediente. En éxito la action hace redirect al detalle. */
-export function ExpedienteForm({ clientes }: { clientes: ClienteOpcion[] }) {
+export function ExpedienteForm({
+  clientes,
+  localidades,
+}: {
+  clientes: ClienteOpcion[];
+  localidades: ComboboxOption[];
+}) {
   const [state, action] = useActionState<ActionResult | null, FormData>(
     crearExpediente,
     null,
@@ -46,6 +53,7 @@ export function ExpedienteForm({ clientes }: { clientes: ClienteOpcion[] }) {
   const [estado, setEstado] = React.useState<string>("en_tramite");
   const [clienteId, setClienteId] = React.useState<string>(SIN_CLIENTE);
   const [caracter, setCaracter] = React.useState<string>("");
+  const [localidad, setLocalidad] = React.useState<string>("");
 
   const fieldError = (campo: string) =>
     state && !state.ok ? state.fieldErrors?.[campo] : undefined;
@@ -129,8 +137,23 @@ export function ExpedienteForm({ clientes }: { clientes: ClienteOpcion[] }) {
             <Input id="secretaria" name="secretaria" placeholder="Ej.: Secretaría única" />
           </Field>
 
-          <Field label="Jurisdicción" htmlFor="jurisdiccion" error={fieldError("jurisdiccion")}>
-            <Input id="jurisdiccion" name="jurisdiccion" defaultValue="cordoba" placeholder="cordoba" />
+          <input type="hidden" name="jurisdiccion" value="cordoba" />
+          <Field
+            label="Localidad / Sede judicial"
+            htmlFor="localidad"
+            error={fieldError("localidad")}
+            hint="Localidad de Córdoba donde se radica la causa."
+          >
+            <Combobox
+              id="localidad"
+              name="localidad"
+              value={localidad}
+              onValueChange={setLocalidad}
+              options={localidades}
+              placeholder="Elegí una localidad"
+              searchPlaceholder="Buscar localidad…"
+              emptyText="No se encontró la localidad."
+            />
           </Field>
 
           <Field label="Etapa procesal" htmlFor="etapa" error={fieldError("etapa")}>

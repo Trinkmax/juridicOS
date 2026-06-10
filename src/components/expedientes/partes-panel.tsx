@@ -111,6 +111,15 @@ function AgregarParteDialog({ expedienteId }: { expedienteId: string }) {
               <Input id="parte-documento" name="documento" placeholder="DNI / CUIT" />
             </Field>
 
+            <Field
+              label="Domicilio"
+              htmlFor="parte-domicilio"
+              error={fieldError("domicilio")}
+              hint="Se usa para completar escritos."
+            >
+              <Input id="parte-domicilio" name="domicilio" placeholder="Calle, número, localidad" />
+            </Field>
+
             <Field label="Carácter" htmlFor="parte-caracter" error={fieldError("caracter")}>
               <Input id="parte-caracter" name="caracter" placeholder="Ej.: por derecho propio" />
             </Field>
@@ -175,6 +184,7 @@ function ParteItem({ parte }: { parte: Parte }) {
         </div>
         <div className="flex flex-wrap gap-x-4 gap-y-0.5 text-xs text-muted-foreground">
           {parte.documento && <span>Doc.: {parte.documento}</span>}
+          {parte.domicilio && <span>Domicilio: {parte.domicilio}</span>}
           {parte.caracter && <span>Carácter: {parte.caracter}</span>}
           {parte.patrocinante && <span>Patrocina: {parte.patrocinante}</span>}
         </div>

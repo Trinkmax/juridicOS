@@ -34,6 +34,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Spinner } from "@/components/ui/spinner";
 import { Separator } from "@/components/ui/separator";
+import { Combobox, type ComboboxOption } from "@/components/ui/combobox";
 import {
   Select,
   SelectTrigger,
@@ -96,6 +97,20 @@ export function Calculadora({
   const [descripcion, setDescripcion] = React.useState("");
 
   const catalogoSeleccionado = catalogo.find((c) => c.id === catalogoId);
+
+  // Opciones del catálogo agrupadas por fuero, buscables (incluye Penal).
+  const catalogoOptions: ComboboxOption[] = React.useMemo(
+    () =>
+      catalogo.map((c) => ({
+        value: c.id,
+        label: c.acto_procesal,
+        group: FUERO[c.fuero]?.label ?? "Otro fuero",
+        hint: `${c.dias} ${
+          c.modalidad === "corridos" ? "corridos" : c.modalidad === "horas" ? "horas" : "hábiles"
+        }${c.base_legal ? ` · ${c.base_legal}` : ""}`,
+      })),
+    [catalogo],
+  );
 
   function aplicarCatalogo(id: string) {
     setCatalogoId(id);
@@ -181,25 +196,15 @@ export function Calculadora({
               Parámetros del cómputo
             </div>
 
-            <Field label="Tipo de acto procesal" hint="Autocompleta días y modalidad.">
-              <Select value={catalogoId} onValueChange={aplicarCatalogo}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Elegí del catálogo (opcional)" />
-                </SelectTrigger>
-                <SelectContent>
-                  {catalogo.map((c) => (
-                    <SelectItem key={c.id} value={c.id}>
-                      <span className="flex items-center gap-2">
-                        {c.acto_procesal}
-                        <span className="text-xs text-muted-foreground">
-                          · {c.dias} {c.modalidad === "corridos" ? "corridos" : "hábiles"}
-                          {FUERO[c.fuero] ? ` · ${FUERO[c.fuero]!.label}` : ""}
-                        </span>
-                      </span>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+            <Field label="Tipo de acto procesal" hint="Buscá por fuero o nombre. Autocompleta días y modalidad.">
+              <Combobox
+                value={catalogoId}
+                onValueChange={aplicarCatalogo}
+                options={catalogoOptions}
+                placeholder="Elegí del catálogo (opcional)"
+                searchPlaceholder="Buscar acto procesal o fuero…"
+                emptyText="Sin resultados en el catálogo."
+              />
             </Field>
 
             {catalogoSeleccionado?.base_legal && (
