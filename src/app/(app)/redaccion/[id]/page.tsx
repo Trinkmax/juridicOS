@@ -14,6 +14,7 @@ import type {
   BorradorItem,
   ExpedienteContexto,
   DocumentoEdicion,
+  ParteJoin,
 } from "@/components/redaccion/tipos";
 
 export const metadata = { title: "Editar documento" };
@@ -51,6 +52,7 @@ export default async function EditarDocumentoPage({
       .from("plantillas")
       .select("*")
       .or(`estudio_id.is.null,estudio_id.eq.${estudioId}`)
+      .order("orden", { ascending: true })
       .order("nombre", { ascending: true }),
     supabase
       .from("documentos_generados")
@@ -61,7 +63,7 @@ export default async function EditarDocumentoPage({
     supabase
       .from("expedientes")
       .select(
-        "id, caratula, nro_sac, juzgado, secretaria, fuero, estado, etapa, clientes(nombre, documento)",
+        "id, caratula, nro_sac, juzgado, secretaria, fuero, estado, etapa, clientes(nombre, documento, domicilio_real), partes(nombre, documento, es_propio)",
       )
       .eq("estudio_id", estudioId)
       .eq("archivado", false)
@@ -87,7 +89,13 @@ export default async function EditarDocumentoPage({
   });
 
   const expedientes: ExpedienteContexto[] = (expedientesRes.data ?? []).map((e) => {
-    const cliente = e.clientes as { nombre: string; documento: string | null } | null;
+    const cliente = e.clientes as {
+      nombre: string;
+      documento: string | null;
+      domicilio_real: string | null;
+    } | null;
+    const partes = (e.partes ?? []) as ParteJoin[];
+    const contraparte = partes.find((p) => !p.es_propio) ?? null;
     return {
       id: e.id,
       caratula: e.caratula,
@@ -99,6 +107,9 @@ export default async function EditarDocumentoPage({
       etapa: e.etapa,
       cliente_nombre: cliente?.nombre ?? null,
       cliente_documento: cliente?.documento ?? null,
+      cliente_domicilio: cliente?.domicilio_real ?? null,
+      contraparte_nombre: contraparte?.nombre ?? null,
+      contraparte_documento: contraparte?.documento ?? null,
     };
   });
 

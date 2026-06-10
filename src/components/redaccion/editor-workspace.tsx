@@ -35,8 +35,11 @@ import {
   SelectTrigger,
   SelectValue,
   SelectContent,
+  SelectGroup,
+  SelectLabel,
   SelectItem,
 } from "@/components/ui/select";
+import { CATEGORIAS_PLANTILLA } from "@/lib/constants";
 import {
   Dialog,
   DialogContent,
@@ -47,6 +50,7 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { AsistenteIA } from "./asistente-ia";
+import { RevisionFormal } from "./revision-formal";
 import { aplicarMailMerge, variablesEnTexto, MARCADOR_PENDIENTE } from "./mail-merge";
 import type {
   PlantillaItem,
@@ -107,6 +111,31 @@ export const EditorWorkspace = forwardRef<
     [contenido],
   );
 
+  /** ¿El membrete aporta datos al merge (letrado, matrícula, domicilios)? */
+  const hayMembrete = Boolean(
+    membrete &&
+      (membrete.abogado ||
+        membrete.matricula ||
+        membrete.domicilio ||
+        membrete.domicilioElectronico ||
+        membrete.estudio),
+  );
+
+  /** Plantillas agrupadas por categoría, en el orden del vocabulario. */
+  const gruposPlantillas = useMemo(() => {
+    const porCategoria = new Map<string, PlantillaItem[]>();
+    for (const p of plantillas) {
+      const cat = p.categoria ?? "otro";
+      const lista = porCategoria.get(cat) ?? [];
+      lista.push(p);
+      porCategoria.set(cat, lista);
+    }
+    return CATEGORIAS_PLANTILLA.filter((c) => porCategoria.has(c.value)).map((c) => ({
+      categoria: c,
+      items: porCategoria.get(c.value)!,
+    }));
+  }, [plantillas]);
+
   function cargarPlantillaObj(p: PlantillaItem) {
     const reemplazar = () => {
       setPlantillaId(p.id);
@@ -137,21 +166,26 @@ export const EditorWorkspace = forwardRef<
   useImperativeHandle(ref, () => ({ cargarPlantilla: cargarPlantillaObj }));
 
   function completarDatos() {
-    if (!expedienteSel) {
-      toast.error("Elegí un expediente para completar los datos.");
+    if (!expedienteSel && !hayMembrete) {
+      toast.error("Elegí un expediente o cargá el membrete del estudio.");
       return;
     }
     if (contenido.trim().length === 0) {
       toast.error("No hay texto para completar.");
       return;
     }
-    const resultado = aplicarMailMerge(contenido, expedienteSel);
+    const resultado = aplicarMailMerge(contenido, {
+      expediente: expedienteSel,
+      membrete,
+    });
     setContenido(resultado);
     const restantes = resultado.split(MARCADOR_PENDIENTE).length - 1;
     toast.success(
       restantes > 0
         ? `Datos completados · ${restantes} marcador(es) [PENDIENTE]`
-        : "Datos del expediente completados",
+        : expedienteSel
+          ? "Datos del expediente y del estudio completados"
+          : "Datos del estudio completados",
     );
   }
 
@@ -330,11 +364,16 @@ export const EditorWorkspace = forwardRef<
                     No hay plantillas.
                   </div>
                 ) : (
-                  plantillas.map((p) => (
-                    <SelectItem key={p.id} value={p.id}>
-                      {p.nombre}
-                      {p.esGlobal ? " · global" : ""}
-                    </SelectItem>
+                  gruposPlantillas.map((g) => (
+                    <SelectGroup key={g.categoria.value}>
+                      <SelectLabel>{g.categoria.label}</SelectLabel>
+                      {g.items.map((p) => (
+                        <SelectItem key={p.id} value={p.id}>
+                          {p.nombre}
+                          {p.esGlobal ? " · global" : ""}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
                   ))
                 )}
               </SelectContent>
@@ -373,25 +412,30 @@ export const EditorWorkspace = forwardRef<
             variant="outline"
             size="sm"
             onClick={completarDatos}
-            disabled={!expedienteSel || contenido.trim().length === 0}
+            disabled={
+              (!expedienteSel && !hayMembrete) || contenido.trim().length === 0
+            }
             className="h-9 sm:h-8"
+            title="Reemplaza las {{variables}} con datos del expediente y del estudio"
           >
             <Replace className="size-4" />
-            Completar datos del expediente
+            Completar datos
           </Button>
 
           <AsistenteIA
             iaActiva={iaActiva}
             textoActual={contenido}
             expedienteId={expedienteId}
-            onGenerar={(t) => {
+            onResultado={(t) => {
               setContenido(t);
               setGeneradoPorIa(true);
             }}
-            onMejorar={(t) => {
-              setContenido(t);
-              setGeneradoPorIa(true);
-            }}
+          />
+
+          <RevisionFormal
+            iaActiva={iaActiva}
+            texto={contenido}
+            expedienteId={expedienteId}
           />
 
           <div className="flex w-full flex-wrap items-center gap-2 sm:ml-auto sm:w-auto">

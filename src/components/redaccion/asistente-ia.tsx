@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
-import { Sparkles, Wand2, PenLine, Info } from "lucide-react";
+import { Sparkles, Wand2, PenLine, Info, ListChecks } from "lucide-react";
 import { asistirRedaccion } from "@/lib/actions/ia";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -19,52 +19,57 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 
+type Modo = "generar" | "mejorar" | "completar";
+
 export function AsistenteIA({
   iaActiva,
   textoActual,
   expedienteId,
-  onGenerar,
-  onMejorar,
+  onResultado,
 }: {
   iaActiva: boolean;
-  /** Texto presente en el editor (para "mejorar" y para saber si hay base). */
+  /** Texto presente en el editor (para "mejorar"/"completar" y para saber si hay base). */
   textoActual: string;
   /** Expediente seleccionado → contexto para la IA. */
   expedienteId: string | null;
-  /** Reemplaza todo el contenido del editor (modo generar). */
-  onGenerar: (texto: string) => void;
-  /** Reemplaza el contenido con la versión mejorada (modo mejorar). */
-  onMejorar: (texto: string) => void;
+  /** Reemplaza el contenido del editor con el texto asistido. */
+  onResultado: (texto: string, modo: Modo) => void;
 }) {
   const [open, setOpen] = useState(false);
   const [instruccion, setInstruccion] = useState("");
+  const [modoActivo, setModoActivo] = useState<Modo | null>(null);
   const [pending, startTransition] = useTransition();
   const hayTexto = textoActual.trim().length > 0;
 
-  function ejecutar(modo: "generar" | "mejorar") {
+  function ejecutar(modo: Modo) {
     if (modo === "generar" && instruccion.trim().length === 0) {
       toast.error("Escribí una instrucción para la IA.");
       return;
     }
+    setModoActivo(modo);
     startTransition(async () => {
       const res = await asistirRedaccion({
         modo,
-        instruccion: instruccion.trim() || "Mejorá la redacción manteniendo el sentido.",
-        textoActual: modo === "mejorar" ? textoActual : undefined,
+        instruccion:
+          instruccion.trim() ||
+          (modo === "mejorar" ? "Mejorá la redacción manteniendo el sentido." : ""),
+        textoActual: modo === "generar" ? undefined : textoActual,
         expedienteId,
       });
+      setModoActivo(null);
       if (!res.ok) {
         toast.error(res.error);
         return;
       }
       const texto = res.data?.texto ?? "";
-      if (modo === "generar") {
-        onGenerar(texto);
-        toast.success("Borrador generado");
-      } else {
-        onMejorar(texto);
-        toast.success("Texto mejorado");
-      }
+      onResultado(texto, modo);
+      toast.success(
+        modo === "generar"
+          ? "Borrador generado"
+          : modo === "completar"
+            ? "Pendientes completados con el expediente"
+            : "Texto mejorado",
+      );
       setInstruccion("");
       setOpen(false);
     });
@@ -85,8 +90,8 @@ export function AsistenteIA({
             Asistente de redacción
           </DialogTitle>
           <DialogDescription>
-            Describí qué necesitás. Podés generar un escrito desde cero o mejorar lo
-            que ya tenés en el editor.
+            Generá un escrito desde cero, mejorá lo que tenés o completá los
+            [PENDIENTE] de una plantilla con los datos del expediente.
           </DialogDescription>
         </DialogHeader>
 
@@ -105,7 +110,7 @@ export function AsistenteIA({
               value={instruccion}
               onChange={(e) => setInstruccion(e.target.value)}
               rows={4}
-              placeholder="Ej.: Redactá un escrito solicitando prórroga del plazo para contestar demanda, fundado en el art. 49 CPCC."
+              placeholder="Ej.: Redactá una demanda laboral por falta de aportes al seguro de retiro complementario La Estrella (CCT 130/75). El cliente trabajó 24 años y fue despedido sin causa."
               disabled={pending}
             />
           </Field>
@@ -128,16 +133,32 @@ export function AsistenteIA({
           <Button
             type="button"
             variant="outline"
+            onClick={() => ejecutar("completar")}
+            disabled={pending || !hayTexto || !expedienteId}
+            title={
+              !hayTexto
+                ? "Cargá una plantilla o escribí texto primero"
+                : !expedienteId
+                  ? "Elegí un expediente: es la fuente de los datos"
+                  : "Completa los [PENDIENTE] con datos del expediente, sin tocar la estructura"
+            }
+          >
+            {pending && modoActivo === "completar" ? <Spinner /> : <ListChecks className="size-4" />}
+            Completar pendientes
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
             onClick={() => ejecutar("mejorar")}
             disabled={pending || !hayTexto}
             title={!hayTexto ? "Escribí o cargá texto en el editor primero" : undefined}
           >
-            {pending ? <Spinner /> : <Wand2 className="size-4" />}
+            {pending && modoActivo === "mejorar" ? <Spinner /> : <Wand2 className="size-4" />}
             Mejorar lo escrito
           </Button>
           <Button type="button" onClick={() => ejecutar("generar")} disabled={pending}>
-            {pending ? <Spinner /> : <PenLine className="size-4" />}
-            {pending ? "Redactando…" : "Generar"}
+            {pending && modoActivo === "generar" ? <Spinner /> : <PenLine className="size-4" />}
+            {pending && modoActivo === "generar" ? "Redactando…" : "Generar"}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -1,6 +1,3 @@
-// AUTO-GENERADO por supabase gen types (vía MCP). No editar a mano.
-// Regenerar tras cambios de esquema.
-
 export type Json =
   | string
   | number
@@ -1327,36 +1324,48 @@ export type Database = {
       plantillas: {
         Row: {
           ambito: string
+          categoria: string | null
           contenido: string
           created_at: string
           created_by: string | null
+          descripcion: string | null
           estudio_id: string | null
+          fuero: string | null
           id: string
           nombre: string
+          orden: number
           tipo: string | null
           updated_at: string
           variables: string[] | null
         }
         Insert: {
           ambito?: string
+          categoria?: string | null
           contenido?: string
           created_at?: string
           created_by?: string | null
+          descripcion?: string | null
           estudio_id?: string | null
+          fuero?: string | null
           id?: string
           nombre: string
+          orden?: number
           tipo?: string | null
           updated_at?: string
           variables?: string[] | null
         }
         Update: {
           ambito?: string
+          categoria?: string | null
           contenido?: string
           created_at?: string
           created_by?: string | null
+          descripcion?: string | null
           estudio_id?: string | null
+          fuero?: string | null
           id?: string
           nombre?: string
+          orden?: number
           tipo?: string | null
           updated_at?: string
           variables?: string[] | null

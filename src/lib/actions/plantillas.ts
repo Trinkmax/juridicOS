@@ -33,13 +33,16 @@ export async function crearPlantilla(
   const parsed = plantillaSchema.safeParse(Object.fromEntries(formData));
   if (!parsed.success) return fromZod(parsed.error);
 
-  const { nombre, tipo, contenido } = parsed.data;
+  const { nombre, tipo, categoria, fuero, descripcion, contenido } = parsed.data;
 
   const { data, error } = await ctx.supabase
     .from("plantillas")
     .insert({
       nombre,
       tipo: tipo ?? null,
+      categoria: categoria ?? null,
+      fuero: fuero ?? null,
+      descripcion: descripcion ?? null,
       contenido,
       variables: extraerVariables(contenido),
       ambito: "estudio",
@@ -71,7 +74,7 @@ export async function actualizarPlantilla(
   const parsed = plantillaSchema.safeParse(Object.fromEntries(formData));
   if (!parsed.success) return fromZod(parsed.error);
 
-  const { nombre, tipo, contenido } = parsed.data;
+  const { nombre, tipo, categoria, fuero, descripcion, contenido } = parsed.data;
 
   // Solo plantillas del estudio (las globales tienen estudio_id null y son de solo lectura).
   const { error } = await ctx.supabase
@@ -79,6 +82,9 @@ export async function actualizarPlantilla(
     .update({
       nombre,
       tipo: tipo ?? null,
+      categoria: categoria ?? null,
+      fuero: fuero ?? null,
+      descripcion: descripcion ?? null,
       contenido,
       variables: extraerVariables(contenido),
     })

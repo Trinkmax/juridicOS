@@ -91,6 +91,14 @@ const styles = StyleSheet.create({
   parrafoVacio: {
     marginBottom: 9,
   },
+  // Títulos de sección forenses ("I. OBJETO.", "PETITUM.", "SERÁ JUSTICIA.-"):
+  // misma letra, en negrita y con aire, como en los escritos presentados.
+  tituloSeccion: {
+    fontFamily: "Times-Bold",
+    textAlign: "left",
+    marginTop: 7,
+    marginBottom: 9,
+  },
   // Firma
   firmaBloque: {
     marginTop: 48,
@@ -159,6 +167,19 @@ function hayMembrete(m: Membrete | null | undefined): m is Membrete {
  */
 function aParrafos(contenido: string): string[] {
   return contenido.replace(/\r\n/g, "\n").split("\n");
+}
+
+/**
+ * ¿La línea es un título de sección forense? Heurística conservadora: línea
+ * corta, íntegramente en mayúsculas (sin minúsculas), con al menos una letra.
+ * Cubre "I. OBJETO.", "II. HECHOS.", "1. DOCUMENTAL:", "PETITUM.",
+ * "SERÁ JUSTICIA.-". Solo cambia el estilo, jamás el texto.
+ */
+function esTituloSeccion(linea: string): boolean {
+  const t = linea.trim();
+  if (t.length < 3 || t.length > 100) return false;
+  if (!/[A-ZÁÉÍÓÚÜÑ]/.test(t)) return false;
+  return !/[a-záéíóúüñ]/.test(t);
 }
 
 export function DocumentoPDF({
@@ -231,7 +252,10 @@ export function DocumentoPDF({
             p.length === 0 ? (
               <View key={i} style={styles.parrafoVacio} />
             ) : (
-              <Text key={i} style={styles.parrafo}>
+              <Text
+                key={i}
+                style={esTituloSeccion(p) ? styles.tituloSeccion : styles.parrafo}
+              >
                 {p}
               </Text>
             ),

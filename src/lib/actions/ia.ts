@@ -43,14 +43,44 @@ const SIN_IA = {
     "La IA no está configurada. Pedile al administrador que cargue la API key de IA en Configuración.",
 };
 
-const SYSTEM_REDACCION = `Sos un asistente de redacción jurídica para un estudio de abogados de Córdoba, Argentina. Redactás escritos y documentos legales en ESPAÑOL rioplatense, con registro formal forense.
+const SYSTEM_REDACCION = `Sos un asistente de redacción jurídica para un estudio de abogados de Córdoba, Argentina (abogado litigante formado en la UNC). Redactás escritos judiciales y documentos legales en ESPAÑOL rioplatense, con registro formal forense, listos para revisar y presentar por el SAC.
 
-Reglas:
-- Usá la terminología y estructura procesal argentina (Córdoba).
-- NUNCA inventes hechos, fechas, montos, nombres ni datos que no estén en el contexto. Si falta un dato, dejá un marcador entre corchetes (p. ej. [FECHA], [MONTO], [DETALLAR HECHOS]).
-- No inventes jurisprudencia, números de fallos ni citas. Citá normas sólo si son pertinentes y de uso común.
-- El resultado es un BORRADOR para que el abogado revise y apruebe; no constituye asesoramiento jurídico definitivo.
-- Devolvé únicamente el texto del documento, sin comentarios ni explicaciones meta.`;
+ESTRUCTURA FORENSE (Córdoba). Cuando redactes un escrito judicial, seguí la estructura real de presentación:
+- Título del escrito en MAYÚSCULAS (p. ej. "PROMUEVE DEMANDA LABORAL", "CONTESTA DEMANDA", "SOLICITA PRÓRROGA").
+- Comparecencia: en demandas, los datos completos del compareciente (nombre, DNI, domicilio real, patrocinio o apoderamiento con M.P., domicilio procesal constituido y domicilio electrónico), cerrando con "comparezco ante V.S. y digo:". En escritos dentro de un expediente, la fórmula abreviada con la carátula y el tribunal.
+- Secciones con numeración romana y título en MAYÚSCULAS: "I. OBJETO.", "II. HECHOS.", y según el caso RUBROS RECLAMADOS, PRUEBA (con acápites: DOCUMENTAL, INFORMATIVA, CONFESIONAL, TESTIMONIAL, PERICIAL, EXHIBICIÓN), DERECHO, RESERVA DEL CASO FEDERAL, PETITUM.
+- En el OBJETO, la fórmula de estilo: "Que vengo por la presente a..." con el monto "o lo que en más o en menos resulte de la prueba a rendir", intereses y costas cuando corresponda.
+- PETITUM numerado ("1. Me tenga por presentado..."), cierre "Proveer de conformidad." y "SERÁ JUSTICIA.-".
+- Si el pedido NO es un escrito judicial (carta documento, telegrama, convenio, oficio), usá la estructura propia de ese género (intimación con plazo y apercibimiento; cláusulas numeradas; etc.).
+
+REGLAS (no negociables):
+- NUNCA inventes hechos, fechas, montos, nombres ni datos que no estén en el contexto. Si falta un dato, dejá el marcador [PENDIENTE: qué completar] (p. ej. [PENDIENTE: fecha de ingreso], [PENDIENTE: relatar los hechos]).
+- PROHIBIDO inventar jurisprudencia: nada de carátulas, números de sentencia ni fechas de fallos. Si el escrito amerita citas, dejá [PENDIENTE: citar jurisprudencia sobre ...].
+- Citá normas solo si son pertinentes y estás seguro (CCCN, LCT, CPCC Córdoba ley 8465, LPT ley 7987, Código Arancelario ley 9459). Ante duda: [PENDIENTE: verificar norma].
+- Si el texto trae variables {{asi}}, conservalas EXACTAMENTE igual: las completa el sistema.
+- Si trabajás sobre una plantilla o borrador con estructura de secciones, RESPETÁ esa estructura; mejorá adentro de ella.
+- El resultado es un BORRADOR para que el abogado revise, apruebe y firme; no constituye asesoramiento jurídico.
+- Devolvé únicamente el texto del documento, en texto plano (sin Markdown, sin #, sin **), sin comentarios meta.`;
+
+const SYSTEM_REVISION = `Sos un prosecretario letrado de un tribunal de Córdoba, Argentina, encargado de la revisión FORMAL de escritos antes de su presentación por el SAC. Analizás un escrito y devolvés un control estructurado. NO opinás sobre la estrategia del caso: revisás forma, completitud y riesgos.
+
+Revisá contra este checklist (adaptado al tipo de escrito; marcá "ok", "falta" o "revisar"):
+1. Comparecencia completa (compareciente identificado; patrocinio/apoderamiento con M.P. si corresponde).
+2. Domicilio procesal constituido y domicilio electrónico.
+3. Identificación de la causa (carátula y/o N° de expediente) cuando es un escrito dentro de un proceso.
+4. OBJETO claro y preciso (qué se pide).
+5. HECHOS relatados (si el tipo de escrito lo exige).
+6. DERECHO / fundamentación normativa.
+7. PRUEBA ofrecida correctamente (si corresponde a la etapa).
+8. PETITUM completo y congruente con el objeto.
+9. Cierre de estilo ("Proveer de conformidad." / "SERÁ JUSTICIA.-") en escritos judiciales.
+10. Sin restos de redacción: variables {{sin_completar}}, marcadores [PENDIENTE], datos faltantes.
+
+Además:
+- "citas_a_verificar": TODA cita normativa o jurisprudencial presente en el texto que el abogado deba verificar antes de presentar (las citas pueden ser erróneas o estar desactualizadas).
+- "datos_pendientes": lista concreta de variables {{...}} y marcadores [PENDIENTE] que quedan sin completar, más datos obviamente faltantes.
+- "apto_para_presentar": true solo si no hay items "falta" ni datos pendientes.
+- Sé concreto y accionable; español rioplatense. No inventes problemas que no surjan del texto.`;
 
 const SYSTEM_RESUMEN = `Sos un asistente que resume expedientes judiciales para abogados de Córdoba, Argentina, en ESPAÑOL. Producí un resumen claro y conciso (TL;DR) del estado de la causa: partes, objeto, etapa procesal, últimos movimientos, próximos vencimientos y qué resta hacer. No inventes información que no esté en el contexto. Usá viñetas cuando ayude a la claridad.`;
 
@@ -141,7 +171,7 @@ async function logIA(
 
 /* ── Redacción asistida ─────────────────────────────────────────────────── */
 export async function asistirRedaccion(input: {
-  modo: "generar" | "mejorar";
+  modo: "generar" | "mejorar" | "completar";
   instruccion: string;
   textoActual?: string;
   expedienteId?: string | null;
@@ -154,10 +184,20 @@ export async function asistirRedaccion(input: {
   const contexto = input.expedienteId
     ? await construirContexto(ctx.supabase, ctx.estudioId, input.expedienteId)
     : "";
-  const instruccion =
-    input.modo === "mejorar"
-      ? `Mejorá, corregí y completá el siguiente borrador según esta indicación: ${input.instruccion}\n\nBORRADOR ACTUAL:\n${input.textoActual ?? ""}`
-      : input.instruccion;
+
+  let instruccion: string;
+  switch (input.modo) {
+    case "mejorar":
+      instruccion = `Mejorá, corregí y completá el siguiente borrador según esta indicación: ${input.instruccion}\n\nBORRADOR ACTUAL:\n${input.textoActual ?? ""}`;
+      break;
+    case "completar":
+      // Rellena la plantilla con el contexto SIN tocar la estructura: solo
+      // marcadores [PENDIENTE] y huecos que el contexto realmente respalde.
+      instruccion = `El siguiente escrito es una plantilla/borrador con marcadores [PENDIENTE: ...] y posibles variables {{var}}. Completá ÚNICAMENTE los marcadores y huecos que puedas respaldar con el CONTEXTO DEL EXPEDIENTE provisto. Mantené la estructura, las secciones y las fórmulas de estilo EXACTAMENTE como están. Lo que el contexto no respalde, dejalo como marcador [PENDIENTE: ...] (no lo inventes). Conservá intactas las variables {{var}} que no puedas resolver con certeza.${input.instruccion ? `\n\nIndicaciones del abogado (hechos del caso que podés usar como fuente): ${input.instruccion}` : ""}\n\nESCRITO A COMPLETAR:\n${input.textoActual ?? ""}`;
+      break;
+    default:
+      instruccion = input.instruccion;
+  }
 
   try {
     const { texto, uso } = await redactar({
@@ -172,13 +212,67 @@ export async function asistirRedaccion(input: {
       ctx.supabase,
       ctx.estudioId,
       ctx.userId,
-      input.modo === "mejorar" ? "redaccion_mejorar" : "redaccion_generar",
+      `redaccion_${input.modo}`,
       cfg.modelo,
       uso,
     );
     return { ok: true, data: { texto } };
   } catch {
     return { ok: false, error: "No pudimos generar el texto. Revisá tu API key o probá nuevamente." };
+  }
+}
+
+/* ── Revisión formal del escrito (checklist estructurado) ───────────────── */
+const revisionSchema = z.object({
+  apto_para_presentar: z.boolean(),
+  resumen: z.string(),
+  checklist: z.array(
+    z.object({
+      requisito: z.string(),
+      estado: z.enum(["ok", "falta", "revisar", "no_aplica"]),
+      detalle: z.string(),
+    }),
+  ),
+  citas_a_verificar: z.array(z.string()),
+  datos_pendientes: z.array(z.string()),
+});
+
+export type RevisionEscrito = z.infer<typeof revisionSchema>;
+
+/**
+ * Control formal del escrito antes de presentar: checklist de requisitos,
+ * citas a verificar y datos pendientes. La IA asiste, el abogado decide.
+ */
+export async function revisarEscrito(input: {
+  texto: string;
+  expedienteId?: string | null;
+}): Promise<ActionResult<{ revision: RevisionEscrito }>> {
+  const ctx = await getActionContext();
+  if (!ctx) return { ok: false, error: "Tu sesión expiró." };
+  const cfg = await resolverIA(ctx.supabase, ctx.estudioId);
+  if (!cfg) return SIN_IA;
+  if (!input.texto || input.texto.trim().length < 40)
+    return { ok: false, error: "El escrito es muy corto para revisar." };
+
+  const contexto = input.expedienteId
+    ? await construirContexto(ctx.supabase, ctx.estudioId, input.expedienteId)
+    : "";
+
+  try {
+    const { data, uso } = await extraer({
+      apiKey: cfg.apiKey,
+      modelo: cfg.modelo,
+      system: contexto
+        ? `${SYSTEM_REVISION}\n\nCONTEXTO DEL EXPEDIENTE (para detectar incongruencias):\n${contexto}`
+        : SYSTEM_REVISION,
+      contenido: input.texto.slice(0, 60000),
+      schema: revisionSchema,
+      maxTokens: 3000,
+    });
+    await logIA(ctx.supabase, ctx.estudioId, ctx.userId, "redaccion_revision", cfg.modelo, uso);
+    return { ok: true, data: { revision: data } };
+  } catch {
+    return { ok: false, error: "No pudimos revisar el escrito. Probá nuevamente." };
   }
 }
 

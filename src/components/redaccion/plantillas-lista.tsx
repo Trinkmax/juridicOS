@@ -1,14 +1,30 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useMemo, useState, useTransition } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { FileText, Plus, MoreVertical, Pencil, Trash2, FileInput, Globe } from "lucide-react";
+import {
+  FileText,
+  Plus,
+  MoreVertical,
+  Pencil,
+  Trash2,
+  FileInput,
+  Globe,
+  Search,
+} from "lucide-react";
 import { eliminarPlantilla } from "@/lib/actions/plantillas";
 import type { Plantilla } from "@/lib/types/domain";
+import {
+  CATEGORIAS_PLANTILLA,
+  FUERO,
+  type Fuero,
+  type CategoriaPlantilla,
+} from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { EmptyState } from "@/components/ui/empty-state";
 import {
   DropdownMenu,
@@ -42,7 +58,35 @@ export function PlantillasLista({
   const router = useRouter();
   const [editar, setEditar] = useState<Plantilla | null>(null);
   const [aEliminar, setAEliminar] = useState<PlantillaItem | null>(null);
+  const [busqueda, setBusqueda] = useState("");
   const [pending, startTransition] = useTransition();
+
+  /** Filtro de texto + agrupación por categoría en el orden del vocabulario. */
+  const grupos = useMemo(() => {
+    const q = busqueda.trim().toLowerCase();
+    const visibles = q
+      ? plantillas.filter((p) =>
+          [p.nombre, p.descripcion ?? "", p.tipo ?? "", p.contenido]
+            .join("\n")
+            .toLowerCase()
+            .includes(q),
+        )
+      : plantillas;
+
+    const porCategoria = new Map<CategoriaPlantilla, PlantillaItem[]>();
+    for (const p of visibles) {
+      const cat = (p.categoria ?? "otro") as CategoriaPlantilla;
+      const lista = porCategoria.get(cat) ?? [];
+      lista.push(p);
+      porCategoria.set(cat, lista);
+    }
+    return CATEGORIAS_PLANTILLA.filter((c) => porCategoria.has(c.value)).map((c) => ({
+      categoria: c,
+      items: porCategoria.get(c.value)!,
+    }));
+  }, [plantillas, busqueda]);
+
+  const total = grupos.reduce((acc, g) => acc + g.items.length, 0);
 
   function confirmarEliminar() {
     if (!aEliminar) return;
@@ -60,108 +104,156 @@ export function PlantillasLista({
   }
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between gap-3">
+    <div className="space-y-5">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-sm text-muted-foreground">
-          Modelos reutilizables. Tocá una para cargarla en el editor.
+          Modelos con estructura forense de Córdoba. Tocá uno para cargarlo en el
+          editor.
         </p>
-        <PlantillaDialog
-          trigger={
-            <Button size="sm">
-              <Plus className="size-4" />
-              Nueva plantilla
-            </Button>
-          }
-        />
+        <div className="flex items-center gap-2">
+          <div className="relative">
+            <Search className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              value={busqueda}
+              onChange={(e) => setBusqueda(e.target.value)}
+              placeholder="Buscar plantilla…"
+              className="h-9 w-full pl-8 sm:w-56"
+              aria-label="Buscar plantilla"
+            />
+          </div>
+          <PlantillaDialog
+            trigger={
+              <Button size="sm" className="shrink-0">
+                <Plus className="size-4" />
+                Nueva plantilla
+              </Button>
+            }
+          />
+        </div>
       </div>
 
-      {plantillas.length === 0 ? (
-        <EmptyState
-          icon={FileText}
-          title="Todavía no hay plantillas"
-          description="Creá tu primer modelo de escrito para reutilizarlo en cada causa."
-          action={
-            <PlantillaDialog
-              trigger={
-                <Button size="sm">
-                  <Plus className="size-4" />
-                  Nueva plantilla
-                </Button>
-              }
-            />
-          }
-        />
+      {total === 0 ? (
+        busqueda ? (
+          <EmptyState
+            icon={Search}
+            title="Sin resultados"
+            description={`Ninguna plantilla coincide con “${busqueda}”.`}
+          />
+        ) : (
+          <EmptyState
+            icon={FileText}
+            title="Todavía no hay plantillas"
+            description="Creá tu primer modelo de escrito para reutilizarlo en cada causa."
+            action={
+              <PlantillaDialog
+                trigger={
+                  <Button size="sm">
+                    <Plus className="size-4" />
+                    Nueva plantilla
+                  </Button>
+                }
+              />
+            }
+          />
+        )
       ) : (
-        <Stagger className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-          {plantillas.map((p) => (
-            <StaggerItem key={p.id}>
-              <Card className="group flex h-full flex-col gap-3 p-4 transition-colors hover:border-foreground/20 hover:bg-accent/60">
-                <div className="flex items-start justify-between gap-2">
-                  <button
-                    type="button"
-                    onClick={() => onUsar(p)}
-                    className="flex-1 text-left"
-                  >
-                    <h3 className="line-clamp-1 text-sm font-semibold leading-tight group-hover:text-primary">
-                      {p.nombre}
-                    </h3>
-                  </button>
-                  {p.esGlobal ? (
-                    <Badge tone="muted">
-                      <Globe className="size-3" />
-                      Global
-                    </Badge>
-                  ) : (
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon-sm" aria-label="Acciones">
-                          <MoreVertical className="size-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem onSelect={() => onUsar(p)}>
-                          <FileInput className="size-4" />
-                          Usar en el editor
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onSelect={() => setEditar(p)}>
-                          <Pencil className="size-4" />
-                          Editar
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem
-                          className="text-destructive focus:bg-destructive-soft focus:text-destructive [&_svg]:text-destructive"
-                          onSelect={() => setAEliminar(p)}
+        <div className="space-y-7">
+          {grupos.map((g) => (
+            <section key={g.categoria.value} className="space-y-3">
+              <div className="flex items-baseline gap-2">
+                <h3 className="font-serif text-base font-semibold tracking-tight">
+                  {g.categoria.label}
+                </h3>
+                <span className="text-xs tabular-nums text-muted-foreground">
+                  {g.items.length}
+                </span>
+                {g.categoria.hint && (
+                  <span className="hidden truncate text-xs text-muted-foreground sm:inline">
+                    · {g.categoria.hint}
+                  </span>
+                )}
+              </div>
+
+              <Stagger className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                {g.items.map((p) => (
+                  <StaggerItem key={p.id}>
+                    <Card className="group flex h-full flex-col gap-3 p-4 transition-colors hover:border-foreground/20 hover:bg-accent/60">
+                      <div className="flex items-start justify-between gap-2">
+                        <button
+                          type="button"
+                          onClick={() => onUsar(p)}
+                          className="flex-1 text-left"
                         >
-                          <Trash2 className="size-4" />
-                          Eliminar
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  )}
-                </div>
+                          <h4 className="line-clamp-2 text-sm font-semibold leading-tight group-hover:text-primary">
+                            {p.nombre}
+                          </h4>
+                        </button>
+                        {p.esGlobal ? (
+                          <Badge tone="muted">
+                            <Globe className="size-3" />
+                            Global
+                          </Badge>
+                        ) : (
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" size="icon-sm" aria-label="Acciones">
+                                <MoreVertical className="size-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuItem onSelect={() => onUsar(p)}>
+                                <FileInput className="size-4" />
+                                Usar en el editor
+                              </DropdownMenuItem>
+                              <DropdownMenuItem onSelect={() => setEditar(p)}>
+                                <Pencil className="size-4" />
+                                Editar
+                              </DropdownMenuItem>
+                              <DropdownMenuSeparator />
+                              <DropdownMenuItem
+                                className="text-destructive focus:bg-destructive-soft focus:text-destructive [&_svg]:text-destructive"
+                                onSelect={() => setAEliminar(p)}
+                              >
+                                <Trash2 className="size-4" />
+                                Eliminar
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        )}
+                      </div>
 
-                <button
-                  type="button"
-                  onClick={() => onUsar(p)}
-                  className="flex-1 text-left"
-                >
-                  <p className="line-clamp-3 whitespace-pre-wrap text-xs leading-relaxed text-muted-foreground">
-                    {p.contenido.slice(0, 220) || "Plantilla sin contenido."}
-                  </p>
-                </button>
+                      <button
+                        type="button"
+                        onClick={() => onUsar(p)}
+                        className="flex-1 text-left"
+                      >
+                        <p className="line-clamp-3 text-xs leading-relaxed text-muted-foreground">
+                          {p.descripcion ||
+                            p.contenido.slice(0, 220) ||
+                            "Plantilla sin contenido."}
+                        </p>
+                      </button>
 
-                <div className="flex flex-wrap items-center gap-1.5">
-                  {p.tipo && <Badge tone="info">{p.tipo}</Badge>}
-                  {p.variables && p.variables.length > 0 && (
-                    <Badge tone="primary">
-                      {p.variables.length} {p.variables.length === 1 ? "variable" : "variables"}
-                    </Badge>
-                  )}
-                </div>
-              </Card>
-            </StaggerItem>
+                      <div className="flex flex-wrap items-center gap-1.5">
+                        {p.fuero && (
+                          <Badge tone={FUERO[p.fuero as Fuero]?.tone ?? "default"}>
+                            {FUERO[p.fuero as Fuero]?.label ?? p.fuero}
+                          </Badge>
+                        )}
+                        {p.variables && p.variables.length > 0 && (
+                          <Badge tone="primary">
+                            {p.variables.length}{" "}
+                            {p.variables.length === 1 ? "variable" : "variables"}
+                          </Badge>
+                        )}
+                      </div>
+                    </Card>
+                  </StaggerItem>
+                ))}
+              </Stagger>
+            </section>
           ))}
-        </Stagger>
+        </div>
       )}
 
       {/* Editor de plantilla del estudio */}

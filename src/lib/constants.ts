@@ -105,6 +105,29 @@ export const TIPOS_CLIENTE: Option<TipoCliente>[] = [
 ];
 export const TIPO_CLIENTE = mapBy(TIPOS_CLIENTE);
 
+/* ── Plantillas de redacción ────────────────────────────────────────── */
+export type CategoriaPlantilla =
+  | "demanda"
+  | "contestacion"
+  | "recurso"
+  | "escrito"
+  | "oficio"
+  | "comunicacion"
+  | "convenio"
+  | "otro";
+
+export const CATEGORIAS_PLANTILLA: Option<CategoriaPlantilla>[] = [
+  { value: "demanda", label: "Demandas", tone: "primary", hint: "Escritos de inicio con estructura completa: OBJETO → HECHOS → PRUEBA → DERECHO → PETITUM." },
+  { value: "contestacion", label: "Contestaciones", tone: "info", hint: "Responde demandas y traslados: negativas, hechos y prueba." },
+  { value: "recurso", label: "Recursos", tone: "warning", hint: "Reposición, apelación y demás vías impugnativas." },
+  { value: "escrito", label: "Escritos", tone: "default", hint: "Presentaciones dentro del expediente: prueba, prórrogas, cautelares." },
+  { value: "oficio", label: "Oficios", tone: "muted", hint: "Comunicaciones ordenadas por el tribunal a entidades." },
+  { value: "comunicacion", label: "CD y telegramas", tone: "info", hint: "Intimaciones extrajudiciales: cartas documento y TCL ley 23.789." },
+  { value: "convenio", label: "Convenios", tone: "muted", hint: "Acuerdos y convenios de honorarios (ley 9459)." },
+  { value: "otro", label: "Otros", tone: "default" },
+];
+export const CATEGORIA_PLANTILLA = mapBy(CATEGORIAS_PLANTILLA);
+
 /* ── Plazos ─────────────────────────────────────────────────────────── */
 export type ModalidadPlazo = "habiles" | "corridos" | "horas";
 export const MODALIDADES_PLAZO: Option<ModalidadPlazo>[] = [

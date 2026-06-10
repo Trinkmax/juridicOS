@@ -1,8 +1,14 @@
 import { FUERO, ESTADO_EXPEDIENTE, type Fuero, type EstadoExpediente } from "@/lib/constants";
-import type { ExpedienteContexto } from "./tipos";
+import type { ExpedienteContexto, Membrete } from "./tipos";
 
 /** Marcador que queda cuando una variable conocida no tiene dato real. */
 export const MARCADOR_PENDIENTE = "[PENDIENTE]";
+
+/** Fuentes de datos del merge: cualquiera puede faltar. */
+export type FuentesMerge = {
+  expediente?: ExpedienteContexto | null;
+  membrete?: Membrete | null;
+};
 
 function fechaHoyLarga(): string {
   // Fecha del runtime del cliente, en formato forense ("2 de junio de 2026").
@@ -32,18 +38,61 @@ function valoresExpediente(exp: ExpedienteContexto): Record<string, string> {
     etapa: exp.etapa ?? "",
     cliente_nombre: exp.cliente_nombre ?? "",
     cliente_documento: exp.cliente_documento ?? "",
-    fecha: fechaHoyLarga(),
+    cliente_domicilio: exp.cliente_domicilio ?? "",
+    contraparte_nombre: exp.contraparte_nombre ?? "",
+    contraparte_documento: exp.contraparte_documento ?? "",
+  };
+}
+
+/** Mapa variable → valor desde el membrete del estudio (letrado y domicilios). */
+function valoresMembrete(m: Membrete): Record<string, string> {
+  return {
+    abogado: m.abogado ?? "",
+    matricula: m.matricula ?? "",
+    estudio_nombre: m.estudio ?? "",
+    estudio_domicilio: m.domicilio ?? "",
+    domicilio_electronico: m.domicilioElectronico ?? "",
   };
 }
 
 /**
- * Reemplaza las variables {{var}} del texto por los datos del expediente.
+ * Variables que el sistema completa solo (expediente + estudio + fecha).
+ * Se usa para los hints de la UI; mantener en sincronía con los mapas de arriba.
+ */
+export const VARIABLES_AUTOMATICAS = [
+  "expediente_caratula",
+  "nro_sac",
+  "juzgado",
+  "secretaria",
+  "fuero",
+  "etapa",
+  "cliente_nombre",
+  "cliente_documento",
+  "cliente_domicilio",
+  "contraparte_nombre",
+  "contraparte_documento",
+  "abogado",
+  "matricula",
+  "estudio_nombre",
+  "estudio_domicilio",
+  "domicilio_electronico",
+  "fecha",
+] as const;
+
+/**
+ * Reemplaza las variables {{var}} del texto con los datos disponibles.
  * - Variables conocidas con dato → valor real.
  * - Variables conocidas sin dato → [PENDIENTE].
+ * - Variables de una fuente AUSENTE (p. ej. sin expediente elegido) → quedan
+ *   intactas, para poder completarlas en un merge posterior.
  * - Variables desconocidas → se dejan tal cual (el usuario las completa a mano).
  */
-export function aplicarMailMerge(texto: string, exp: ExpedienteContexto): string {
-  const valores = valoresExpediente(exp);
+export function aplicarMailMerge(texto: string, fuentes: FuentesMerge): string {
+  const valores: Record<string, string> = {
+    ...(fuentes.membrete ? valoresMembrete(fuentes.membrete) : {}),
+    ...(fuentes.expediente ? valoresExpediente(fuentes.expediente) : {}),
+    fecha: fechaHoyLarga(),
+  };
   return texto.replace(/\{\{\s*([\w.]+)\s*\}\}/g, (original, clave: string) => {
     if (!(clave in valores)) return original;
     const valor = valores[clave];

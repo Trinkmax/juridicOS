@@ -26,6 +26,17 @@ export type ExpedienteContexto = {
   etapa: string | null;
   cliente_nombre: string | null;
   cliente_documento: string | null;
+  cliente_domicilio: string | null;
+  /** Primera parte ajena (es_propio = false): la contraparte del pleito. */
+  contraparte_nombre: string | null;
+  contraparte_documento: string | null;
+};
+
+/** Fila de `partes` embebida en la consulta de expedientes (para la contraparte). */
+export type ParteJoin = {
+  nombre: string;
+  documento: string | null;
+  es_propio: boolean;
 };
 
 /**
