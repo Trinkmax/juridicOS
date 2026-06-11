@@ -15,7 +15,7 @@ import type { PlazoDetalle } from "@/lib/types/domain";
  */
 export function VencimientosList({ plazos }: { plazos: PlazoDetalle[] }) {
   return (
-    <Card className="h-full">
+    <Card>
       <CardHeader className="flex-row items-center justify-between gap-2 space-y-0">
         <CardTitle className="flex items-center gap-2">
           <CalendarClock className="size-4 text-primary" />
@@ -41,7 +41,7 @@ export function VencimientosList({ plazos }: { plazos: PlazoDetalle[] }) {
             className="py-10"
           />
         ) : (
-          <ul className="-mx-1 flex flex-col">
+          <ul className="flex max-h-80 flex-col overflow-y-auto overscroll-contain">
             {plazos.map((p) => {
               const dias = p.dias_restantes ?? null;
               return (

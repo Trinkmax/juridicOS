@@ -47,7 +47,7 @@ export function ExpedientesRecientes({
             className="py-8"
           />
         ) : (
-          <ul className="-mx-2 flex flex-col">
+          <ul className="flex max-h-80 flex-col overflow-y-auto overscroll-contain">
             {expedientes.map((e) => (
               <li key={e.id}>
                 <Link

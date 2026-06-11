@@ -249,22 +249,22 @@ export default async function DashboardPage() {
         ))}
       </Stagger>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <FadeIn delay={0.05} className="lg:col-span-2">
-          <VencimientosList plazos={plazos} />
-        </FadeIn>
+      {/* Hero a todo el ancho: próximos vencimientos (con scroll propio). */}
+      <FadeIn delay={0.05}>
+        <VencimientosList plazos={plazos} />
+      </FadeIn>
 
-        <div className="flex flex-col gap-6">
-          <FadeIn delay={0.1}>
-            <MiniCalendario items={mesItems} />
-          </FadeIn>
-          <FadeIn delay={0.15}>
-            <AgendaWidget audiencias={audiencias} />
-          </FadeIn>
-          <FadeIn delay={0.2}>
-            <ExpedientesRecientes expedientes={expedientes} />
-          </FadeIn>
-        </div>
+      {/* Tres columnas simétricas: calendario · agenda · expedientes. */}
+      <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-3">
+        <FadeIn delay={0.1}>
+          <MiniCalendario items={mesItems} />
+        </FadeIn>
+        <FadeIn delay={0.15}>
+          <AgendaWidget audiencias={audiencias} />
+        </FadeIn>
+        <FadeIn delay={0.2}>
+          <ExpedientesRecientes expedientes={expedientes} />
+        </FadeIn>
       </div>
 
       <FadeIn delay={0.25}>

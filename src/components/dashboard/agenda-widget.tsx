@@ -64,7 +64,7 @@ export function AgendaWidget({ audiencias }: { audiencias: AudienciaConExpedient
             className="py-8"
           />
         ) : (
-          <ul className="flex flex-col gap-2.5">
+          <ul className="flex max-h-80 flex-col gap-2.5 overflow-y-auto overscroll-contain pr-1">
             {audiencias.map((a) => {
               const remoto = a.modalidad === "virtual" || a.modalidad === "remota";
               const LugarIcon = remoto ? Video : MapPin;
