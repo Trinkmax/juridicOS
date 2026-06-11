@@ -70,3 +70,15 @@ export function capitalizar(s?: string | null) {
   if (!s) return "";
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
+
+/** "recién", "hace 5 min", "hace 2 h", "ayer", "hace 3 días", fecha corta. */
+export function tiempoRelativo(value?: string | Date | null): string {
+  if (!value) return "nunca";
+  const d = toDate(value);
+  const min = Math.floor((Date.now() - d.getTime()) / 60000);
+  if (min < 1) return "recién";
+  if (min < 60) return `hace ${min} min`;
+  const h = Math.floor(min / 60);
+  if (h < 24) return `hace ${h} h`;
+  return etiquetaRelativa(d).toLowerCase();
+}

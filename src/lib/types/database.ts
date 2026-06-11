@@ -202,6 +202,67 @@ export type Database = {
           },
         ]
       }
+      calendar_feeds: {
+        Row: {
+          activo: boolean
+          alcance: string
+          created_at: string
+          created_by: string | null
+          estudio_id: string
+          id: string
+          last_accessed_at: string | null
+          rotated_at: string | null
+          token: string
+          usuario_id: string
+        }
+        Insert: {
+          activo?: boolean
+          alcance?: string
+          created_at?: string
+          created_by?: string | null
+          estudio_id: string
+          id?: string
+          last_accessed_at?: string | null
+          rotated_at?: string | null
+          token: string
+          usuario_id: string
+        }
+        Update: {
+          activo?: boolean
+          alcance?: string
+          created_at?: string
+          created_by?: string | null
+          estudio_id?: string
+          id?: string
+          last_accessed_at?: string | null
+          rotated_at?: string | null
+          token?: string
+          usuario_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "calendar_feeds_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "usuarios"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "calendar_feeds_estudio_id_fkey"
+            columns: ["estudio_id"]
+            isOneToOne: false
+            referencedRelation: "estudios"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "calendar_feeds_usuario_id_fkey"
+            columns: ["usuario_id"]
+            isOneToOne: false
+            referencedRelation: "usuarios"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       calendario_judicial: {
         Row: {
           anio: number | null
@@ -1906,6 +1967,7 @@ export type Database = {
         Args: { _estudio: string; _key: string; _modelo?: string }
         Returns: undefined
       }
+      obtener_agenda_ics: { Args: { _token: string }; Returns: Json }
       obtener_api_key_ia: {
         Args: { _estudio: string }
         Returns: {

@@ -3,7 +3,13 @@ import { NextResponse, type NextRequest } from "next/server";
 import type { Database } from "@/lib/types/database";
 
 /** Public route prefixes that never require an authenticated session. */
-const PUBLIC_PREFIXES = ["/login", "/registro", "/auth", "/recuperar"];
+const PUBLIC_PREFIXES = [
+  "/login",
+  "/registro",
+  "/auth",
+  "/recuperar",
+  "/api/calendar", // feed ICS de suscripción (autenticado por token en la URL)
+];
 
 /**
  * Refresh the Supabase session on every request and gate the app.
