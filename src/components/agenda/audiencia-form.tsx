@@ -4,8 +4,9 @@ import * as React from "react";
 import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import { useRouter } from "next/navigation";
-import { crearAudiencia } from "@/lib/actions/audiencias";
+import { crearAudiencia, actualizarAudiencia } from "@/lib/actions/audiencias";
 import type { ActionResult } from "@/lib/actions/_base";
+import type { Audiencia } from "@/lib/types/domain";
 import { Field, FormError } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -29,12 +30,20 @@ const MODALIDADES_AUDIENCIA = [
   { value: "hibrida", label: "Híbrida" },
 ];
 
-function SubmitButton() {
+/** ISO (timestamptz) → valor para <input type="datetime-local"> en hora local. */
+function toDatetimeLocal(iso: string) {
+  const d = new Date(iso);
+  return new Date(d.getTime() - d.getTimezoneOffset() * 60_000)
+    .toISOString()
+    .slice(0, 16);
+}
+
+function SubmitButton({ editando }: { editando: boolean }) {
   const { pending } = useFormStatus();
   return (
     <Button type="submit" disabled={pending}>
       {pending && <Spinner />}
-      Agendar audiencia
+      {editando ? "Guardar cambios" : "Agendar audiencia"}
     </Button>
   );
 }
@@ -42,29 +51,36 @@ function SubmitButton() {
 export function AudienciaForm({
   expedientes,
   expedientePreseleccionado,
+  audiencia,
   onSuccess,
 }: {
   expedientes: ExpedienteLite[];
   expedientePreseleccionado?: string;
+  /** Si viene, el formulario edita esa audiencia en vez de crear una nueva. */
+  audiencia?: Audiencia;
   onSuccess?: () => void;
 }) {
   const router = useRouter();
-  const [state, action] = useActionState<ActionResult | null, FormData>(
-    crearAudiencia,
-    null,
+  const editando = Boolean(audiencia);
+  const accion = React.useMemo(
+    () => (audiencia ? actualizarAudiencia.bind(null, audiencia.id) : crearAudiencia),
+    [audiencia],
   );
+  const [state, action] = useActionState<ActionResult | null, FormData>(accion, null);
   const fieldErrors = state && !state.ok ? state.fieldErrors : undefined;
 
-  const [expedienteId, setExpedienteId] = React.useState(expedientePreseleccionado ?? "");
-  const [modalidad, setModalidad] = React.useState("presencial");
+  const [expedienteId, setExpedienteId] = React.useState(
+    audiencia?.expediente_id ?? expedientePreseleccionado ?? "",
+  );
+  const [modalidad, setModalidad] = React.useState(audiencia?.modalidad ?? "presencial");
 
   React.useEffect(() => {
     if (state?.ok) {
-      toast.success("Audiencia agendada.");
+      toast.success(editando ? "Audiencia actualizada." : "Audiencia agendada.");
       onSuccess?.();
       router.refresh();
     }
-  }, [state, onSuccess, router]);
+  }, [state, editando, onSuccess, router]);
 
   return (
     <form action={action} className="space-y-4">
@@ -72,7 +88,7 @@ export function AudienciaForm({
 
       <Field label="Expediente" required error={fieldErrors?.expediente_id}>
         <input type="hidden" name="expediente_id" value={expedienteId} />
-        <Select value={expedienteId} onValueChange={setExpedienteId}>
+        <Select value={expedienteId} onValueChange={setExpedienteId} disabled={editando}>
           <SelectTrigger>
             <SelectValue placeholder="Elegí el expediente" />
           </SelectTrigger>
@@ -87,15 +103,30 @@ export function AudienciaForm({
       </Field>
 
       <Field label="Título" required error={fieldErrors?.titulo}>
-        <Input name="titulo" placeholder="Ej: Audiencia preliminar" required />
+        <Input
+          name="titulo"
+          placeholder="Ej: Audiencia preliminar"
+          defaultValue={audiencia?.titulo ?? ""}
+          required
+        />
       </Field>
 
       <div className="grid grid-cols-2 gap-3">
         <Field label="Fecha y hora" required error={fieldErrors?.fecha_hora}>
-          <Input type="datetime-local" name="fecha_hora" required />
+          <Input
+            type="datetime-local"
+            name="fecha_hora"
+            defaultValue={audiencia ? toDatetimeLocal(audiencia.fecha_hora) : ""}
+            required
+          />
         </Field>
         <Field label="Duración (min)" error={fieldErrors?.duracion_min}>
-          <Input type="number" name="duracion_min" min={0} defaultValue={60} />
+          <Input
+            type="number"
+            name="duracion_min"
+            min={0}
+            defaultValue={audiencia?.duracion_min ?? 60}
+          />
         </Field>
       </div>
 
@@ -116,24 +147,28 @@ export function AudienciaForm({
           </Select>
         </Field>
         <Field label="Juzgado" error={fieldErrors?.juzgado}>
-          <Input name="juzgado" placeholder="Opcional" />
+          <Input name="juzgado" placeholder="Opcional" defaultValue={audiencia?.juzgado ?? ""} />
         </Field>
       </div>
 
       {modalidad === "presencial" || modalidad === "hibrida" ? (
         <Field label="Lugar" error={fieldErrors?.lugar}>
-          <Input name="lugar" placeholder="Dirección o sala" />
+          <Input name="lugar" placeholder="Dirección o sala" defaultValue={audiencia?.lugar ?? ""} />
         </Field>
       ) : null}
 
       {modalidad === "virtual" || modalidad === "hibrida" ? (
         <Field label="Enlace" error={fieldErrors?.enlace}>
-          <Input name="enlace" placeholder="https://…" />
+          <Input name="enlace" placeholder="https://…" defaultValue={audiencia?.enlace ?? ""} />
         </Field>
       ) : null}
 
       <Field label="Tipo" error={fieldErrors?.tipo} hint="Opcional.">
-        <Textarea name="tipo" placeholder="Notas o tipo de audiencia…" />
+        <Textarea
+          name="tipo"
+          placeholder="Notas o tipo de audiencia…"
+          defaultValue={audiencia?.tipo ?? ""}
+        />
       </Field>
 
       <DialogFooter>
@@ -142,7 +177,7 @@ export function AudienciaForm({
             Cancelar
           </Button>
         </DialogClose>
-        <SubmitButton />
+        <SubmitButton editando={editando} />
       </DialogFooter>
     </form>
   );

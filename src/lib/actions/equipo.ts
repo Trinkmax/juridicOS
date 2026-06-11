@@ -215,10 +215,19 @@ export async function agregarMiembro(
 
   const usuarioId = created.user.id;
 
-  // El trigger handle_new_user ya creó la fila en `usuarios`; completamos extras.
-  if (matricula || titulo) {
-    await admin.from("usuarios").update({ matricula, titulo }).eq("id", usuarioId);
-  }
+  // El trigger handle_new_user crea la fila en `usuarios` desde la metadata,
+  // pero no setea nombre_completo. Reforzamos el perfil completo (idempotente)
+  // para que el miembro se muestre bien en producción.
+  const { error: perfilError } = await admin.from("usuarios").upsert({
+    id: usuarioId,
+    email,
+    nombre,
+    apellido,
+    nombre_completo: `${nombre} ${apellido}`.trim(),
+    matricula,
+    titulo,
+  });
+  if (perfilError) return { ok: false, error: perfilError.message };
 
   return vincularMiembro(admin, ctx.estudioId, usuarioId, rol, ctx.userId);
 }

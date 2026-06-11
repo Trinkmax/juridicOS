@@ -94,3 +94,21 @@ export async function cancelarAudiencia(id: string): Promise<ActionResult> {
   revalidarAgenda();
   return { ok: true };
 }
+
+/** Elimina una audiencia por id. */
+export async function eliminarAudiencia(id: string): Promise<ActionResult> {
+  const ctx = await getActionContext();
+  if (!ctx) return NO_ESTUDIO;
+
+  const { data, error } = await ctx.supabase
+    .from("audiencias")
+    .delete()
+    .eq("id", id)
+    .eq("estudio_id", ctx.estudioId)
+    .select("expediente_id")
+    .maybeSingle();
+  if (error) return { ok: false, error: error.message };
+
+  revalidarAgenda(data?.expediente_id ?? undefined);
+  return { ok: true, message: "Audiencia eliminada." };
+}

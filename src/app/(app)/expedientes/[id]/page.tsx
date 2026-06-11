@@ -220,7 +220,11 @@ export default async function ExpedienteDetallePage({
           </TabsContent>
 
           <TabsContent value="audiencias">
-            <AudienciasPanel expedienteId={expediente.id} audiencias={audiencias} />
+            <AudienciasPanel
+              expedienteId={expediente.id}
+              caratula={expediente.caratula}
+              audiencias={audiencias}
+            />
           </TabsContent>
 
           <TabsContent value="asistente">

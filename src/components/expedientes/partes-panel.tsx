@@ -5,8 +5,17 @@ import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { UserPlus, Loader2, Trash2, Users, ShieldCheck } from "lucide-react";
-import { crearParte, eliminarParte } from "@/lib/actions/partes";
+import {
+  UserPlus,
+  Loader2,
+  Trash2,
+  Users,
+  ShieldCheck,
+  MoreHorizontal,
+  Pencil,
+  Save,
+} from "lucide-react";
+import { crearParte, actualizarParte, eliminarParte } from "@/lib/actions/partes";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -17,7 +26,6 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
-  DialogTrigger,
   DialogContent,
   DialogHeader,
   DialogFooter,
@@ -25,6 +33,12 @@ import {
   DialogDescription,
   DialogClose,
 } from "@/components/ui/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
 import {
   Select,
   SelectTrigger,
@@ -37,48 +51,59 @@ import { cn } from "@/lib/utils";
 import type { ActionResult } from "@/lib/actions/_base";
 import type { Parte } from "@/lib/types/domain";
 
-function GuardarParte() {
+function Guardar({ editando }: { editando: boolean }) {
   const { pending } = useFormStatus();
   return (
     <Button type="submit" disabled={pending}>
-      {pending ? <Loader2 className="animate-spin" /> : <UserPlus />}
-      Agregar parte
+      {pending ? <Loader2 className="animate-spin" /> : editando ? <Save /> : <UserPlus />}
+      {editando ? "Guardar cambios" : "Agregar parte"}
     </Button>
   );
 }
 
-function AgregarParteDialog({ expedienteId }: { expedienteId: string }) {
+/** Diálogo de parte: crea (sin `parte`) o edita (con `parte`). */
+function ParteFormDialog({
+  expedienteId,
+  parte,
+  open,
+  onOpenChange,
+}: {
+  expedienteId: string;
+  parte?: Parte;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}) {
   const router = useRouter();
-  const [open, setOpen] = React.useState(false);
-  const [state, action] = useActionState<ActionResult | null, FormData>(crearParte, null);
-  const [tipo, setTipo] = React.useState<string>("actor");
-  const [esPropio, setEsPropio] = React.useState(false);
+  const editando = Boolean(parte);
+  const accion = React.useMemo(
+    () => (parte ? actualizarParte.bind(null, parte.id) : crearParte),
+    [parte],
+  );
+  const [state, action] = useActionState<ActionResult | null, FormData>(accion, null);
+  const [tipo, setTipo] = React.useState<string>(parte?.tipo ?? "actor");
+  const [esPropio, setEsPropio] = React.useState(parte?.es_propio ?? false);
 
   React.useEffect(() => {
     if (state?.ok) {
-      toast.success("Parte agregada.");
-      setOpen(false);
-      setTipo("actor");
-      setEsPropio(false);
+      toast.success(state.message ?? (editando ? "Parte actualizada." : "Parte agregada."));
+      onOpenChange(false);
       router.refresh();
     }
-  }, [state, router]);
+  }, [state, editando, onOpenChange, router]);
 
   const fieldError = (campo: string) =>
     state && !state.ok ? state.fieldErrors?.[campo] : undefined;
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button size="sm">
-          <UserPlus />
-          Agregar parte
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="max-h-[90vh] overflow-y-auto">
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent>
         <DialogHeader>
-          <DialogTitle>Agregar parte</DialogTitle>
-          <DialogDescription>Sumá un litigante o interviniente a la causa.</DialogDescription>
+          <DialogTitle>{editando ? "Editar parte" : "Agregar parte"}</DialogTitle>
+          <DialogDescription>
+            {editando
+              ? "Actualizá los datos de la parte."
+              : "Sumá un litigante o interviniente a la causa."}
+          </DialogDescription>
         </DialogHeader>
 
         <form action={action} className="space-y-4">
@@ -88,7 +113,13 @@ function AgregarParteDialog({ expedienteId }: { expedienteId: string }) {
           <FormError>{state && !state.ok ? state.error : undefined}</FormError>
 
           <Field label="Nombre" htmlFor="parte-nombre" required error={fieldError("nombre")}>
-            <Input id="parte-nombre" name="nombre" placeholder="Nombre y apellido / Razón social" autoFocus />
+            <Input
+              id="parte-nombre"
+              name="nombre"
+              placeholder="Nombre y apellido / Razón social"
+              defaultValue={parte?.nombre ?? ""}
+              autoFocus
+            />
           </Field>
 
           <div className="grid gap-4 sm:grid-cols-2">
@@ -108,7 +139,12 @@ function AgregarParteDialog({ expedienteId }: { expedienteId: string }) {
             </Field>
 
             <Field label="Documento" htmlFor="parte-documento" error={fieldError("documento")}>
-              <Input id="parte-documento" name="documento" placeholder="DNI / CUIT" />
+              <Input
+                id="parte-documento"
+                name="documento"
+                placeholder="DNI / CUIT"
+                defaultValue={parte?.documento ?? ""}
+              />
             </Field>
 
             <Field
@@ -117,15 +153,30 @@ function AgregarParteDialog({ expedienteId }: { expedienteId: string }) {
               error={fieldError("domicilio")}
               hint="Se usa para completar escritos."
             >
-              <Input id="parte-domicilio" name="domicilio" placeholder="Calle, número, localidad" />
+              <Input
+                id="parte-domicilio"
+                name="domicilio"
+                placeholder="Calle, número, localidad"
+                defaultValue={parte?.domicilio ?? ""}
+              />
             </Field>
 
             <Field label="Carácter" htmlFor="parte-caracter" error={fieldError("caracter")}>
-              <Input id="parte-caracter" name="caracter" placeholder="Ej.: por derecho propio" />
+              <Input
+                id="parte-caracter"
+                name="caracter"
+                placeholder="Ej.: por derecho propio"
+                defaultValue={parte?.caracter ?? ""}
+              />
             </Field>
 
             <Field label="Patrocinante" htmlFor="parte-patrocinante" error={fieldError("patrocinante")}>
-              <Input id="parte-patrocinante" name="patrocinante" placeholder="Letrado/a" />
+              <Input
+                id="parte-patrocinante"
+                name="patrocinante"
+                placeholder="Letrado/a"
+                defaultValue={parte?.patrocinante ?? ""}
+              />
             </Field>
           </div>
 
@@ -143,7 +194,7 @@ function AgregarParteDialog({ expedienteId }: { expedienteId: string }) {
                 Cancelar
               </Button>
             </DialogClose>
-            <GuardarParte />
+            <Guardar editando={editando} />
           </DialogFooter>
         </form>
       </DialogContent>
@@ -151,17 +202,18 @@ function AgregarParteDialog({ expedienteId }: { expedienteId: string }) {
   );
 }
 
-function ParteItem({ parte }: { parte: Parte }) {
+function ParteItem({ parte, expedienteId }: { parte: Parte; expedienteId: string }) {
   const router = useRouter();
   const [pending, startTransition] = React.useTransition();
-  const [open, setOpen] = React.useState(false);
+  const [editOpen, setEditOpen] = React.useState(false);
+  const [borrarOpen, setBorrarOpen] = React.useState(false);
 
   function onEliminar() {
     startTransition(async () => {
       const res = await eliminarParte(parte.id);
       if (res.ok) {
         toast.success("Parte eliminada.");
-        setOpen(false);
+        setBorrarOpen(false);
         router.refresh();
       } else {
         toast.error(res.error);
@@ -190,17 +242,41 @@ function ParteItem({ parte }: { parte: Parte }) {
         </div>
       </div>
 
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
             size="icon-sm"
-            className="text-muted-foreground hover:text-destructive"
-            aria-label={`Eliminar a ${parte.nombre}`}
+            className="shrink-0 text-muted-foreground"
+            aria-label={`Acciones de ${parte.nombre}`}
           >
-            <Trash2 />
+            <MoreHorizontal className="size-4" />
           </Button>
-        </DialogTrigger>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem onSelect={() => setEditOpen(true)}>
+            <Pencil className="size-4" />
+            Editar
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onSelect={() => setBorrarOpen(true)}
+            className="text-destructive focus:bg-destructive-soft focus:text-destructive [&_svg]:text-destructive"
+          >
+            <Trash2 className="size-4" />
+            Eliminar
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      <ParteFormDialog
+        key={parte.id}
+        expedienteId={expedienteId}
+        parte={parte}
+        open={editOpen}
+        onOpenChange={setEditOpen}
+      />
+
+      <Dialog open={borrarOpen} onOpenChange={setBorrarOpen}>
         <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle>Eliminar parte</DialogTitle>
@@ -233,6 +309,8 @@ export function PartesPanel({
   expedienteId: string;
   partes: Parte[];
 }) {
+  const [nuevoOpen, setNuevoOpen] = React.useState(false);
+
   return (
     <Card className={cn("p-5 space-y-4")}>
       <div className="flex items-center justify-between gap-2">
@@ -242,7 +320,10 @@ export function PartesPanel({
             {partes.length} {partes.length === 1 ? "parte" : "partes"} en la causa
           </p>
         </div>
-        <AgregarParteDialog expedienteId={expedienteId} />
+        <Button size="sm" onClick={() => setNuevoOpen(true)}>
+          <UserPlus />
+          Agregar parte
+        </Button>
       </div>
 
       {partes.length === 0 ? (
@@ -250,15 +331,26 @@ export function PartesPanel({
           icon={Users}
           title="Sin partes cargadas"
           description="Agregá a los actores, demandados y demás intervinientes de la causa."
-          action={<AgregarParteDialog expedienteId={expedienteId} />}
+          action={
+            <Button onClick={() => setNuevoOpen(true)}>
+              <UserPlus />
+              Agregar parte
+            </Button>
+          }
         />
       ) : (
         <div className="space-y-2.5">
           {partes.map((p) => (
-            <ParteItem key={p.id} parte={p} />
+            <ParteItem key={p.id} parte={p} expedienteId={expedienteId} />
           ))}
         </div>
       )}
+
+      <ParteFormDialog
+        expedienteId={expedienteId}
+        open={nuevoOpen}
+        onOpenChange={setNuevoOpen}
+      />
     </Card>
   );
 }
