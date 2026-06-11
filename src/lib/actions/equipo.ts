@@ -4,9 +4,15 @@ import { revalidatePath } from "next/cache";
 import {
   getActionContext,
   NO_ESTUDIO,
+  fromZod,
   type ActionResult,
 } from "@/lib/actions/_base";
-import { rolEstudioSchema } from "@/lib/validations/equipo";
+import { createAdminClient } from "@/lib/supabase/admin";
+import {
+  rolEstudioSchema,
+  crearMiembroSchema,
+  agregarExistenteSchema,
+} from "@/lib/validations/equipo";
 import type { Database } from "@/lib/types/database";
 
 type RolEstudio = Database["public"]["Enums"]["rol_estudio"];
@@ -103,4 +109,116 @@ export async function activarMiembro(
 
   revalidatePath("/equipo");
   return { ok: true, message: activo ? "Miembro activado" : "Miembro desactivado" };
+}
+
+/** Vincula un usuario al estudio (o reactiva su membresía). Usa admin client. */
+async function vincularMiembro(
+  admin: ReturnType<typeof createAdminClient>,
+  estudioId: string,
+  usuarioId: string,
+  rol: RolEstudio,
+  invitadoPor: string,
+): Promise<ActionResult> {
+  const { data: existente } = await admin
+    .from("miembros_estudio")
+    .select("id, activo")
+    .eq("estudio_id", estudioId)
+    .eq("usuario_id", usuarioId)
+    .maybeSingle();
+
+  if (existente) {
+    if (existente.activo) {
+      return { ok: false, error: "Esa persona ya forma parte del estudio." };
+    }
+    const { error } = await admin
+      .from("miembros_estudio")
+      .update({ activo: true, rol })
+      .eq("id", existente.id);
+    if (error) return { ok: false, error: error.message };
+    revalidatePath("/equipo");
+    return { ok: true, message: "Reactivamos a esa persona en el estudio." };
+  }
+
+  const { error } = await admin.from("miembros_estudio").insert({
+    estudio_id: estudioId,
+    usuario_id: usuarioId,
+    rol,
+    invitado_por: invitadoPor,
+    activo: true,
+  });
+  if (error) return { ok: false, error: error.message };
+
+  revalidatePath("/equipo");
+  return { ok: true, message: "Miembro agregado al estudio." };
+}
+
+/**
+ * Agrega un miembro al estudio. Reservado al owner (la RLS también lo exige).
+ * Dos modos:
+ *  - "nuevo": le crea la cuenta (email + contraseña) con el admin client.
+ *  - "existente": lo busca por email (si ya tiene cuenta) y lo vincula.
+ */
+export async function agregarMiembro(
+  _prev: ActionResult | null,
+  formData: FormData,
+): Promise<ActionResult> {
+  const ctx = await getActionContext();
+  if (!ctx) return NO_ESTUDIO;
+  if (ctx.rol !== "owner") return SOLO_OWNER;
+
+  const admin = createAdminClient();
+  const modo = formData.get("modo") === "existente" ? "existente" : "nuevo";
+
+  if (modo === "existente") {
+    const parsed = agregarExistenteSchema.safeParse(Object.fromEntries(formData));
+    if (!parsed.success) return fromZod(parsed.error);
+    const { email, rol } = parsed.data;
+
+    const { data: usuario, error } = await admin
+      .from("usuarios")
+      .select("id")
+      .eq("email", email)
+      .maybeSingle();
+    if (error) return { ok: false, error: error.message };
+    if (!usuario) {
+      return {
+        ok: false,
+        error: "No existe una cuenta con ese email.",
+        fieldErrors: { email: ["Usá “Crear usuario nuevo” para darle de alta."] },
+      };
+    }
+    return vincularMiembro(admin, ctx.estudioId, usuario.id, rol, ctx.userId);
+  }
+
+  const parsed = crearMiembroSchema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) return fromZod(parsed.error);
+  const { nombre, apellido, email, password, rol, matricula, titulo } = parsed.data;
+
+  const { data: created, error: createError } = await admin.auth.admin.createUser({
+    email,
+    password,
+    email_confirm: true,
+    user_metadata: { nombre, apellido },
+  });
+
+  if (createError || !created?.user) {
+    const m = (createError?.message ?? "").toLowerCase();
+    if (m.includes("already") || m.includes("registered") || m.includes("exist")) {
+      return {
+        ok: false,
+        error: "Ya existe una cuenta con ese email.",
+        fieldErrors: { email: ["Usá “Ya tiene cuenta” para sumarla."] },
+      };
+    }
+    return { ok: false, error: createError?.message ?? "No pudimos crear el usuario." };
+  }
+
+  const usuarioId = created.user.id;
+
+  // El trigger handle_new_user ya creó la fila en `usuarios`; completamos extras.
+  if (matricula || titulo) {
+    await admin.from("usuarios").update({ matricula, titulo }).eq("id", usuarioId);
+  }
+
+  return vincularMiembro(admin, ctx.estudioId, usuarioId, rol, ctx.userId);
 }

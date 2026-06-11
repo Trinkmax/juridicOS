@@ -106,22 +106,21 @@ export function TareaCard({
     <div
       ref={setNodeRef}
       style={style}
+      {...listeners}
+      {...attributes}
       className={cn(
         "group rounded-lg border border-border bg-card p-3 transition-colors",
         "hover:border-foreground/20 hover:bg-accent/60",
-        dragging && "cursor-grabbing shadow-lg",
+        dragging ? "cursor-grabbing shadow-lg" : "cursor-grab",
       )}
     >
       <div className="flex items-start gap-2">
-        <button
-          type="button"
-          aria-label="Arrastrar tarea"
-          className="mt-0.5 cursor-grab text-muted-foreground/40 opacity-100 transition-opacity touch-none sm:opacity-0 sm:group-hover:opacity-100"
-          {...listeners}
-          {...attributes}
+        <span
+          aria-hidden
+          className="mt-0.5 text-muted-foreground/40 opacity-100 transition-opacity sm:opacity-0 sm:group-hover:opacity-100"
         >
           <GripVertical className="size-4" />
-        </button>
+        </span>
 
         <div className="min-w-0 flex-1">
           <p className="text-sm font-medium leading-snug text-foreground">
@@ -158,6 +157,7 @@ export function TareaCard({
           {tarea.expediente?.caratula && (
             <Link
               href={`/expedientes/${tarea.expediente_id}`}
+              onPointerDown={(e) => e.stopPropagation()}
               className="mt-2 inline-flex max-w-full items-center gap-1 text-xs text-primary hover:underline"
             >
               <FileText className="size-3 shrink-0" />
@@ -174,6 +174,7 @@ export function TareaCard({
                 size="icon-sm"
                 className="opacity-100 transition-opacity data-[state=open]:opacity-100 sm:opacity-0 sm:group-hover:opacity-100"
                 aria-label="Acciones de la tarea"
+                onPointerDown={(e) => e.stopPropagation()}
               >
                 <MoreHorizontal className="size-4" />
               </Button>

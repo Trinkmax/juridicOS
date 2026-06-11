@@ -1,8 +1,8 @@
-import { UsersRound, Scale, ShieldCheck, Mail } from "lucide-react";
+import { UsersRound, Scale, ShieldCheck } from "lucide-react";
 import { requireEstudio } from "@/lib/session";
 import { createClient } from "@/lib/supabase/server";
 import { PageHeader } from "@/components/ui/page-header";
-import { Badge } from "@/components/ui/badge";
+import { AgregarMiembroDialog } from "@/components/equipo/agregar-miembro-dialog";
 import { StatCard } from "@/components/dashboard/stat-card";
 import { FadeIn, Stagger, StaggerItem } from "@/components/motion/fade-in";
 import {
@@ -109,12 +109,7 @@ export default async function EquipoPage() {
         description="Quiénes integran el estudio, sus roles y su carga de trabajo actual."
         icon={<UsersRound className="size-5" />}
       >
-        {esOwner && (
-          <Badge tone="muted" className="hidden sm:inline-flex">
-            <Mail className="size-3" />
-            Invitaciones por email: próximamente
-          </Badge>
-        )}
+        {esOwner && <AgregarMiembroDialog />}
       </PageHeader>
 
       <FadeIn>
@@ -140,15 +135,6 @@ export default async function EquipoPage() {
           />
         </div>
       </FadeIn>
-
-      {esOwner && (
-        <div className="sm:hidden">
-          <Badge tone="muted">
-            <Mail className="size-3" />
-            Invitaciones por email: próximamente
-          </Badge>
-        </div>
-      )}
 
       <Stagger className="grid gap-3">
         {items.map((m) => (

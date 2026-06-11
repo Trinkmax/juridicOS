@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState, useTransition } from "react";
+import { createPortal } from "react-dom";
 import {
   DndContext,
   DragOverlay,
@@ -210,17 +211,23 @@ export function KanbanBoard({
         ))}
       </div>
 
-      <DragOverlay>
-        {activeTarea ? (
-          <TareaCard
-            tarea={activeTarea}
-            miembros={miembros}
-            expedientes={expedientes}
-            onMover={aplicarMovimiento}
-            dragging
-          />
-        ) : null}
-      </DragOverlay>
+      {typeof document !== "undefined" &&
+        createPortal(
+          <DragOverlay
+            dropAnimation={{ duration: 200, easing: "cubic-bezier(0.22, 1, 0.36, 1)" }}
+          >
+            {activeTarea ? (
+              <TareaCard
+                tarea={activeTarea}
+                miembros={miembros}
+                expedientes={expedientes}
+                onMover={aplicarMovimiento}
+                dragging
+              />
+            ) : null}
+          </DragOverlay>,
+          document.body,
+        )}
     </DndContext>
   );
 }
