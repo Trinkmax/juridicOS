@@ -61,7 +61,7 @@ export function MiniCalendario({ items }: { items: AgendaItem[] }) {
   const agendaHref = `/agenda?mes=${mes}&vista=mes`;
 
   return (
-    <Card>
+    <Card className="flex h-[22rem] flex-col">
       <CardHeader className="flex-row items-center justify-between gap-2 space-y-0">
         <CardTitle className="flex items-center gap-2 capitalize">
           <CalendarDays className="size-4 text-primary" />
@@ -71,7 +71,7 @@ export function MiniCalendario({ items }: { items: AgendaItem[] }) {
           <Link href={agendaHref}>Ver agenda</Link>
         </Button>
       </CardHeader>
-      <CardContent>
+      <CardContent className="flex min-h-0 flex-1 flex-col justify-center">
         <div className="grid grid-cols-7 gap-0.5">
           {WEEKDAYS.map((w, i) => (
             <div

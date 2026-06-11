@@ -43,7 +43,7 @@ export function AgendaWidget({ audiencias }: { audiencias: AudienciaConExpedient
   const [sel, setSel] = React.useState<AgendaItem | null>(null);
 
   return (
-    <Card>
+    <Card className="flex h-[22rem] flex-col">
       <CardHeader className="flex-row items-center justify-between gap-2 space-y-0">
         <CardTitle className="flex items-center gap-2">
           <CalendarDays className="size-4 text-primary" />
@@ -55,7 +55,7 @@ export function AgendaWidget({ audiencias }: { audiencias: AudienciaConExpedient
           </Button>
         )}
       </CardHeader>
-      <CardContent>
+      <CardContent className="flex min-h-0 flex-1 flex-col">
         {audiencias.length === 0 ? (
           <EmptyState
             icon={CalendarDays}
@@ -64,7 +64,7 @@ export function AgendaWidget({ audiencias }: { audiencias: AudienciaConExpedient
             className="py-8"
           />
         ) : (
-          <ul className="flex max-h-80 flex-col gap-2.5 overflow-y-auto overscroll-contain pr-1">
+          <ul className="flex min-h-0 flex-1 flex-col gap-2.5 overflow-y-auto overscroll-contain pr-1">
             {audiencias.map((a) => {
               const remoto = a.modalidad === "virtual" || a.modalidad === "remota";
               const LugarIcon = remoto ? Video : MapPin;

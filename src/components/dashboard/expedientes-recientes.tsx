@@ -21,7 +21,7 @@ export function ExpedientesRecientes({
   expedientes: ExpedienteConCliente[];
 }) {
   return (
-    <Card>
+    <Card className="flex h-[22rem] flex-col">
       <CardHeader className="flex-row items-center justify-between gap-2 space-y-0">
         <CardTitle className="flex items-center gap-2">
           <FolderOpen className="size-4 text-primary" />
@@ -33,7 +33,7 @@ export function ExpedientesRecientes({
           </Button>
         )}
       </CardHeader>
-      <CardContent>
+      <CardContent className="flex min-h-0 flex-1 flex-col">
         {expedientes.length === 0 ? (
           <EmptyState
             icon={FolderOpen}
@@ -47,7 +47,7 @@ export function ExpedientesRecientes({
             className="py-8"
           />
         ) : (
-          <ul className="flex max-h-80 flex-col overflow-y-auto overscroll-contain">
+          <ul className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain">
             {expedientes.map((e) => (
               <li key={e.id}>
                 <Link
