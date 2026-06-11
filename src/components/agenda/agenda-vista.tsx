@@ -2,16 +2,36 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import { parseISO, format, addMonths } from "date-fns";
 import { es } from "date-fns/locale";
-import { ChevronLeft, ChevronRight, CalendarDays, List } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  CalendarDays,
+  List,
+  Trash2,
+  Loader2,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { capitalizar } from "@/lib/format";
 import { AgendaCalendario } from "./agenda-calendario";
 import { AgendaLista } from "./agenda-lista";
 import { EventoDetalle } from "./evento-detalle";
+import { AudienciaForm } from "./audiencia-form";
+import { EditarPlazoForm } from "@/components/plazos/editar-plazo-dialog";
+import { eliminarAudiencia } from "@/lib/actions/audiencias";
+import { eliminarPlazo } from "@/lib/actions/plazos";
 import { type AgendaItem } from "./tipos";
 
 const LEYENDA: { dot: string; label: string }[] = [
@@ -19,6 +39,8 @@ const LEYENDA: { dot: string; label: string }[] = [
   { dot: "bg-destructive", label: "Plazo" },
   { dot: "bg-primary", label: "Evento" },
 ];
+
+type Modo = "detalle" | "editar" | "borrar";
 
 export function AgendaVista({
   items,
@@ -29,7 +51,10 @@ export function AgendaVista({
   mes: string; // YYYY-MM
   vista: "mes" | "lista";
 }) {
+  const router = useRouter();
   const [sel, setSel] = React.useState<AgendaItem | null>(null);
+  const [modo, setModo] = React.useState<Modo>("detalle");
+  const [pending, startTransition] = React.useTransition();
 
   const anchor = parseISO(`${mes}-01`);
   const prevMes = format(addMonths(anchor, -1), "yyyy-MM");
@@ -37,6 +62,65 @@ export function AgendaVista({
   const hoyMes = format(new Date(), "yyyy-MM");
   const titulo = capitalizar(format(anchor, "MMMM yyyy", { locale: es }));
   const href = (m: string, v: string) => `/agenda?mes=${m}&vista=${v}`;
+
+  function abrir(item: AgendaItem) {
+    setSel(item);
+    setModo("detalle");
+  }
+  function cerrar() {
+    setSel(null);
+    setModo("detalle");
+  }
+
+  const editable = sel?.tipo === "audiencia" || sel?.tipo === "plazo";
+
+  const audienciaEdit =
+    sel && sel.tipo === "audiencia"
+      ? {
+          id: sel.id,
+          expediente_id: sel.expedienteId ?? "",
+          titulo: sel.titulo,
+          tipo: sel.audienciaTipo ?? null,
+          fecha_hora: sel.hora ?? sel.fecha,
+          duracion_min: sel.duracionMin ?? null,
+          modalidad: sel.modalidadAud ?? "presencial",
+          lugar: sel.lugar ?? null,
+          juzgado: sel.juzgado ?? null,
+          enlace: sel.enlace ?? null,
+        }
+      : null;
+
+  const plazoEdit =
+    sel && sel.tipo === "plazo"
+      ? {
+          id: sel.id,
+          expediente_id: sel.expedienteId ?? null,
+          acto_procesal: sel.titulo,
+          dias: sel.dias ?? null,
+          modalidad: sel.modalidadPlazo ?? null,
+          fecha_inicio_computo: sel.fechaInicioComputo ?? null,
+          jurisdiccion: sel.jurisdiccion ?? null,
+          prioridad: sel.prioridad ?? null,
+          descripcion: sel.descripcion ?? null,
+        }
+      : null;
+
+  function onEliminar() {
+    if (!sel) return;
+    startTransition(async () => {
+      const res =
+        sel.tipo === "audiencia"
+          ? await eliminarAudiencia(sel.id)
+          : await eliminarPlazo(sel.id);
+      if (res.ok) {
+        toast.success(sel.tipo === "audiencia" ? "Audiencia eliminada." : "Plazo eliminado.");
+        cerrar();
+        router.refresh();
+      } else {
+        toast.error(res.error || "No se pudo eliminar.");
+      }
+    });
+  }
 
   return (
     <div className="space-y-4">
@@ -113,14 +197,86 @@ export function AgendaVista({
       </div>
 
       {vista === "mes" ? (
-        <AgendaCalendario items={items} mes={mes} onSelect={setSel} />
+        <AgendaCalendario items={items} mes={mes} onSelect={abrir} />
       ) : (
-        <AgendaLista items={items} onSelect={setSel} />
+        <AgendaLista items={items} onSelect={abrir} />
       )}
 
-      <Dialog open={!!sel} onOpenChange={(o) => { if (!o) setSel(null); }}>
-        <DialogContent className="max-h-[90vh] max-w-lg overflow-y-auto">
-          {sel && <EventoDetalle item={sel} />}
+      <Dialog
+        open={!!sel}
+        onOpenChange={(o) => {
+          if (!o) cerrar();
+        }}
+      >
+        <DialogContent className="sm:max-w-lg">
+          {sel && modo === "detalle" && (
+            <EventoDetalle
+              item={sel}
+              onEditar={editable ? () => setModo("editar") : undefined}
+              onEliminar={editable ? () => setModo("borrar") : undefined}
+            />
+          )}
+
+          {sel && modo === "editar" && audienciaEdit && (
+            <>
+              <DialogHeader>
+                <DialogTitle>Editar audiencia</DialogTitle>
+                <DialogDescription>Actualizá los datos de la audiencia.</DialogDescription>
+              </DialogHeader>
+              <AudienciaForm
+                audiencia={audienciaEdit}
+                expedientes={[
+                  { id: sel.expedienteId ?? "", caratula: sel.expediente ?? "Expediente" },
+                ]}
+                onSuccess={cerrar}
+              />
+            </>
+          )}
+
+          {sel && modo === "editar" && plazoEdit && (
+            <>
+              <DialogHeader>
+                <DialogTitle>Editar plazo</DialogTitle>
+                <DialogDescription>
+                  Si cambiás los días o la fecha de cómputo, el vencimiento se recalcula solo.
+                </DialogDescription>
+              </DialogHeader>
+              <EditarPlazoForm plazo={plazoEdit} onSuccess={cerrar} />
+            </>
+          )}
+
+          {sel && modo === "borrar" && (
+            <>
+              <DialogHeader>
+                <DialogTitle>
+                  {sel.tipo === "audiencia" ? "Eliminar audiencia" : "Eliminar plazo"}
+                </DialogTitle>
+                <DialogDescription>
+                  ¿Eliminar <span className="font-medium text-foreground">{sel.titulo}</span>? Esta
+                  acción no se puede deshacer.
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  onClick={() => setModo("detalle")}
+                  disabled={pending}
+                >
+                  Cancelar
+                </Button>
+                <Button
+                  type="button"
+                  variant="destructive"
+                  onClick={onEliminar}
+                  disabled={pending}
+                >
+                  {pending ? <Loader2 className="animate-spin" /> : <Trash2 />}
+                  Eliminar
+                </Button>
+              </DialogFooter>
+            </>
+          )}
         </DialogContent>
       </Dialog>
     </div>

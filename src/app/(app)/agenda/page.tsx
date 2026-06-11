@@ -58,7 +58,7 @@ export default async function AgendaPage({
       supabase
         .from("audiencias")
         .select(
-          "id, titulo, fecha_hora, duracion_min, modalidad, lugar, juzgado, enlace, expediente_id, expedientes(caratula)",
+          "id, titulo, tipo, fecha_hora, duracion_min, modalidad, lugar, juzgado, enlace, expediente_id, expedientes(caratula)",
         )
         .eq("estudio_id", activeEstudio.id)
         .eq("estado", "programada")
@@ -103,6 +103,7 @@ export default async function AgendaPage({
       expedienteId: a.expediente_id,
       expediente: exp?.caratula ?? null,
       modalidadAud: a.modalidad,
+      audienciaTipo: a.tipo,
       lugar: a.lugar,
       juzgado: a.juzgado,
       enlace: a.enlace,
@@ -123,6 +124,9 @@ export default async function AgendaPage({
       prioridad: p.prioridad,
       modalidadPlazo: p.modalidad,
       fuero: p.fuero,
+      dias: p.dias,
+      fechaInicioComputo: p.fecha_inicio_computo,
+      jurisdiccion: p.jurisdiccion,
     });
   }
 

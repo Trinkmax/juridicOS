@@ -6,7 +6,6 @@ import { useFormStatus } from "react-dom";
 import { useRouter } from "next/navigation";
 import { crearAudiencia, actualizarAudiencia } from "@/lib/actions/audiencias";
 import type { ActionResult } from "@/lib/actions/_base";
-import type { Audiencia } from "@/lib/types/domain";
 import { Field, FormError } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -23,6 +22,20 @@ import { DialogFooter, DialogClose } from "@/components/ui/dialog";
 import { toast } from "sonner";
 
 type ExpedienteLite = { id: string; caratula: string };
+
+/** Subconjunto de Audiencia que precarga el form (lo cumple la fila completa y el ítem de agenda). */
+type AudienciaEditable = {
+  id: string;
+  expediente_id: string;
+  titulo: string;
+  tipo: string | null;
+  fecha_hora: string;
+  duracion_min: number | null;
+  modalidad: string;
+  lugar: string | null;
+  juzgado: string | null;
+  enlace: string | null;
+};
 
 const MODALIDADES_AUDIENCIA = [
   { value: "presencial", label: "Presencial" },
@@ -57,7 +70,7 @@ export function AudienciaForm({
   expedientes: ExpedienteLite[];
   expedientePreseleccionado?: string;
   /** Si viene, el formulario edita esa audiencia en vez de crear una nueva. */
-  audiencia?: Audiencia;
+  audiencia?: AudienciaEditable;
   onSuccess?: () => void;
 }) {
   const router = useRouter();

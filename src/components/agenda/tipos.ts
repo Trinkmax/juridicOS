@@ -14,6 +14,7 @@ export type AgendaItem = {
   expediente?: string | null;
   // Audiencia
   modalidadAud?: string | null;
+  audienciaTipo?: string | null;
   lugar?: string | null;
   juzgado?: string | null;
   enlace?: string | null;
@@ -27,6 +28,9 @@ export type AgendaItem = {
   prioridad?: string | null;
   modalidadPlazo?: string | null;
   fuero?: string | null;
+  dias?: number | null;
+  fechaInicioComputo?: string | null;
+  jurisdiccion?: string | null;
 };
 
 export const TIPO_LABEL: Record<AgendaTipo, string> = {

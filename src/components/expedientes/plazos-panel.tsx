@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { EmptyState } from "@/components/ui/empty-state";
 import { PlazoUrgenciaBadge, plazoTono } from "@/components/shared/plazo-badge";
+import { PlazoAcciones } from "@/components/plazos/plazo-acciones";
 import { formatFecha, capitalizar } from "@/lib/format";
 import { MODALIDAD_PLAZO, TONE_BORDER } from "@/lib/constants";
 import { cn } from "@/lib/utils";
@@ -81,17 +82,20 @@ export function PlazosPanel({
                     <p className="text-xs text-muted-foreground line-clamp-2">{p.descripcion}</p>
                   )}
                 </div>
-                <div className="flex shrink-0 flex-col items-end gap-1.5">
-                  <PlazoUrgenciaBadge
-                    diasRestantes={p.dias_restantes}
-                    estado={estado}
-                    fechaVencimiento={p.fecha_vencimiento}
-                  />
-                  {modalidad && (
-                    <Badge tone="muted" className="text-[0.7rem]">
-                      {modalidad.label}
-                    </Badge>
-                  )}
+                <div className="flex shrink-0 items-start gap-2">
+                  <div className="flex flex-col items-end gap-1.5">
+                    <PlazoUrgenciaBadge
+                      diasRestantes={p.dias_restantes}
+                      estado={estado}
+                      fechaVencimiento={p.fecha_vencimiento}
+                    />
+                    {modalidad && (
+                      <Badge tone="muted" className="text-[0.7rem]">
+                        {modalidad.label}
+                      </Badge>
+                    )}
+                  </div>
+                  <PlazoAcciones plazo={p} />
                 </div>
               </div>
             );

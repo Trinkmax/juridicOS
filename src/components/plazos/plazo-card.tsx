@@ -77,7 +77,7 @@ export function PlazoCard({
           {quickAction && estado === "pendiente" && plazo.id && (
             <CumplirRapido id={plazo.id} />
           )}
-          {plazo.id && <PlazoAcciones id={plazo.id} estado={estado} />}
+          {plazo.id && <PlazoAcciones plazo={plazo} />}
         </div>
       </div>
     </Card>

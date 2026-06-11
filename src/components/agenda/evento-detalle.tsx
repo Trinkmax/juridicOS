@@ -13,6 +13,8 @@ import {
   ArrowRight,
   Scale,
   AlignLeft,
+  Pencil,
+  Trash2,
   type LucideIcon,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -72,10 +74,20 @@ function Row({
   );
 }
 
-export function EventoDetalle({ item }: { item: AgendaItem }) {
+export function EventoDetalle({
+  item,
+  onEditar,
+  onEliminar,
+}: {
+  item: AgendaItem;
+  /** Si se pasan, muestran acciones de editar/eliminar (audiencias y plazos). */
+  onEditar?: () => void;
+  onEliminar?: () => void;
+}) {
   const TipoIcon = TIPO_ICON[item.tipo];
   const esPlazo = item.tipo === "plazo";
   const esAudiencia = item.tipo === "audiencia";
+  const puedeAccion = esAudiencia || esPlazo;
   const prioridad = opt(PRIORIDAD, item.prioridad);
   const fuero = opt(FUERO, item.fuero);
   const modalidadPlazo = opt(MODALIDAD_PLAZO, item.modalidadPlazo);
@@ -158,6 +170,23 @@ export function EventoDetalle({ item }: { item: AgendaItem }) {
           <Button variant="ghost" type="button">Cerrar</Button>
         </DialogClose>
         <div className="flex flex-wrap gap-2">
+          {onEliminar && puedeAccion && (
+            <Button
+              variant="ghost"
+              type="button"
+              onClick={onEliminar}
+              className="text-destructive hover:bg-destructive-soft hover:text-destructive"
+            >
+              <Trash2 className="size-4" />
+              Eliminar
+            </Button>
+          )}
+          {onEditar && puedeAccion && (
+            <Button variant="outline" type="button" onClick={onEditar}>
+              <Pencil className="size-4" />
+              Editar
+            </Button>
+          )}
           {esAudiencia && item.enlace && (
             <Button asChild variant="outline">
               <a href={item.enlace} target="_blank" rel="noreferrer">
