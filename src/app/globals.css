@@ -306,6 +306,10 @@
     -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
     mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
   }
+  .mask-fade-y {
+    -webkit-mask-image: linear-gradient(to bottom, transparent, black 6%, black 94%, transparent);
+    mask-image: linear-gradient(to bottom, transparent, black 6%, black 94%, transparent);
+  }
   /* Glass sobrio — sin saturación, para barras/headers flotantes. */
   .glass {
     background-color: color-mix(in oklch, var(--color-card) 85%, transparent);
