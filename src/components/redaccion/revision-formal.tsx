@@ -26,7 +26,7 @@ import {
 } from "@/components/ui/dialog";
 
 const ESTADO_UI = {
-  ok: { icon: CircleCheck, clase: "text-success", label: "OK" },
+  ok: { icon: CircleCheck, clase: "text-foreground/55", label: "OK" },
   falta: { icon: CircleAlert, clase: "text-destructive", label: "Falta" },
   revisar: { icon: CircleHelp, clase: "text-warning", label: "Revisar" },
   no_aplica: { icon: CircleMinus, clase: "text-muted-foreground", label: "No aplica" },
@@ -109,9 +109,9 @@ export function RevisionFormal({
           </div>
         ) : revision ? (
           <ScrollArea className="-mx-1 max-h-[58dvh] px-1">
-            <div className="space-y-4 pb-1">
-              <div className="flex items-start gap-3 rounded-lg border border-border bg-muted/40 p-3">
-                <Badge tone={revision.apto_para_presentar ? "success" : "warning"}>
+            <div className="space-y-5 pb-1">
+              <div className="flex items-start gap-3 rounded-lg border border-border bg-muted/40 p-4">
+                <Badge tone={revision.apto_para_presentar ? "muted" : "warning"}>
                   {revision.apto_para_presentar ? "Sin observaciones de forma" : "Con observaciones"}
                 </Badge>
                 <p className="flex-1 text-sm leading-relaxed">{revision.resumen}</p>
@@ -138,9 +138,10 @@ export function RevisionFormal({
               </ul>
 
               {revision.datos_pendientes.length > 0 && (
-                <div className="space-y-1.5">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                    Datos pendientes ({revision.datos_pendientes.length})
+                <div className="space-y-2">
+                  <p className="text-sm font-medium text-muted-foreground">
+                    Datos pendientes{" "}
+                    <span className="text-data">({revision.datos_pendientes.length})</span>
                   </p>
                   <ul className="space-y-1">
                     {revision.datos_pendientes.map((d, i) => (
@@ -154,8 +155,8 @@ export function RevisionFormal({
               )}
 
               {revision.citas_a_verificar.length > 0 && (
-                <div className="space-y-1.5">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                <div className="space-y-2">
+                  <p className="text-sm font-medium text-muted-foreground">
                     Citas a verificar por el letrado
                   </p>
                   <ul className="space-y-1">
@@ -169,7 +170,7 @@ export function RevisionFormal({
                 </div>
               )}
 
-              <div className="flex items-start gap-2 rounded-lg bg-muted/60 p-3 text-xs text-muted-foreground">
+              <div className="flex items-start gap-2.5 rounded-lg bg-muted/60 p-3.5 text-xs leading-relaxed text-muted-foreground">
                 <Info className="mt-0.5 size-3.5 shrink-0" />
                 <p>
                   La revisión es asistencia de IA, no dictamen: el control final y la

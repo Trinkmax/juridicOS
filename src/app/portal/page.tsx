@@ -21,13 +21,16 @@ export default async function PortalHomePage() {
   const nombre = ctx.profile?.nombre?.trim();
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-10">
       <FadeIn>
-        <header className="space-y-1.5">
-          <h1 className="font-display text-2xl font-semibold tracking-tight">
+        <header className="space-y-2">
+          <p className="text-sm font-medium text-muted-foreground">
+            Portal de clientes
+          </p>
+          <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-[2rem]">
             {nombre ? `Hola, ${nombre}` : "Hola"}
           </h1>
-          <p className="text-muted-foreground">
+          <p className="max-w-prose text-muted-foreground">
             {causas.length > 0
               ? "Acá podés seguir el estado de tus causas, ver audiencias y novedades."
               : "Este es tu espacio para seguir tus causas con tu estudio."}
@@ -44,13 +47,21 @@ export default async function PortalHomePage() {
           />
         </FadeIn>
       ) : (
-        <Stagger className="grid gap-3 sm:grid-cols-2">
-          {causas.map((causa) => (
-            <StaggerItem key={causa.id}>
-              <CausaCard causa={causa} />
-            </StaggerItem>
-          ))}
-        </Stagger>
+        <section className="space-y-4">
+          <div className="flex items-baseline justify-between gap-3">
+            <h2 className="font-display text-base font-semibold">Tus causas</h2>
+            <span className="text-data text-sm tabular-nums text-muted-foreground">
+              {causas.length}
+            </span>
+          </div>
+          <Stagger className="grid gap-4 sm:grid-cols-2">
+            {causas.map((causa) => (
+              <StaggerItem key={causa.id}>
+                <CausaCard causa={causa} />
+              </StaggerItem>
+            ))}
+          </Stagger>
+        </section>
       )}
     </div>
   );

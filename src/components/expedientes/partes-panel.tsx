@@ -235,7 +235,11 @@ function ParteItem({ parte, expedienteId }: { parte: Parte; expedienteId: string
           )}
         </div>
         <div className="flex flex-wrap gap-x-4 gap-y-0.5 text-xs text-muted-foreground">
-          {parte.documento && <span>Doc.: {parte.documento}</span>}
+          {parte.documento && (
+            <span>
+              Doc.: <span className="text-data">{parte.documento}</span>
+            </span>
+          )}
           {parte.domicilio && <span>Domicilio: {parte.domicilio}</span>}
           {parte.caracter && <span>Carácter: {parte.caracter}</span>}
           {parte.patrocinante && <span>Patrocina: {parte.patrocinante}</span>}
@@ -312,9 +316,9 @@ export function PartesPanel({
   const [nuevoOpen, setNuevoOpen] = React.useState(false);
 
   return (
-    <Card className={cn("p-5 space-y-4")}>
-      <div className="flex items-center justify-between gap-2">
-        <div>
+    <Card className={cn("p-6 space-y-5 shadow-xs")}>
+      <div className="flex items-center justify-between gap-3">
+        <div className="space-y-0.5">
           <h3 className="font-display text-base font-semibold">Partes</h3>
           <p className="text-sm text-muted-foreground">
             {partes.length} {partes.length === 1 ? "parte" : "partes"} en la causa

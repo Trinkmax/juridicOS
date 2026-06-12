@@ -46,18 +46,19 @@ const BUCKETS: Bucket[] = [
   {
     id: "adelante",
     titulo: "Más adelante",
-    tono: "success",
+    // Tinta neutra: el verde se reserva para nada decorativo (principio 4).
+    tono: "muted",
     match: (d) => d > 7,
   },
 ];
 
-/** Acento (barra superior) por tono del bucket. */
+/** Acento (barra vertical) por tono del bucket. El color saturado solo marca urgencia. */
 const TONE_ACCENT: Record<Tone, string> = {
   default: "bg-border",
   primary: "bg-primary",
-  muted: "bg-muted-foreground/40",
+  muted: "bg-muted-foreground/35",
   info: "bg-info",
-  success: "bg-success",
+  success: "bg-foreground/30",
   warning: "bg-warning",
   destructive: "bg-destructive",
 };
@@ -68,7 +69,7 @@ const TONE_BADGE: Record<Tone, Tone> = {
   primary: "primary",
   muted: "muted",
   info: "info",
-  success: "success",
+  success: "muted",
   warning: "warning",
   destructive: "destructive",
 };
@@ -119,23 +120,21 @@ export function PlazosTablero({ plazos }: { plazos: PlazoDetalle[] }) {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-10">
       {secciones.map((seccion) => (
-        <section key={seccion.id} aria-label={seccion.titulo} className="space-y-3">
-          <div className="flex items-center gap-3">
+        <section key={seccion.id} aria-label={seccion.titulo} className="space-y-3.5">
+          <div className="flex items-center gap-2.5">
             <span
               aria-hidden
-              className={`h-5 w-1 shrink-0 rounded-full ${TONE_ACCENT[seccion.tono]}`}
+              className={`h-4 w-1 shrink-0 rounded-full ${TONE_ACCENT[seccion.tono]}`}
             />
-            <h2 className="font-display text-base font-semibold tracking-tight">
-              {seccion.titulo}
-            </h2>
+            <h2 className="font-display text-base font-semibold">{seccion.titulo}</h2>
             <Badge tone={TONE_BADGE[seccion.tono]} className="text-data">
               {seccion.plazos.length}
             </Badge>
           </div>
 
-          <Stagger className="space-y-3">
+          <Stagger className="space-y-2.5">
             {seccion.plazos.map((p) => (
               <StaggerItem key={p.id}>
                 <PlazoCard plazo={p} quickAction />

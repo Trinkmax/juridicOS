@@ -64,11 +64,11 @@ function ModoBtn({
       className={cn(
         "flex items-center justify-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors",
         activo
-          ? "bg-card text-foreground shadow-xs"
-          : "text-muted-foreground hover:text-foreground",
+          ? "border border-border bg-card text-foreground shadow-xs"
+          : "border border-transparent text-muted-foreground hover:text-foreground",
       )}
     >
-      <Icon className="size-4" />
+      <Icon className="size-4 shrink-0" />
       {label}
     </button>
   );
@@ -111,7 +111,7 @@ export function AgregarMiembroDialog() {
           </DialogDescription>
         </DialogHeader>
 
-        <div className="grid grid-cols-2 gap-1 rounded-lg bg-muted p-1">
+        <div className="grid grid-cols-2 gap-1 rounded-lg border border-border bg-muted/60 p-1">
           <ModoBtn
             activo={modo === "nuevo"}
             onClick={() => setModo("nuevo")}
@@ -126,12 +126,12 @@ export function AgregarMiembroDialog() {
           />
         </div>
 
-        <form action={action} className="space-y-4">
+        <form action={action} className="space-y-5">
           <input type="hidden" name="modo" value={modo} />
           <FormError>{state && !state.ok ? state.error : undefined}</FormError>
 
           {modo === "nuevo" && (
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid gap-5 sm:grid-cols-2">
               <Field label="Nombre" htmlFor="m-nombre" required error={fieldError("nombre")}>
                 <Input id="m-nombre" name="nombre" autoComplete="off" />
               </Field>
@@ -202,7 +202,7 @@ export function AgregarMiembroDialog() {
           </Field>
 
           {modo === "nuevo" && (
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid gap-5 sm:grid-cols-2">
               <Field label="Matrícula" htmlFor="m-matricula" error={fieldError("matricula")}>
                 <Input id="m-matricula" name="matricula" placeholder="Opcional" />
               </Field>

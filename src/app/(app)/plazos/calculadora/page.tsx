@@ -33,7 +33,7 @@ export default async function CalculadoraPage({
   ]);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <PageHeader
         title="Calculadora de plazos"
         description="Computá vencimientos en días hábiles judiciales de Córdoba, al instante."

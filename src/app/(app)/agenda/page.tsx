@@ -149,7 +149,7 @@ export default async function AgendaPage({
   const expedientesLite = expedientes ?? [];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <PageHeader
         title="Agenda"
         description="Audiencias, plazos y eventos del estudio en un solo calendario."

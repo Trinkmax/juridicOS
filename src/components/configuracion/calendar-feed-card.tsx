@@ -71,8 +71,8 @@ export function CalendarFeedCard({
   /* ─────────────────────────── Sin feed: CTA ─────────────────────────── */
   if (!feed) {
     return (
-      <div className="space-y-4">
-        <p className="text-sm text-muted-foreground">
+      <div className="space-y-5">
+        <p className="text-sm leading-relaxed text-muted-foreground">
           Generá un enlace personal y suscribí tu agenda —{" "}
           <span className="text-foreground">plazos, audiencias y eventos</span> — en
           Apple Calendar, Google Calendar u Outlook. Es de solo lectura y se
@@ -94,7 +94,7 @@ export function CalendarFeedCard({
   const masked = `${baseUrl}/api/calendar/${"•".repeat(14)}`;
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
       <div className="flex flex-wrap items-center gap-2">
         <Badge tone="muted">Solo lectura</Badge>
         <span className="text-xs text-muted-foreground">
@@ -103,8 +103,8 @@ export function CalendarFeedCard({
       </div>
 
       {/* Alcance del enlace */}
-      <div className="space-y-2">
-        <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+      <div className="space-y-2.5">
+        <p className="text-sm font-medium text-muted-foreground">
           Qué incluye tu enlace
         </p>
         <div className="flex gap-2">
@@ -132,7 +132,7 @@ export function CalendarFeedCard({
             readOnly
             value={masked}
             aria-label="Enlace de suscripción al calendario"
-            className="font-mono text-xs text-muted-foreground"
+            className="text-data font-mono text-xs text-muted-foreground"
             onFocusCapture={(e) => e.currentTarget.blur()}
           />
           <CopyButton value={httpsUrl} />
@@ -179,14 +179,14 @@ export function CalendarFeedCard({
       </details>
 
       {/* Aviso de privacidad */}
-      <p className="flex items-start gap-2 text-xs text-muted-foreground">
+      <p className="flex items-start gap-2 text-xs leading-relaxed text-muted-foreground">
         <ShieldAlert className="mt-0.5 size-3.5 shrink-0" />
         Cualquier persona con este enlace puede ver tu agenda. No lo compartas; si se
         filtra, regeneralo.
       </p>
 
       {/* Pie: estado + acciones */}
-      <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border pt-4">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border pt-5">
         <span className="text-xs text-muted-foreground">
           Último acceso de un calendario:{" "}
           <span className="text-foreground">{tiempoRelativo(feed.lastAccessedAt)}</span>
@@ -265,7 +265,7 @@ function CopyButton({ value }: { value: string }) {
         }
       }}
     >
-      {copied ? <Check className="size-4 text-success" /> : <Copy className="size-4" />}
+      {copied ? <Check className="size-4 text-foreground" /> : <Copy className="size-4" />}
     </Button>
   );
 }

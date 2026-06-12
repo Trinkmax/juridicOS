@@ -81,7 +81,12 @@ export function ExpedienteForm({
           </Field>
 
           <Field label="Número SAC" htmlFor="nro_sac" error={fieldError("nro_sac")}>
-            <Input id="nro_sac" name="nro_sac" placeholder="Ej.: 1234567" className="font-mono" />
+            <Input
+              id="nro_sac"
+              name="nro_sac"
+              placeholder="Ej.: 1234567"
+              className="font-mono text-data"
+            />
           </Field>
 
           <Field label="Materia" htmlFor="materia" error={fieldError("materia")}>
@@ -237,6 +242,7 @@ export function ExpedienteForm({
               min={0}
               step="0.01"
               placeholder="0"
+              className="text-data"
             />
           </Field>
 

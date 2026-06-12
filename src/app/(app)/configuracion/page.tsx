@@ -26,11 +26,11 @@ export const metadata = { title: "Configuración" };
 
 const PLAN_LABEL: Record<string, string> = { basico: "Básico", pro: "Pro", premium: "Premium" };
 
-function Dato({ label, value }: { label: string; value: string }) {
+function Dato({ label, value, data }: { label: string; value: string; data?: boolean }) {
   return (
-    <div>
-      <p className="text-xs text-muted-foreground">{label}</p>
-      <p className="font-medium">{value}</p>
+    <div className="space-y-1">
+      <p className="text-xs font-medium text-muted-foreground">{label}</p>
+      <p className={data ? "text-data font-medium" : "font-medium"}>{value}</p>
     </div>
   );
 }
@@ -85,7 +85,7 @@ export default async function ConfiguracionPage() {
   };
 
   return (
-    <div className="mx-auto max-w-3xl space-y-6">
+    <div className="mx-auto max-w-3xl space-y-8">
       <PageHeader
         title="Configuración"
         description="Datos del estudio e integraciones."
@@ -97,12 +97,12 @@ export default async function ConfiguracionPage() {
           <CardTitle>Estudio</CardTitle>
           <CardDescription>Información general del estudio.</CardDescription>
         </CardHeader>
-        <CardContent className="grid gap-4 text-sm sm:grid-cols-2">
+        <CardContent className="grid gap-5 text-sm sm:grid-cols-2">
           <Dato label="Nombre" value={activeEstudio.nombre} />
-          <Dato label="CUIT" value={activeEstudio.cuit ?? "—"} />
+          <Dato label="CUIT" value={activeEstudio.cuit ?? "—"} data />
           <Dato label="Localidad" value={activeEstudio.localidad ?? "—"} />
           <Dato label="Plan" value={PLAN_LABEL[activeEstudio.plan] ?? activeEstudio.plan} />
-          <Dato label="Valor del jus" value={formatMoney(activeEstudio.valor_jus)} />
+          <Dato label="Valor del jus" value={formatMoney(activeEstudio.valor_jus)} data />
         </CardContent>
       </Card>
 

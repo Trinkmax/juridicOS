@@ -61,7 +61,7 @@ export function MiniCalendario({ items }: { items: AgendaItem[] }) {
   const agendaHref = `/agenda?mes=${mes}&vista=mes`;
 
   return (
-    <Card className="flex h-[22rem] flex-col">
+    <Card className="flex h-[22rem] flex-col shadow-xs">
       <CardHeader className="flex-row items-center justify-between gap-2 space-y-0">
         <CardTitle className="flex items-center gap-2 capitalize">
           <CalendarDays className="size-4 text-primary" />
@@ -76,7 +76,7 @@ export function MiniCalendario({ items }: { items: AgendaItem[] }) {
           {WEEKDAYS.map((w, i) => (
             <div
               key={`${w}-${i}`}
-              className="pb-1 text-center text-[0.625rem] font-semibold uppercase tracking-wide text-muted-foreground"
+              className="pb-1.5 text-center text-xs font-medium text-muted-foreground"
               aria-hidden
             >
               {w}
@@ -95,7 +95,7 @@ export function MiniCalendario({ items }: { items: AgendaItem[] }) {
               <>
                 <span
                   className={cn(
-                    "flex size-6 items-center justify-center rounded-md text-xs font-medium tabular-nums",
+                    "flex size-6 items-center justify-center rounded-md text-data text-xs font-medium",
                     isToday && "bg-primary text-primary-foreground",
                     !isToday && inMonth && "text-foreground",
                     !isToday && !inMonth && "text-muted-foreground/40",

@@ -36,7 +36,7 @@ export function CumplirRapido({ id }: { id: string }) {
       onClick={onCumplir}
       disabled={pending}
       aria-label="Marcar plazo como cumplido"
-      className="h-9 text-success hover:border-success/40 hover:bg-success-soft hover:text-success sm:h-8"
+      className="h-9 text-foreground/70 hover:border-foreground/25 hover:text-foreground sm:h-8"
     >
       {pending ? <Spinner /> : <Check className="size-4" />}
       Cumplir

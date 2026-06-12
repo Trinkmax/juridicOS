@@ -496,8 +496,8 @@ export const EditorWorkspace = forwardRef<
       </div>
 
       {/* Cuerpo del editor */}
-      <div className="space-y-4 p-4 sm:p-6">
-        <div className="grid gap-3 sm:grid-cols-[2fr_1fr]">
+      <div className="space-y-5 p-4 sm:p-6">
+        <div className="grid gap-4 sm:grid-cols-[2fr_1fr]">
           <Field label="Título del documento" htmlFor="titulo">
             <Input
               id="titulo"
@@ -517,7 +517,7 @@ export const EditorWorkspace = forwardRef<
         </div>
 
         {(variables.length > 0 || pendientes > 0 || generadoPorIa) && (
-          <div className="flex flex-wrap items-center gap-1.5 text-xs">
+          <div className="flex flex-wrap items-center gap-1.5">
             {generadoPorIa && (
               <Badge tone="primary">
                 <Wand2 className="size-3" />
@@ -526,19 +526,23 @@ export const EditorWorkspace = forwardRef<
             )}
             {variables.length > 0 && (
               <Badge tone="info">
-                {variables.length} variable(s) sin completar
+                <span className="text-data">{variables.length}</span> variable(s) sin
+                completar
               </Badge>
             )}
             {pendientes > 0 && (
-              <Badge tone="warning">{pendientes} marcador(es) [PENDIENTE]</Badge>
+              <Badge tone="muted">
+                <span className="text-data">{pendientes}</span> marcador(es)
+                [PENDIENTE]
+              </Badge>
             )}
           </div>
         )}
 
         <EditorTextarea contenido={contenido} setContenido={setContenido} />
 
-        <div className="space-y-2 rounded-md border border-border bg-muted/30 p-3">
-          <div className="flex items-start gap-2 text-xs text-muted-foreground">
+        <div className="space-y-2.5 rounded-md border border-border bg-muted/30 p-4">
+          <div className="flex items-start gap-2.5 text-xs leading-relaxed text-muted-foreground">
             <ShieldCheck className="mt-0.5 size-3.5 shrink-0" />
             <p>
               La validez surge de la presentación firmada en el SAC (tu usuario es tu
@@ -546,7 +550,7 @@ export const EditorWorkspace = forwardRef<
               antes de presentar.
             </p>
           </div>
-          <div className="flex items-start gap-2 text-xs text-muted-foreground">
+          <div className="flex items-start gap-2.5 text-xs leading-relaxed text-muted-foreground">
             <Info className="mt-0.5 size-3.5 shrink-0" />
             <p>
               La IA asiste; revisá y aprobá el documento. No constituye asesoramiento

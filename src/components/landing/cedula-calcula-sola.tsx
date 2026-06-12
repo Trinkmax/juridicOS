@@ -106,11 +106,9 @@ export function CedulaQueCalculaSola() {
 
       <div className="space-y-4 p-4 sm:p-5">
         {/* Entradas: el visitante pone dos datos */}
-        <div className="grid gap-3 sm:grid-cols-[1fr_auto] sm:items-end">
+        <div className="space-y-3">
           <label htmlFor="cedula-acto" className="block space-y-1.5">
-            <span className="font-mono text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-              Acto procesal
-            </span>
+            <span className="text-xs font-medium text-muted-foreground">Acto procesal</span>
             <Combobox
               id="cedula-acto"
               options={OPTIONS}
@@ -122,26 +120,24 @@ export function CedulaQueCalculaSola() {
             />
           </label>
           <label className="block space-y-1.5">
-            <span className="font-mono text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-              Notificación
-            </span>
+            <span className="text-xs font-medium text-muted-foreground">Fecha de notificación</span>
             <input
               type="date"
               value={fecha}
               min="2026-01-01"
               max="2026-11-30"
               onChange={(e) => e.target.value && setFecha(e.target.value)}
-              className="h-10 w-full rounded-md border border-input bg-card px-3 text-sm text-data shadow-xs outline-none focus:border-ring focus:ring-2 focus:ring-ring/25 sm:w-[9.5rem]"
+              className="text-data h-10 w-full rounded-md border border-input bg-card px-3 text-sm shadow-xs outline-none focus:border-ring focus:ring-2 focus:ring-ring/25"
             />
           </label>
         </div>
 
         {/* Artículo del acto elegido, como sello-dato */}
         <div className="flex flex-wrap items-center gap-2">
-          <Badge tone="muted" className="font-mono text-[10px]">
+          <Badge tone="muted" className="font-mono text-[10.5px]">
             {acto.baseLegal}
           </Badge>
-          <Badge tone="primary" className="font-mono text-[10px]">
+          <Badge tone="primary" className="font-mono text-[10.5px]">
             {etiquetaModalidad(acto.dias, acto.modalidad)}
           </Badge>
         </div>

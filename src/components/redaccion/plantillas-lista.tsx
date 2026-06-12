@@ -104,9 +104,9 @@ export function PlantillasLista({
   }
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-sm text-muted-foreground">
+        <p className="max-w-prose text-sm leading-relaxed text-muted-foreground">
           Modelos con estructura forense de Córdoba. Tocá uno para cargarlo en el
           editor.
         </p>
@@ -157,14 +157,14 @@ export function PlantillasLista({
           />
         )
       ) : (
-        <div className="space-y-7">
+        <div className="space-y-8">
           {grupos.map((g) => (
-            <section key={g.categoria.value} className="space-y-3">
+            <section key={g.categoria.value} className="space-y-4">
               <div className="flex items-baseline gap-2">
-                <h3 className="font-serif text-base font-semibold tracking-tight">
+                <h3 className="font-display text-base font-semibold">
                   {g.categoria.label}
                 </h3>
-                <span className="text-xs tabular-nums text-muted-foreground">
+                <span className="text-data text-xs text-muted-foreground">
                   {g.items.length}
                 </span>
                 {g.categoria.hint && (
@@ -174,10 +174,10 @@ export function PlantillasLista({
                 )}
               </div>
 
-              <Stagger className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+              <Stagger className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
                 {g.items.map((p) => (
                   <StaggerItem key={p.id}>
-                    <Card className="group flex h-full flex-col gap-3 p-4 transition-colors hover:border-foreground/20 hover:bg-accent/60">
+                    <Card className="group flex h-full flex-col gap-3.5 p-5 shadow-xs transition-colors hover:border-foreground/20 hover:bg-accent/60">
                       <div className="flex items-start justify-between gap-2">
                         <button
                           type="button"
@@ -242,7 +242,7 @@ export function PlantillasLista({
                         )}
                         {p.variables && p.variables.length > 0 && (
                           <Badge tone="primary">
-                            {p.variables.length}{" "}
+                            <span className="text-data">{p.variables.length}</span>{" "}
                             {p.variables.length === 1 ? "variable" : "variables"}
                           </Badge>
                         )}

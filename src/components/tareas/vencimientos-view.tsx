@@ -62,9 +62,9 @@ const GRUPOS: GrupoDef[] = [
   { id: "vencidas", label: "Vencidas", tone: "destructive", dot: "bg-destructive" },
   { id: "hoy", label: "Hoy", tone: "destructive", dot: "bg-destructive" },
   { id: "semana", label: "Esta semana", tone: "warning", dot: "bg-warning" },
-  { id: "adelante", label: "Más adelante", tone: "info", dot: "bg-info" },
-  { id: "sin_fecha", label: "Sin fecha", tone: "muted", dot: "bg-muted-foreground/40" },
-  { id: "completadas", label: "Completadas", tone: "success", dot: "bg-success" },
+  { id: "adelante", label: "Más adelante", tone: "muted", dot: "bg-muted-foreground/40" },
+  { id: "sin_fecha", label: "Sin fecha", tone: "muted", dot: "bg-muted-foreground/30" },
+  { id: "completadas", label: "Completadas", tone: "muted", dot: "bg-foreground/55" },
 ];
 
 /** Asigna una tarea (no cancelada) a su grupo según vencimiento/estado. */
@@ -137,8 +137,8 @@ function TareaFila({
   return (
     <div
       className={cn(
-        "group flex items-center gap-3 rounded-md border border-border bg-card px-3 py-2.5 transition-colors",
-        "hover:border-foreground/20 hover:bg-accent/60",
+        "group flex items-center gap-3 rounded-lg border border-border bg-card px-3.5 py-3 shadow-xs transition-colors",
+        "hover:border-foreground/20 hover:bg-accent/50",
         pending && "opacity-60",
       )}
     >
@@ -151,7 +151,7 @@ function TareaFila({
               onClick={reabrir}
               disabled={pending}
               aria-label="Reabrir tarea"
-              className="grid size-7 shrink-0 place-items-center rounded-full border border-success bg-success text-success-foreground transition-colors hover:bg-success-soft hover:text-success sm:size-5"
+              className="grid size-7 shrink-0 place-items-center rounded-full border border-foreground/70 bg-foreground/80 text-background transition-colors hover:border-border hover:bg-transparent hover:text-foreground sm:size-5"
             >
               <Check className="size-3" />
             </button>
@@ -166,7 +166,7 @@ function TareaFila({
               onClick={completar}
               disabled={pending}
               aria-label={`Completar tarea: ${tarea.titulo}`}
-              className="grid size-7 shrink-0 place-items-center rounded-full border border-border text-transparent transition-colors hover:border-success hover:bg-success-soft hover:text-success focus-visible:border-success focus-visible:text-success sm:size-5"
+              className="grid size-7 shrink-0 place-items-center rounded-full border border-border text-transparent transition-colors hover:border-foreground hover:bg-accent hover:text-foreground focus-visible:border-foreground focus-visible:text-foreground sm:size-5"
             >
               <Check className="size-3" />
             </button>
@@ -338,7 +338,7 @@ export function VencimientosView({
   }
 
   return (
-    <div className="space-y-7">
+    <div className="space-y-8">
       {GRUPOS.map((g) => {
         const items = grupos.get(g.id) ?? [];
         if (items.length === 0) return null;
@@ -350,7 +350,7 @@ export function VencimientosView({
             aria-label={g.label}
             className={cn(completadas && "opacity-70")}
           >
-            <div className="mb-2.5 flex items-center gap-2 px-1">
+            <div className="mb-3 flex items-center gap-2 px-1">
               <span className={cn("size-2 shrink-0 rounded-full", g.dot)} />
               <h2 className="font-display text-sm font-semibold text-foreground">
                 {g.label}
@@ -360,7 +360,7 @@ export function VencimientosView({
               </Badge>
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-2.5">
               {items.map((t) => (
                 <TareaFila
                   key={t.id}

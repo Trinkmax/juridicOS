@@ -57,12 +57,12 @@ export function AgendaCalendario({
   const today = new Date();
 
   return (
-    <div className="overflow-hidden rounded-lg border border-border bg-card">
-      <div className="grid grid-cols-7 border-b border-border bg-muted/40">
+    <div className="overflow-hidden rounded-lg border border-border bg-card shadow-xs">
+      <div className="grid grid-cols-7 border-b border-border bg-muted/30">
         {WEEKDAYS.map((w) => (
           <div
             key={w}
-            className="px-1 py-2 text-center text-[0.6875rem] font-semibold uppercase tracking-wide text-muted-foreground sm:px-2"
+            className="px-1 py-2.5 text-center text-xs font-medium text-muted-foreground sm:px-2"
           >
             {w}
           </div>
@@ -83,15 +83,15 @@ export function AgendaCalendario({
             <div
               key={k}
               className={cn(
-                "min-h-[5.5rem] border-b border-r border-border p-1 sm:min-h-[7rem] sm:p-1.5 [&:nth-child(7n)]:border-r-0",
-                !inMonth && "bg-muted/30",
+                "min-h-[5.5rem] border-b border-r border-border p-1.5 sm:min-h-[7.5rem] sm:p-2 [&:nth-child(7n)]:border-r-0",
+                !inMonth && "bg-muted/25",
                 lastRow && "border-b-0",
               )}
             >
-              <div className="mb-1 flex justify-end px-0.5">
+              <div className="mb-1.5 flex justify-end px-0.5">
                 <span
                   className={cn(
-                    "flex size-6 items-center justify-center rounded-md text-xs font-medium tabular-nums",
+                    "flex size-6 items-center justify-center rounded-md text-xs font-medium text-data",
                     isToday && "bg-primary text-primary-foreground",
                     !isToday && inMonth && "text-foreground",
                     !isToday && !inMonth && "text-muted-foreground/40",
@@ -111,12 +111,12 @@ export function AgendaCalendario({
                       onClick={() => onSelect(it)}
                       title={it.titulo}
                       className={cn(
-                        "flex w-full items-center gap-1 rounded-sm border px-1 py-0.5 text-left text-[0.6875rem] leading-tight transition-opacity hover:opacity-80 sm:px-1.5",
+                        "flex w-full items-center gap-1.5 rounded-sm border px-1.5 py-1 text-left text-[0.6875rem] leading-tight transition-opacity hover:opacity-80",
                         TONE_CHIP[tone],
                       )}
                     >
                       {it.hora && !it.todoElDia && (
-                        <span className="hidden shrink-0 font-mono text-data tabular-nums opacity-80 sm:inline">
+                        <span className="hidden shrink-0 text-data opacity-80 sm:inline">
                           {format(itemDate(it), "HH:mm")}
                         </span>
                       )}
@@ -130,7 +130,7 @@ export function AgendaCalendario({
                     <PopoverTrigger asChild>
                       <button
                         type="button"
-                        className="w-full rounded-sm px-1 py-0.5 text-left text-[0.6875rem] font-medium text-muted-foreground transition-colors hover:bg-accent sm:px-1.5"
+                        className="w-full rounded-sm px-1.5 py-1 text-left text-[0.6875rem] font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
                       >
                         +{overflow} más
                       </button>
@@ -139,7 +139,7 @@ export function AgendaCalendario({
                       align="start"
                       className="max-h-[60vh] w-[min(16rem,calc(100vw-1.5rem))] overflow-y-auto p-2"
                     >
-                      <p className="mb-1.5 px-1 font-display text-sm font-semibold capitalize">
+                      <p className="mb-2 px-1 font-display text-sm font-semibold capitalize">
                         {capitalizar(format(day, "EEEE d 'de' MMMM", { locale: es }))}
                       </p>
                       <div className="space-y-0.5">
@@ -150,13 +150,13 @@ export function AgendaCalendario({
                               key={`${it.tipo}-${it.id}`}
                               type="button"
                               onClick={() => onSelect(it)}
-                              className="flex w-full items-center gap-2 rounded-sm px-1.5 py-1 text-left text-xs transition-colors hover:bg-accent"
+                              className="flex w-full items-center gap-2 rounded-sm px-1.5 py-1.5 text-left text-xs transition-colors hover:bg-accent"
                             >
                               <span
                                 className={cn("size-1.5 shrink-0 rounded-full", TONE_DOT[tone])}
                               />
                               {it.hora && !it.todoElDia && (
-                                <span className="shrink-0 font-mono text-data tabular-nums text-muted-foreground">
+                                <span className="shrink-0 text-data text-muted-foreground">
                                   {format(itemDate(it), "HH:mm")}
                                 </span>
                               )}

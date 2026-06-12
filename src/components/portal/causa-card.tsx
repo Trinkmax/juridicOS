@@ -14,17 +14,17 @@ export function CausaCard({ causa }: { causa: CausaPortal }) {
       href={`/portal/${causa.id}`}
       className="group block rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
     >
-      <Card className="h-full p-5 transition-colors group-hover:border-foreground/20">
+      <Card className="flex h-full flex-col p-6 shadow-xs transition-colors group-hover:border-foreground/20">
         <div className="flex flex-wrap items-center gap-2">
           <OptionBadge option={FUERO[causa.fuero]} />
           <OptionBadge option={ESTADO_EXPEDIENTE[causa.estado]} dot />
         </div>
 
-        <h2 className="mt-3 font-display text-base font-semibold leading-snug text-balance">
+        <h2 className="mt-4 font-display text-base font-semibold leading-snug text-balance">
           {causa.caratula}
         </h2>
 
-        <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
+        <div className="mt-2.5 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
           {causa.nro_sac && (
             <span>
               SAC{" "}
@@ -36,7 +36,7 @@ export function CausaCard({ causa }: { causa: CausaPortal }) {
           <span>Actualizada {etiquetaRelativa(causa.updated_at).toLowerCase()}</span>
         </div>
 
-        <div className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-primary">
+        <div className="mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-primary">
           Ver detalle
           <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
         </div>

@@ -24,29 +24,34 @@ export function formatTamano(bytes?: number | null): string {
 
 type IconMeta = { icon: LucideIcon; className: string };
 
-/** Icono + color según el MIME / extensión del documento. */
+/* Tinta: el tipo de archivo se comunica por la FORMA del icono, no por color.
+   El color saturado queda reservado a la urgencia de plazos; acá todo va en
+   tinta neutra (foreground/muted) para una biblioteca sobria y consistente. */
+const ICONO_TINTA = "text-foreground/65";
+
+/** Icono según el MIME / extensión del documento (color en tinta neutra). */
 export function iconoDocumento(mime?: string | null, nombre?: string | null): IconMeta {
   const m = (mime ?? "").toLowerCase();
   const ext = (nombre ?? "").split(".").pop()?.toLowerCase() ?? "";
 
   if (m.startsWith("image/") || ["png", "jpg", "jpeg", "gif", "webp", "svg"].includes(ext))
-    return { icon: FileImage, className: "text-violet-600 dark:text-violet-400" };
+    return { icon: FileImage, className: ICONO_TINTA };
 
   if (m.startsWith("video/") || ["mp4", "mov", "avi", "mkv"].includes(ext))
-    return { icon: FileVideo, className: "text-pink-600 dark:text-pink-400" };
+    return { icon: FileVideo, className: ICONO_TINTA };
 
   if (m.startsWith("audio/") || ["mp3", "wav", "ogg", "m4a"].includes(ext))
-    return { icon: FileAudio, className: "text-amber-600 dark:text-amber-400" };
+    return { icon: FileAudio, className: ICONO_TINTA };
 
   if (
     m.includes("spreadsheet") ||
     m.includes("excel") ||
     ["xls", "xlsx", "csv", "ods"].includes(ext)
   )
-    return { icon: FileSpreadsheet, className: "text-emerald-600 dark:text-emerald-400" };
+    return { icon: FileSpreadsheet, className: ICONO_TINTA };
 
   if (m.includes("zip") || m.includes("compressed") || ["zip", "rar", "7z", "tar", "gz"].includes(ext))
-    return { icon: FileArchive, className: "text-orange-600 dark:text-orange-400" };
+    return { icon: FileArchive, className: ICONO_TINTA };
 
   if (
     m.includes("json") ||
@@ -54,10 +59,10 @@ export function iconoDocumento(mime?: string | null, nombre?: string | null): Ic
     m.includes("javascript") ||
     ["json", "xml", "html", "js", "ts", "css"].includes(ext)
   )
-    return { icon: FileCode, className: "text-sky-600 dark:text-sky-400" };
+    return { icon: FileCode, className: ICONO_TINTA };
 
   if (m === "application/pdf" || ext === "pdf")
-    return { icon: FileText, className: "text-rose-600 dark:text-rose-400" };
+    return { icon: FileText, className: ICONO_TINTA };
 
   if (
     m.includes("word") ||
@@ -65,7 +70,7 @@ export function iconoDocumento(mime?: string | null, nombre?: string | null): Ic
     m.startsWith("text/") ||
     ["doc", "docx", "txt", "rtf", "odt"].includes(ext)
   )
-    return { icon: FileText, className: "text-blue-600 dark:text-blue-400" };
+    return { icon: FileText, className: ICONO_TINTA };
 
   return { icon: FileIcon, className: "text-muted-foreground" };
 }

@@ -55,6 +55,7 @@ export function PlazosEstadoChart({ data }: { data: PlazoEstadoDatum[] }) {
           verticalAlign="bottom"
           iconType="circle"
           iconSize={9}
+          wrapperStyle={{ paddingTop: 12 }}
           formatter={(value: string) => (
             <span style={LEGEND_ITEM_STYLE}>{value}</span>
           )}

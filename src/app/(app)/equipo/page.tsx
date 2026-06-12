@@ -103,7 +103,7 @@ export default async function EquipoPage() {
   const administradores = items.filter((m) => m.rol === "owner").length;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <PageHeader
         title="Equipo del estudio"
         description="Quiénes integran el estudio, sus roles y su carga de trabajo actual."
@@ -136,13 +136,18 @@ export default async function EquipoPage() {
         </div>
       </FadeIn>
 
-      <Stagger className="grid gap-3">
-        {items.map((m) => (
-          <StaggerItem key={m.id}>
-            <MiembroCard miembro={m} puedeGestionar={esOwner} />
-          </StaggerItem>
-        ))}
-      </Stagger>
+      <section className="space-y-4">
+        <h2 className="font-display text-sm font-medium text-muted-foreground">
+          Integrantes
+        </h2>
+        <Stagger className="grid gap-3">
+          {items.map((m) => (
+            <StaggerItem key={m.id}>
+              <MiembroCard miembro={m} puedeGestionar={esOwner} />
+            </StaggerItem>
+          ))}
+        </Stagger>
+      </section>
     </div>
   );
 }

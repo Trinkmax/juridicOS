@@ -20,9 +20,9 @@ export function PlazosPanel({
   plazos: PlazoDetalle[];
 }) {
   return (
-    <Card className="p-5 space-y-4">
-      <div className="flex items-center justify-between gap-2">
-        <div>
+    <Card className="p-6 space-y-5 shadow-xs">
+      <div className="flex items-center justify-between gap-3">
+        <div className="space-y-0.5">
           <h3 className="font-display text-base font-semibold">Plazos</h3>
           <p className="text-sm text-muted-foreground">
             {plazos.length} {plazos.length === 1 ? "plazo asociado" : "plazos asociados"}
@@ -64,16 +64,21 @@ export function PlazosPanel({
                   TONE_BORDER[tono],
                 )}
               >
-                <div className="min-w-0 space-y-1">
+                <div className="min-w-0 space-y-1.5">
                   <p className="font-medium leading-snug">
                     {p.acto_procesal ?? "Plazo procesal"}
                   </p>
                   <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-xs text-muted-foreground">
                     {p.fecha_vencimiento && (
-                      <span>Vence: {capitalizar(formatFecha(p.fecha_vencimiento))}</span>
+                      <span>
+                        Vence:{" "}
+                        <span className="text-data">
+                          {capitalizar(formatFecha(p.fecha_vencimiento))}
+                        </span>
+                      </span>
                     )}
                     {p.dias != null && modalidad && (
-                      <span>
+                      <span className="text-data">
                         {p.dias} {modalidad.label.toLowerCase()}
                       </span>
                     )}

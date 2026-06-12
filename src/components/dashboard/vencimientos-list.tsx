@@ -15,7 +15,7 @@ import type { PlazoDetalle } from "@/lib/types/domain";
  */
 export function VencimientosList({ plazos }: { plazos: PlazoDetalle[] }) {
   return (
-    <Card>
+    <Card className="shadow-xs">
       <CardHeader className="flex-row items-center justify-between gap-2 space-y-0">
         <CardTitle className="flex items-center gap-2">
           <CalendarClock className="size-4 text-primary" />
@@ -48,7 +48,7 @@ export function VencimientosList({ plazos }: { plazos: PlazoDetalle[] }) {
                 <li
                   key={p.id ?? `${p.acto_procesal}-${p.fecha_vencimiento}`}
                   className={cn(
-                    "group flex items-center gap-3 rounded-lg border-l-2 px-3 py-2.5 transition-colors hover:bg-accent/60",
+                    "group flex items-center gap-3 rounded-lg border-l-2 px-3.5 py-3 transition-colors hover:bg-accent/60",
                     TONE_BORDER[plazoTono(dias, "pendiente")],
                   )}
                 >

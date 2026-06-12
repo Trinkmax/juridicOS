@@ -128,8 +128,8 @@ export function DocumentoFila({ doc }: { doc: DocumentoFilaItem }) {
   const etiquetas = doc.etiquetas ?? [];
 
   return (
-    <div className="group flex items-start gap-3 rounded-lg border border-border bg-card px-4 py-3 transition-colors hover:bg-accent/60">
-      <div className="flex size-10 shrink-0 items-center justify-center rounded-md bg-muted">
+    <div className="group flex items-start gap-3.5 rounded-lg border border-border bg-card px-4 py-3.5 shadow-xs transition-colors hover:border-foreground/15 hover:bg-accent/50">
+      <div className="flex size-10 shrink-0 items-center justify-center rounded-md border border-border bg-muted/70">
         <Icon className={cn("size-5", iconColor)} />
       </div>
 

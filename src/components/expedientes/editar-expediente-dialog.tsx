@@ -124,7 +124,7 @@ export function EditarExpedienteDialog({
                   id="edit-nro_sac"
                   name="nro_sac"
                   defaultValue={expediente.nro_sac ?? ""}
-                  className="font-mono"
+                  className="font-mono text-data"
                 />
               </Field>
 
@@ -270,6 +270,7 @@ export function EditarExpedienteDialog({
                   min={0}
                   step="0.01"
                   defaultValue={expediente.monto_reclamado ?? ""}
+                  className="text-data"
                 />
               </Field>
 

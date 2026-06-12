@@ -111,11 +111,11 @@ export function TimeTrackingPanel({
     <div className="grid gap-6 lg:grid-cols-[20rem_1fr]">
       <Card className="h-fit">
         <CardHeader>
-          <CardTitle className="text-base">Registrar tiempo</CardTitle>
+          <CardTitle>Registrar tiempo</CardTitle>
           <CardDescription>Cargá las horas trabajadas en una causa.</CardDescription>
         </CardHeader>
         <CardContent>
-          <form ref={formRef} action={action} className="space-y-4">
+          <form ref={formRef} action={action} className="space-y-5">
             {/* minutos se calcula desde horas; enviamos un hidden derivado */}
             <input
               type="hidden"
@@ -181,10 +181,10 @@ export function TimeTrackingPanel({
       <Card>
         <CardHeader className="flex-row items-center justify-between">
           <div>
-            <CardTitle className="text-base">Entradas de tiempo</CardTitle>
+            <CardTitle>Entradas de tiempo</CardTitle>
             <CardDescription>Registro de horas del estudio.</CardDescription>
           </div>
-          <Badge tone="primary" className="text-data text-sm">
+          <Badge tone="primary" className="text-data">
             <Clock className="size-3.5" />
             {horas(totalMinutos)} h
           </Badge>

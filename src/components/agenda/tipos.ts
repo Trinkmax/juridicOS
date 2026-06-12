@@ -57,11 +57,12 @@ export function itemTone(item: AgendaItem): Tone {
 }
 
 export const TONE_DOT: Record<Tone, string> = {
-  default: "bg-muted-foreground",
+  default: "bg-foreground/55",
   primary: "bg-primary",
-  muted: "bg-muted-foreground",
+  muted: "bg-foreground/40",
   info: "bg-info",
-  success: "bg-success",
+  // Plazos "a tiempo": tinta sobria, el color saturado se reserva a la urgencia.
+  success: "bg-foreground/55",
   warning: "bg-warning",
   destructive: "bg-destructive",
 };
@@ -69,10 +70,11 @@ export const TONE_DOT: Record<Tone, string> = {
 /** Clases de chip (borde + fondo suave + texto) por tono, para celdas del calendario. */
 export const TONE_CHIP: Record<Tone, string> = {
   default: "border-border bg-secondary text-secondary-foreground",
-  primary: "border-primary/30 bg-primary-soft text-primary",
+  primary: "border-primary/25 bg-primary-soft text-primary",
   muted: "border-border bg-muted text-muted-foreground",
-  info: "border-info/30 bg-info-soft text-info",
-  success: "border-success/30 bg-success-soft text-success",
+  info: "border-info/25 bg-info-soft text-info",
+  // Plazos "a tiempo": superficie neutra de tinta; el ámbar/rojo marca urgencia.
+  success: "border-border bg-secondary text-secondary-foreground",
   warning: "border-warning/40 bg-warning-soft text-warning-foreground",
-  destructive: "border-destructive/30 bg-destructive-soft text-destructive",
+  destructive: "border-destructive/25 bg-destructive-soft text-destructive",
 };

@@ -94,7 +94,7 @@ export function Combobox({
               className,
             )}
           >
-            <span className={cn("truncate", !selected && "text-muted-foreground/70")}>
+            <span className={cn("min-w-0 flex-1 truncate text-left", !selected && "text-muted-foreground/70")}>
               {selected ? selected.label : placeholder}
             </span>
             {clearable && selected ? (

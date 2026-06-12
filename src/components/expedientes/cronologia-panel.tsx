@@ -131,9 +131,7 @@ function Row({
     <div className="flex items-start gap-3">
       <Icon className="mt-0.5 size-4 shrink-0 text-muted-foreground" />
       <div className="min-w-0 flex-1">
-        <dt className="text-xs uppercase tracking-wide text-muted-foreground">
-          {label}
-        </dt>
+        <dt className="text-xs font-medium text-muted-foreground">{label}</dt>
         <dd className="mt-0.5 text-sm text-foreground">{children}</dd>
       </div>
     </div>
@@ -385,9 +383,9 @@ export function CronologiaPanel({
   );
 
   return (
-    <Card className="p-5 space-y-4">
-      <div className="flex items-center justify-between gap-2">
-        <div>
+    <Card className="p-6 space-y-5 shadow-xs">
+      <div className="flex items-center justify-between gap-3">
+        <div className="space-y-0.5">
           <h3 className="font-display text-base font-semibold">Cronología</h3>
           <p className="text-sm text-muted-foreground">
             {items.length}{" "}
@@ -419,9 +417,9 @@ export function CronologiaPanel({
                 {nuevoMes && (
                   <li
                     aria-hidden
-                    className="sticky top-0 z-10 -ml-6 bg-card/95 pb-1 pt-1 backdrop-blur-sm"
+                    className="sticky top-0 z-10 -ml-6 bg-card/95 pb-1.5 pt-1.5 backdrop-blur-sm"
                   >
-                    <span className="font-display text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                    <span className="font-display text-xs font-medium text-muted-foreground">
                       {capitalizar(formatFecha(item.fecha, "MMMM yyyy"))}
                     </span>
                   </li>

@@ -50,7 +50,7 @@ export default async function ExpedientesPage({
   const hayFiltros = Boolean(q || fuero || estado);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <PageHeader
         title="Expedientes"
         description="Todas las causas del estudio en un solo lugar."
@@ -64,7 +64,8 @@ export default async function ExpedientesPage({
         </Button>
       </PageHeader>
 
-      <ExpedientesFiltros />
+      <div className="space-y-6">
+        <ExpedientesFiltros />
 
       {expedientes.length === 0 ? (
         hayFiltros ? (
@@ -89,8 +90,15 @@ export default async function ExpedientesPage({
           />
         )
       ) : (
-        <FadeIn>
-          <Card className="overflow-hidden p-0">
+        <FadeIn className="space-y-3">
+          <p className="text-sm text-muted-foreground">
+            <span className="text-data font-medium text-foreground">
+              {expedientes.length}
+            </span>{" "}
+            {expedientes.length === 1 ? "expediente" : "expedientes"}
+            {hayFiltros ? " con los filtros aplicados" : " en el estudio"}
+          </p>
+          <Card className="overflow-hidden p-0 shadow-xs">
             <Table>
               <TableHeader>
                 <TableRow className="hover:bg-transparent">
@@ -105,15 +113,15 @@ export default async function ExpedientesPage({
               <TableBody>
                 {expedientes.map((e) => (
                   <TableRow key={e.id} className="group">
-                    <TableCell className="max-w-[60vw] sm:max-w-[24rem]">
+                    <TableCell className="max-w-[60vw] py-3.5 sm:max-w-[24rem]">
                       <Link
                         href={`/expedientes/${e.id}`}
-                        className="font-medium text-foreground hover:text-primary hover:underline underline-offset-4 line-clamp-2"
+                        className="font-medium text-foreground transition-colors hover:text-primary line-clamp-2"
                       >
                         {e.caratula}
                       </Link>
                     </TableCell>
-                    <TableCell className="hidden md:table-cell font-mono text-xs text-muted-foreground text-data">
+                    <TableCell className="hidden md:table-cell text-data font-mono text-xs text-muted-foreground">
                       {e.nro_sac ?? "—"}
                     </TableCell>
                     <TableCell className="hidden sm:table-cell">
@@ -125,7 +133,7 @@ export default async function ExpedientesPage({
                     <TableCell className="hidden lg:table-cell text-sm text-muted-foreground">
                       {e.clientes?.nombre ?? "—"}
                     </TableCell>
-                    <TableCell className="hidden xl:table-cell text-sm text-muted-foreground max-w-[16rem] truncate">
+                    <TableCell className="hidden xl:table-cell max-w-[16rem] truncate text-sm text-muted-foreground">
                       {e.juzgado ?? "—"}
                     </TableCell>
                   </TableRow>
@@ -135,6 +143,7 @@ export default async function ExpedientesPage({
           </Card>
         </FadeIn>
       )}
+      </div>
     </div>
   );
 }

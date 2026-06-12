@@ -13,6 +13,7 @@ import {
   AlertTriangle,
   Gavel,
   ShieldCheck,
+  ArrowRight,
 } from "lucide-react";
 import {
   parsearCedula,
@@ -30,7 +31,13 @@ import {
 } from "@/lib/constants";
 import { formatFechaCorta, capitalizar } from "@/lib/format";
 
-import { Card, CardContent } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
@@ -65,9 +72,9 @@ type Resultado = {
 };
 
 const CONFIANZA_TONE: Record<CedulaExtraccion["confianza"], Tone> = {
-  alta: "success",
-  media: "warning",
-  baja: "destructive",
+  alta: "muted",
+  media: "muted",
+  baja: "warning",
 };
 const CONFIANZA_LABEL: Record<CedulaExtraccion["confianza"], string> = {
   alta: "Confianza alta",
@@ -121,14 +128,14 @@ export function IngestaCliente({
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {!iaActiva && (
         <Card className="border-warning/40 bg-warning-soft">
           <CardContent className="flex items-start gap-3 p-4 text-sm">
             <Info className="mt-0.5 size-4 shrink-0 text-warning-foreground" />
             <p className="text-warning-foreground">
               Configurá{" "}
-              <code className="rounded-sm bg-background/60 px-1 py-0.5 text-xs">
+              <code className="rounded-sm bg-background/60 px-1 py-0.5 font-mono text-xs">
                 ANTHROPIC_API_KEY
               </code>{" "}
               para activar la lectura con IA.
@@ -141,12 +148,16 @@ export function IngestaCliente({
         {/* ── Entrada ──────────────────────────────────────────────────── */}
         <FadeIn>
           <Card className="lg:sticky lg:top-6">
-            <CardContent className="space-y-5 p-5">
-              <div className="flex items-center gap-2 text-sm font-medium">
+            <CardHeader>
+              <div className="flex items-center gap-2.5 text-muted-foreground">
                 <ScanText className="size-4 text-primary" />
-                Texto de la cédula
+                <CardTitle>Texto de la cédula</CardTitle>
               </div>
-
+              <CardDescription>
+                Pegá la notificación completa y la IA detecta el acto, la fecha y el plazo.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
               <Field
                 label="Pegá la notificación"
                 htmlFor="cedula-texto"
@@ -157,7 +168,7 @@ export function IngestaCliente({
                   value={texto}
                   onChange={(e) => setTexto(e.target.value)}
                   rows={12}
-                  className="min-h-[280px] resize-y font-mono text-[13px] leading-relaxed"
+                  className="min-h-[280px] resize-y text-[13px] leading-relaxed"
                   placeholder="Ej.: En los autos caratulados… se notifica a Ud. que con fecha… se ha dictado la siguiente resolución…"
                   disabled={!iaActiva || analizando}
                 />
@@ -201,8 +212,8 @@ export function IngestaCliente({
         {/* ── Resultado ────────────────────────────────────────────────── */}
         <div className="space-y-4">
           {analizando ? (
-            <Card className="border border-border">
-              <CardContent className="flex flex-col items-center justify-center gap-3 py-16 text-center">
+            <Card>
+              <CardContent className="flex flex-col items-center justify-center gap-3 py-20 text-center">
                 <Spinner className="size-6 text-primary" />
                 <p className="text-sm text-muted-foreground">Analizando la cédula…</p>
               </CardContent>
@@ -218,14 +229,14 @@ export function IngestaCliente({
               }}
             />
           ) : (
-            <Card className="border border-dashed border-border bg-muted/20">
-              <CardContent className="flex flex-col items-center justify-center gap-3 py-16 text-center">
+            <Card className="border-dashed bg-muted/20">
+              <CardContent className="flex flex-col items-center justify-center gap-4 py-20 text-center">
                 <div className="flex size-12 items-center justify-center rounded-md bg-primary-soft text-primary">
                   <ScanText className="size-6" />
                 </div>
-                <div className="space-y-1">
-                  <p className="text-sm font-medium">Esperando una cédula</p>
-                  <p className="max-w-xs text-sm text-muted-foreground">
+                <div className="space-y-1.5">
+                  <p className="font-display text-base font-semibold">Esperando una cédula</p>
+                  <p className="mx-auto max-w-xs text-sm leading-relaxed text-muted-foreground">
                     Pegá el texto y la IA detecta el acto, la fecha y el plazo sugerido.
                   </p>
                 </div>
@@ -233,9 +244,9 @@ export function IngestaCliente({
             </Card>
           )}
 
-          <div className="flex items-start gap-2 px-1 text-xs text-muted-foreground">
+          <div className="flex items-start gap-2 px-1 text-xs leading-relaxed text-muted-foreground">
             <Info className="mt-0.5 size-3.5 shrink-0" />
-            <p className="leading-relaxed">{DISCLAIMER}</p>
+            <p>{DISCLAIMER}</p>
           </div>
         </div>
       </div>
@@ -265,35 +276,42 @@ function ResultadoCard({
 
   return (
     <FadeIn y={6}>
-      <Card className="border border-border">
-        <CardContent className="space-y-5 p-5">
+      <Card>
+        <CardContent className="space-y-6 p-5">
           <div className="flex items-start justify-between gap-3">
-            <div className="min-w-0 space-y-1">
-              <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                <Gavel className="size-3.5 text-primary" />
+            <div className="min-w-0 space-y-1.5">
+              <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                <Gavel className="size-4 text-primary" />
                 Acto detectado
               </div>
-              <h2 className="font-display text-2xl font-semibold leading-tight tracking-tight">
+              <h2 className="font-display text-2xl font-semibold leading-tight">
                 {capitalizar(extraccion.tipo_acto)}
               </h2>
             </div>
-            <Badge tone={confTone} className="shrink-0">
+            <Badge tone={confTone} dot className="shrink-0">
               {CONFIANZA_LABEL[extraccion.confianza]}
             </Badge>
           </div>
 
           <div className="flex flex-wrap items-center gap-2 text-sm">
-            <Badge tone="muted" className="gap-1.5 text-data">
+            <Badge tone="muted" className="gap-1.5">
               <CalendarClock className="size-3" />
-              {extraccion.fecha_notificacion
-                ? `Notificada el ${formatFechaCorta(extraccion.fecha_notificacion)}`
-                : "Fecha no detectada"}
+              {extraccion.fecha_notificacion ? (
+                <>
+                  Notificada el{" "}
+                  <span className="text-data">
+                    {formatFechaCorta(extraccion.fecha_notificacion)}
+                  </span>
+                </>
+              ) : (
+                "Fecha no detectada"
+              )}
             </Badge>
           </div>
 
           {extraccion.partes_detectadas.length > 0 && (
-            <div className="space-y-1.5">
-              <div className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
+            <div className="space-y-2">
+              <div className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground">
                 <Users className="size-3.5" />
                 Partes detectadas
               </div>
@@ -308,8 +326,8 @@ function ResultadoCard({
           )}
 
           {extraccion.resumen && (
-            <div className="space-y-1.5">
-              <div className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
+            <div className="space-y-2">
+              <div className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground">
                 <FileText className="size-3.5" />
                 Resumen
               </div>
@@ -319,16 +337,17 @@ function ResultadoCard({
 
           {hayPlazo && (
             <div className="rounded-lg border border-primary/20 bg-primary-soft/60 p-4">
-              <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-primary">
-                <CalendarClock className="size-3.5" />
+              <div className="flex items-center gap-2 text-sm font-medium text-primary">
+                <CalendarClock className="size-4" />
                 Plazo sugerido
               </div>
-              <p className="mt-1.5 text-base font-semibold text-foreground">
-                {capitalizar(actoSugerido)} — <span className="text-data">{diasSugerido}</span> {modalidadLabel(modalidadSugerida)}
+              <p className="mt-2 text-base font-semibold text-foreground">
+                {capitalizar(actoSugerido)} —{" "}
+                <span className="text-data">{diasSugerido}</span> {modalidadLabel(modalidadSugerida)}
               </p>
               {catalogoMatch && (
-                <p className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground">
-                  <ShieldCheck className="size-3.5 text-success" />
+                <p className="mt-1.5 flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <ShieldCheck className="size-3.5 text-muted-foreground" />
                   Coincide con tu catálogo de plazos.
                 </p>
               )}
@@ -336,9 +355,9 @@ function ResultadoCard({
           )}
 
           {extraccion.advertencia && (
-            <div className="flex items-start gap-2 text-xs text-muted-foreground">
+            <div className="flex items-start gap-2 text-xs leading-relaxed text-muted-foreground">
               <AlertTriangle className="mt-0.5 size-3.5 shrink-0 text-warning-foreground" />
-              <p className="leading-relaxed">{extraccion.advertencia}</p>
+              <p>{extraccion.advertencia}</p>
             </div>
           )}
 
@@ -441,7 +460,7 @@ function CrearPlazoDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-4">
+        <div className="space-y-5">
           <Field label="Expediente" required>
             <Select value={expedienteId} onValueChange={setExpedienteId}>
               <SelectTrigger>
@@ -517,7 +536,7 @@ function CrearPlazoDialog({
             </Select>
           </Field>
 
-          <div className="flex items-start gap-2 rounded-lg bg-muted/60 p-3 text-xs text-muted-foreground">
+          <div className="flex items-start gap-2 rounded-lg border border-border bg-muted/40 p-3 text-xs leading-relaxed text-muted-foreground">
             <Info className="mt-0.5 size-3.5 shrink-0" />
             <p>{DISCLAIMER}</p>
           </div>
@@ -530,7 +549,7 @@ function CrearPlazoDialog({
             </Button>
           </DialogClose>
           <Button type="button" onClick={onConfirmar} disabled={guardando}>
-            {guardando && <Spinner />}
+            {guardando ? <Spinner /> : <ArrowRight className="size-4" />}
             Crear plazo
           </Button>
         </DialogFooter>

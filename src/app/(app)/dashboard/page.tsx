@@ -225,7 +225,7 @@ export default async function DashboardPage() {
   ];
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-8">
       <FadeIn>
         <PageHeader
           title={saludo}
@@ -234,7 +234,7 @@ export default async function DashboardPage() {
         />
       </FadeIn>
 
-      <Stagger className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+      <Stagger className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         {stats.map((s) => (
           <StaggerItem key={s.label}>
             <StatCard

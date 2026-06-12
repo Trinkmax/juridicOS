@@ -37,6 +37,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 
 export type FacturaRow = {
@@ -92,9 +93,9 @@ export function FacturasTabla({ facturas }: { facturas: FacturaRow[] }) {
   }
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-start gap-3 rounded-md border border-warning/40 bg-warning-soft px-4 py-3 text-sm text-warning-foreground">
-        <Info className="mt-0.5 size-4 shrink-0" />
+    <div className="space-y-5">
+      <div className="flex items-start gap-3 rounded-md border border-border bg-muted/40 px-4 py-3 text-sm text-muted-foreground">
+        <Info className="mt-0.5 size-4 shrink-0 text-muted-foreground" />
         <p>
           Facturación electrónica ARCA/AFIP (CAE): integración pendiente — por
           ahora se registra internamente.
@@ -177,6 +178,7 @@ export function FacturasTabla({ facturas }: { facturas: FacturaRow[] }) {
                               {t.label}
                             </DropdownMenuItem>
                           ))}
+                          <DropdownMenuSeparator />
                           <DropdownMenuLabel>AFIP / ARCA</DropdownMenuLabel>
                           <DropdownMenuItem
                             onSelect={() => pedirCAE(f.id)}

@@ -31,10 +31,10 @@ export function StatCard({
     <div className="flex items-start justify-between gap-3">
       <div className="min-w-0">
         <p className="text-sm font-medium text-muted-foreground">{label}</p>
-        <p className="mt-2 font-display text-data text-3xl font-semibold tracking-tight">
+        <p className="mt-3 font-display text-data text-3xl font-semibold tracking-tight">
           {value}
         </p>
-        <div className="mt-1 min-h-[1.25rem] text-xs">
+        <div className="mt-1.5 min-h-[1.25rem] text-xs">
           {alerta ? (
             <span className="font-medium text-destructive">{alerta}</span>
           ) : hint ? (
@@ -52,20 +52,20 @@ export function StatCard({
     return (
       <Card
         className={cn(
-          "group relative overflow-hidden transition-colors hover:border-foreground/20",
+          "group relative overflow-hidden shadow-xs transition-colors hover:border-foreground/20",
           "focus-within:border-foreground/20",
           className,
         )}
       >
         <Link
           href={href}
-          className="block rounded-lg p-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:p-5"
+          className="block rounded-lg p-5 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           aria-label={`${label}: ${value}`}
         >
           {body}
           <ArrowUpRight
             aria-hidden
-            className="pointer-events-none absolute right-4 top-4 size-4 text-muted-foreground/0 transition-colors group-hover:text-muted-foreground/60"
+            className="pointer-events-none absolute right-5 top-5 size-4 text-muted-foreground/0 transition-colors group-hover:text-muted-foreground/60"
           />
         </Link>
       </Card>
@@ -75,7 +75,7 @@ export function StatCard({
   return (
     <Card
       className={cn(
-        "group relative overflow-hidden p-4 transition-colors hover:border-foreground/20 sm:p-5",
+        "group relative overflow-hidden p-5 shadow-xs transition-colors hover:border-foreground/20",
         className,
       )}
     >

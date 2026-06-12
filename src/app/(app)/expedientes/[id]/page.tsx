@@ -111,7 +111,7 @@ export default async function ExpedienteDetallePage({
   const cliente = expediente.clientes ?? null;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <Button variant="ghost" size="sm" asChild className="-ml-2 text-muted-foreground">
         <Link href="/expedientes">
           <ArrowLeft />
@@ -121,7 +121,7 @@ export default async function ExpedienteDetallePage({
 
       {/* Header */}
       <FadeIn>
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+        <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
           <div className="min-w-0 space-y-3">
             <div className="flex flex-wrap items-center gap-2">
               <OptionBadge option={FUERO[expediente.fuero]} />
@@ -133,7 +133,7 @@ export default async function ExpedienteDetallePage({
                 </Badge>
               )}
             </div>
-            <h1 className="font-display text-2xl font-semibold tracking-tight text-balance">
+            <h1 className="font-display text-2xl font-semibold text-balance sm:text-[1.75rem]">
               {expediente.caratula}
             </h1>
             <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">

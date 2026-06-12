@@ -244,9 +244,9 @@ export function MovimientosPanel({
   const [editando, setEditando] = React.useState<Movimiento | null>(null);
 
   return (
-    <Card className="p-5 space-y-4">
-      <div className="flex items-center justify-between gap-2">
-        <div>
+    <Card className="p-6 space-y-5 shadow-xs">
+      <div className="flex items-center justify-between gap-3">
+        <div className="space-y-0.5">
           <h3 className="font-display text-base font-semibold">Cronología</h3>
           <p className="text-sm text-muted-foreground">
             {movimientos.length}{" "}

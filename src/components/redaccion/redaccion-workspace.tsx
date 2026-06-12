@@ -41,7 +41,7 @@ export function RedaccionWorkspace({
   }
 
   return (
-    <Tabs value={tab} onValueChange={setTab} className="space-y-5">
+    <Tabs value={tab} onValueChange={setTab} className="space-y-6">
       <TabsList>
         <TabsTrigger value="editor">
           <PenLine className="size-4" />
@@ -50,12 +50,20 @@ export function RedaccionWorkspace({
         <TabsTrigger value="plantillas">
           <LayoutTemplate className="size-4" />
           Plantillas
-          {plantillas.length > 0 && <Badge tone="muted">{plantillas.length}</Badge>}
+          {plantillas.length > 0 && (
+            <Badge tone="muted" className="text-data">
+              {plantillas.length}
+            </Badge>
+          )}
         </TabsTrigger>
         <TabsTrigger value="borradores">
           <FilesIcon className="size-4" />
           Mis borradores
-          {borradores.length > 0 && <Badge tone="muted">{borradores.length}</Badge>}
+          {borradores.length > 0 && (
+            <Badge tone="muted" className="text-data">
+              {borradores.length}
+            </Badge>
+          )}
         </TabsTrigger>
       </TabsList>
 

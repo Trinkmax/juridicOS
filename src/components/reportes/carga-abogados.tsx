@@ -33,8 +33,8 @@ function Metrica({
 }) {
   return (
     <div className="flex items-center gap-1.5" title={label}>
-      <Icon className="size-3.5 shrink-0" style={{ color }} />
-      <span className="text-data text-sm font-semibold">{value}</span>
+      <Icon className="size-3.5 shrink-0 text-muted-foreground/70" style={{ color }} />
+      <span className="text-data text-sm font-semibold tabular-nums">{value}</span>
     </div>
   );
 }
@@ -44,7 +44,7 @@ export function CargaAbogados({ data }: { data: CargaAbogado[] }) {
   const maxCarga = Math.max(1, ...data.map((d) => d.plazosPendientes + d.tareasActivas));
 
   return (
-    <div className="flex flex-col gap-2.5">
+    <div className="flex flex-col gap-3">
       {data.map((a) => {
         const carga = a.plazosPendientes + a.tareasActivas;
         const pct = Math.round((carga / maxCarga) * 100);
@@ -52,16 +52,16 @@ export function CargaAbogados({ data }: { data: CargaAbogado[] }) {
           <div
             key={a.usuarioId}
             className={cn(
-              "rounded-lg border border-border bg-card p-4",
+              "rounded-lg border border-border bg-card p-4 sm:px-5",
               "transition-colors hover:border-foreground/20",
             )}
           >
-            <div className="flex items-center justify-between gap-3">
-              <div className="flex min-w-0 items-center gap-2.5">
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex min-w-0 items-center gap-3">
                 <Avatar name={a.nombre} src={a.avatarUrl} size="sm" />
                 <span className="truncate text-sm font-medium">{a.nombre}</span>
               </div>
-              <div className="flex shrink-0 items-center gap-3.5">
+              <div className="flex shrink-0 items-center gap-4">
                 <Metrica
                   icon={CalendarClock}
                   value={a.plazosPendientes}
@@ -82,9 +82,9 @@ export function CargaAbogados({ data }: { data: CargaAbogado[] }) {
                 />
               </div>
             </div>
-            <div className="mt-2.5 h-1.5 w-full overflow-hidden rounded-sm bg-muted">
+            <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-muted">
               <div
-                className="h-full rounded-sm transition-all"
+                className="h-full rounded-full transition-all"
                 style={{
                   width: `${Math.max(pct, carga > 0 ? 6 : 0)}%`,
                   background: CHART_COLORS.primary,

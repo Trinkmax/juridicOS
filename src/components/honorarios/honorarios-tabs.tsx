@@ -27,7 +27,7 @@ export function HonorariosTabs({
   valorJus: number;
 }) {
   return (
-    <Tabs defaultValue="honorarios" className="space-y-5">
+    <Tabs defaultValue="honorarios" className="space-y-6">
       <TabsList>
         <TabsTrigger value="honorarios">Honorarios</TabsTrigger>
         <TabsTrigger value="tiempo">Registro de tiempo</TabsTrigger>
@@ -35,7 +35,7 @@ export function HonorariosTabs({
         <TabsTrigger value="cuenta">Estado de cuenta</TabsTrigger>
       </TabsList>
 
-      <TabsContent value="honorarios" className="space-y-4">
+      <TabsContent value="honorarios" className="space-y-5">
         <div className="flex items-center justify-between gap-3">
           <p className="text-sm text-muted-foreground">
             {honorarios.length} honorario{honorarios.length === 1 ? "" : "s"} registrado
@@ -54,7 +54,7 @@ export function HonorariosTabs({
         <TimeTrackingPanel entries={entries} expedientes={expedientes} />
       </TabsContent>
 
-      <TabsContent value="facturas" className="space-y-4">
+      <TabsContent value="facturas" className="space-y-5">
         <div className="flex items-center justify-between gap-3">
           <p className="text-sm text-muted-foreground">
             {facturas.length} factura{facturas.length === 1 ? "" : "s"} registrada

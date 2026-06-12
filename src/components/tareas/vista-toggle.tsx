@@ -17,7 +17,7 @@ const OPCIONES: {
 export function VistaToggle({ vista }: { vista: VistaTareas }) {
   return (
     <div
-      className="flex items-center rounded-md border border-border p-0.5"
+      className="flex items-center rounded-lg border border-border bg-card p-1 shadow-xs"
       role="tablist"
       aria-label="Vista de tareas"
     >
@@ -32,10 +32,10 @@ export function VistaToggle({ vista }: { vista: VistaTareas }) {
             role="tab"
             aria-selected={activa}
             className={cn(
-              "flex items-center gap-1.5 rounded-sm px-2.5 py-1 text-sm transition-colors",
+              "flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm transition-colors",
               activa
-                ? "bg-secondary font-medium text-foreground"
-                : "text-muted-foreground hover:text-foreground",
+                ? "bg-secondary font-medium text-foreground shadow-xs"
+                : "text-muted-foreground hover:bg-accent/60 hover:text-foreground",
             )}
           >
             <Icon className="size-4" />

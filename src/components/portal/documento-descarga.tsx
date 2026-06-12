@@ -40,14 +40,14 @@ export function DocumentoDescarga({
   }
 
   return (
-    <div className="flex items-center gap-3 rounded-lg border border-border bg-card p-3.5 transition-colors hover:border-foreground/20">
+    <div className="flex items-center gap-3.5 rounded-lg border border-border bg-card p-4 shadow-xs transition-colors hover:border-foreground/20">
       <div className="flex size-10 shrink-0 items-center justify-center rounded-md bg-primary-soft text-primary">
         <FileText className="size-5" />
       </div>
 
       <div className="min-w-0 flex-1">
         <p className="truncate text-sm font-medium">{nombre}</p>
-        <p className="text-xs text-muted-foreground">
+        <p className="mt-0.5 text-xs text-muted-foreground">
           {[tipo, tamano].filter(Boolean).join(" · ") || "Documento"}
         </p>
       </div>

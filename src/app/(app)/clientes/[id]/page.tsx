@@ -41,11 +41,11 @@ function MetricaTile({
   value: string | number;
 }) {
   return (
-    <div className="rounded-lg border border-border p-4">
-      <p className="font-display text-data text-xl font-semibold tracking-tight sm:text-2xl">
+    <div className="rounded-lg border border-border bg-card p-5">
+      <p className="font-display text-data text-2xl font-semibold tracking-tight sm:text-[1.75rem]">
         {value}
       </p>
-      <p className="mt-1 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+      <p className="mt-1.5 text-sm font-medium text-muted-foreground">
         {label}
       </p>
     </div>
@@ -67,10 +67,8 @@ function Dato({ icon: Icon, label, value }: DatoProps) {
         <Icon className="size-4" />
       </div>
       <div className="min-w-0">
-        <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-          {label}
-        </p>
-        <p className="mt-0.5 break-words text-sm font-medium">{value || "—"}</p>
+        <p className="text-xs font-medium text-muted-foreground">{label}</p>
+        <p className="mt-1 break-words text-sm font-medium">{value || "—"}</p>
       </div>
     </div>
   );
@@ -175,7 +173,7 @@ export default async function ClienteDetallePage({
   const esJuridica = cliente.tipo === "juridica";
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <Button asChild variant="ghost" size="sm" className="-ml-2">
         <Link href="/clientes">
           <ArrowLeft className="size-4" />
@@ -188,10 +186,10 @@ export default async function ClienteDetallePage({
           <div className="flex items-center gap-4 min-w-0">
             <Avatar name={cliente.nombre} size="lg" />
             <div className="min-w-0">
-              <h1 className="truncate font-display text-xl font-semibold tracking-tight sm:text-2xl">
+              <h1 className="truncate font-display text-2xl font-semibold tracking-tight sm:text-[1.75rem]">
                 {cliente.nombre}
               </h1>
-              <div className="mt-1.5 flex items-center gap-2">
+              <div className="mt-2 flex items-center gap-2">
                 <OptionBadge option={TIPO_CLIENTE[cliente.tipo]} dot />
                 {cliente.localidad && (
                   <span className="text-sm text-muted-foreground">
@@ -231,7 +229,7 @@ export default async function ClienteDetallePage({
             <CardHeader>
               <CardTitle>Datos del cliente</CardTitle>
             </CardHeader>
-            <CardContent className="grid gap-5 sm:grid-cols-2">
+            <CardContent className="grid gap-6 sm:grid-cols-2">
               <Dato
                 icon={esJuridica ? Building2 : IdCard}
                 label={esJuridica ? "CUIT" : "DNI"}
@@ -269,7 +267,7 @@ export default async function ClienteDetallePage({
                   {cliente.notas}
                 </p>
               ) : (
-                <p className="text-sm text-muted-foreground/70">
+                <p className="text-sm text-muted-foreground/60">
                   Sin notas. Editá el cliente para agregar observaciones internas.
                 </p>
               )}
@@ -309,8 +307,15 @@ export default async function ClienteDetallePage({
                         <p className="truncate text-sm font-medium">
                           {e.caratula}
                         </p>
-                        <p className="mt-0.5 text-xs text-muted-foreground">
-                          {e.nro_sac ? `SAC ${e.nro_sac} · ` : ""}
+                        <p className="mt-1 text-xs text-muted-foreground">
+                          {e.nro_sac ? (
+                            <>
+                              SAC <span className="text-data">{e.nro_sac}</span>
+                              {" · "}
+                            </>
+                          ) : (
+                            ""
+                          )}
                           {e.fecha_inicio
                             ? `Iniciada ${formatFechaCorta(e.fecha_inicio)}`
                             : "Sin fecha de inicio"}

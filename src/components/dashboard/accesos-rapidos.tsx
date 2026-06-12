@@ -33,12 +33,12 @@ const ACCESOS: Acceso[] = [
 /** The dashboard's three primary jump-off actions. */
 export function AccesosRapidos({ className }: { className?: string }) {
   return (
-    <div className={cn("grid gap-3 sm:grid-cols-3", className)}>
+    <div className={cn("grid gap-4 sm:grid-cols-3", className)}>
       {ACCESOS.map((a) => (
         <Link
           key={a.href}
           href={a.href}
-          className="group flex items-center gap-3 rounded-lg border border-border bg-card p-4 transition-colors hover:border-foreground/20"
+          className="group flex items-center gap-3.5 rounded-lg border border-border bg-card p-4 shadow-xs transition-colors hover:border-foreground/20"
         >
           <div className="flex size-10 shrink-0 items-center justify-center rounded-md bg-primary-soft text-primary">
             <a.icon className="size-5" />

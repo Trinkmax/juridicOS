@@ -186,12 +186,12 @@ export function Calculadora({
   const dr = venc ? diasRestantes(venc) : null;
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[minmax(0,360px)_minmax(0,1fr)]">
+    <div className="grid gap-6 lg:grid-cols-[minmax(0,360px)_minmax(0,1fr)] lg:gap-8">
       {/* ── Panel de entrada ─────────────────────────────────────────── */}
       <FadeIn>
-        <Card className="lg:sticky lg:top-6">
-          <CardContent className="space-y-5 p-5">
-            <div className="flex items-center gap-2 text-sm font-medium">
+        <Card className="shadow-xs lg:sticky lg:top-6">
+          <CardContent className="space-y-5 p-6">
+            <div className="flex items-center gap-2 text-sm font-medium text-foreground">
               <Sparkles className="size-4 text-primary" />
               Parámetros del cómputo
             </div>
@@ -257,7 +257,7 @@ export function Calculadora({
       </FadeIn>
 
       {/* ── Resultado + desglose ─────────────────────────────────────── */}
-      <div className="space-y-5">
+      <div className="space-y-6">
         <ResultadoCard
           resultado={resultado}
           calculando={calculando}
@@ -270,7 +270,7 @@ export function Calculadora({
 
         {resultado?.fecha_vencimiento && (
           <FadeIn>
-            <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border bg-card p-4">
+            <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border bg-card p-4 shadow-xs">
               <div className="flex items-start gap-2 text-xs text-muted-foreground">
                 <Info className="mt-0.5 size-3.5 shrink-0" />
                 <p className="max-w-md leading-relaxed">
@@ -382,9 +382,9 @@ function ResultadoCard({
   const venc = resultado?.fecha_vencimiento ?? null;
 
   return (
-    <Card>
+    <Card className="shadow-xs">
       <CardContent className="p-6">
-        <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+        <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
           <CalendarClock className="size-4 text-primary" />
           Vencimiento
           {calculando && <Spinner className="ml-1 size-3.5 text-primary" />}
@@ -398,9 +398,9 @@ function ResultadoCard({
           </p>
         ) : (
           <FadeIn key={`${venc}-${resultado?.dias_contados}`} y={6}>
-            <div className="mt-3 space-y-4">
+            <div className="mt-4 space-y-5">
               <div className="flex flex-wrap items-end gap-x-4 gap-y-2">
-                <p className="font-display text-data text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
+                <p className="font-display text-data text-3xl font-semibold leading-tight sm:text-4xl">
                   {capitalizar(formatFecha(venc, "EEEE d 'de' MMMM"))}
                 </p>
                 <span className="text-data pb-1 text-lg text-muted-foreground">
@@ -414,26 +414,29 @@ function ResultadoCard({
                   estado="pendiente"
                   fechaVencimiento={venc}
                 />
-                <Badge tone="success" className="gap-1.5 text-data">
-                  <CheckCircle2 className="size-3" />
-                  {resultado.dias_contados} días{" "}
+                <Badge tone="default" className="gap-1.5">
+                  <CheckCircle2 className="size-3 text-foreground/55" />
+                  <span className="text-data">{resultado.dias_contados}</span> días{" "}
                   {resultado.modalidad === "corridos" ? "corridos" : "hábiles"}
                 </Badge>
                 {resultado.dias_inhabiles_salteados > 0 && (
-                  <Badge tone="muted" className="gap-1.5 text-data">
+                  <Badge tone="muted" className="gap-1.5">
                     <CircleOff className="size-3" />
-                    {resultado.dias_inhabiles_salteados} inhábiles salteados
+                    <span className="text-data">
+                      {resultado.dias_inhabiles_salteados}
+                    </span>{" "}
+                    inhábiles salteados
                   </Badge>
                 )}
               </div>
 
               {resultado.vencimiento_con_gracia && (
-                <div className="flex items-center gap-2 rounded-lg border border-border bg-muted/40 px-3 py-2.5 text-sm">
+                <div className="flex items-center gap-2 rounded-md border border-border bg-muted/40 px-3 py-2.5 text-sm">
                   <ShieldCheck className="size-4 shrink-0 text-info" />
                   <span className="text-muted-foreground">
                     Plazo de gracia (cargo de las 2 primeras horas):
                   </span>
-                  <span className="font-medium text-foreground">
+                  <span className="text-data font-medium text-foreground">
                     {formatFechaCorta(resultado.vencimiento_con_gracia)}
                   </span>
                 </div>
@@ -454,24 +457,25 @@ function DesgloseCard({
 }) {
   return (
     <FadeIn>
-      <Card>
+      <Card className="shadow-xs">
         <CardContent className="p-5">
-          <div className="mb-1 flex items-center justify-between">
+          <div className="mb-1.5 flex items-center justify-between">
             <h3 className="flex items-center gap-2 font-display text-sm font-semibold">
               <CalendarCheck2 className="size-4 text-primary" />
               Desglose del cómputo
             </h3>
-            <span className="text-data text-xs text-muted-foreground">
-              {detalle.length} día{detalle.length === 1 ? "" : "s"}
+            <span className="text-xs text-muted-foreground">
+              <span className="text-data">{detalle.length}</span> día
+              {detalle.length === 1 ? "" : "s"}
             </span>
           </div>
-          <p className="mb-4 text-xs text-muted-foreground">
+          <p className="mb-4 text-xs leading-relaxed text-muted-foreground">
             Día por día, qué se contó y qué se salteó.
           </p>
 
           <Separator className="mb-4" />
 
-          <Stagger className="grid gap-1.5 sm:grid-cols-2">
+          <Stagger className="grid gap-2 sm:grid-cols-2">
             {detalle.map((d, i) => (
               <StaggerItem key={`${d.fecha}-${i}`}>
                 <DiaRow dia={d} />
@@ -489,16 +493,16 @@ function DiaRow({ dia }: { dia: ComputoPlazo["detalle"][number] }) {
   return (
     <div
       className={cn(
-        "flex items-center gap-3 rounded-lg border px-3 py-2 text-sm transition-colors",
-        habil
-          ? "border-success/20 bg-success-soft/40"
-          : "border-border bg-muted/30",
+        "flex items-center gap-3 rounded-md border px-3 py-2 text-sm transition-colors",
+        habil ? "border-border bg-card" : "border-border bg-muted/30",
       )}
     >
       <span
         className={cn(
-          "flex size-6 shrink-0 items-center justify-center rounded-full text-xs font-semibold",
-          habil ? "bg-success text-success-foreground" : "bg-muted text-muted-foreground",
+          "text-data flex size-6 shrink-0 items-center justify-center rounded-full text-xs font-semibold",
+          habil
+            ? "bg-foreground text-background"
+            : "bg-muted text-muted-foreground",
         )}
       >
         {habil ? dia.n ?? <CheckCircle2 className="size-3.5" /> : <CircleOff className="size-3.5" />}
@@ -513,18 +517,11 @@ function DiaRow({ dia }: { dia: ComputoPlazo["detalle"][number] }) {
           {capitalizar(formatFecha(dia.fecha, "EEEE d 'de' MMM"))}
         </p>
         {!habil && dia.motivo && (
-          <p
-            className={cn(
-              "text-xs",
-              /feria/i.test(dia.motivo) ? "text-warning-foreground" : "text-destructive",
-            )}
-          >
-            {dia.motivo}
-          </p>
+          <p className="text-xs text-muted-foreground">{dia.motivo}</p>
         )}
       </div>
       {habil && (
-        <CheckCircle2 className="size-4 shrink-0 text-success" aria-hidden />
+        <CheckCircle2 className="size-4 shrink-0 text-foreground/45" aria-hidden />
       )}
     </div>
   );

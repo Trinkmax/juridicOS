@@ -81,11 +81,11 @@ export function AsistenteIA({
 
   if (!iaActiva) {
     return (
-      <Card className="flex flex-col items-center justify-center gap-3 bg-muted/40 px-6 py-14 text-center">
+      <Card className="flex flex-col items-center justify-center gap-4 bg-muted/40 px-6 py-16 text-center shadow-xs">
         <div className="flex size-12 items-center justify-center rounded-full bg-primary-soft text-primary">
           <Sparkles className="size-6" />
         </div>
-        <div className="space-y-1">
+        <div className="space-y-1.5">
           <h3 className="font-display text-sm font-semibold">Asistente IA no disponible</h3>
           <p className="max-w-sm text-sm text-muted-foreground">
             Configurá <code className="font-mono text-xs">ANTHROPIC_API_KEY</code> para activar
@@ -137,13 +137,13 @@ export function AsistenteIA({
   return (
     <div className="space-y-6">
       {/* Resumen con IA */}
-      <Card className="p-5 space-y-4">
+      <Card className="p-6 space-y-5 shadow-xs">
         <div className="flex flex-wrap items-start justify-between gap-3">
-          <div className="flex items-center gap-2">
-            <div className="flex size-9 items-center justify-center rounded-md bg-primary-soft text-primary">
+          <div className="flex items-center gap-3">
+            <div className="flex size-9 shrink-0 items-center justify-center rounded-md bg-primary-soft text-primary">
               <Sparkles className="size-5" />
             </div>
-            <div>
+            <div className="space-y-0.5">
               <h3 className="font-display text-base font-semibold">Copiloto de la causa</h3>
               <p className="text-sm text-muted-foreground">
                 Resumí el expediente y consultá lo que necesites.
@@ -177,8 +177,8 @@ export function AsistenteIA({
       </Card>
 
       {/* Preguntas y respuestas */}
-      <Card className="flex flex-col p-5">
-        <div className="mb-3">
+      <Card className="flex flex-col p-6 shadow-xs">
+        <div className="mb-4 space-y-0.5">
           <h3 className="font-display text-base font-semibold">Preguntale al expediente</h3>
           <p className="text-sm text-muted-foreground">
             Respondo según los datos cargados de la causa.

@@ -115,7 +115,7 @@ export function AsistenteIA({
             />
           </Field>
 
-          <div className="flex items-start gap-2 rounded-lg bg-muted/60 p-3 text-xs text-muted-foreground">
+          <div className="flex items-start gap-2.5 rounded-lg bg-muted/60 p-3.5 text-xs leading-relaxed text-muted-foreground">
             <Info className="mt-0.5 size-3.5 shrink-0" />
             <p>
               La IA asiste; revisá y aprobá el documento. No constituye asesoramiento

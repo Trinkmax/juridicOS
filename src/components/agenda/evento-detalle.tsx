@@ -67,7 +67,7 @@ function Row({
     <div className="flex items-start gap-3">
       <Icon className="mt-0.5 size-4 shrink-0 text-muted-foreground" />
       <div className="min-w-0 flex-1">
-        <dt className="text-xs uppercase tracking-wide text-muted-foreground">{label}</dt>
+        <dt className="text-xs font-medium text-muted-foreground">{label}</dt>
         <dd className="mt-0.5 text-sm text-foreground">{children}</dd>
       </div>
     </div>
@@ -115,7 +115,7 @@ export function EventoDetalle({
         <DialogTitle className="text-xl">{item.titulo}</DialogTitle>
       </DialogHeader>
 
-      <dl className="space-y-3.5 py-1">
+      <dl className="space-y-4 py-2">
         <Row icon={esPlazo ? CalendarClock : CalendarDays} label={esPlazo ? "Vencimiento" : "Fecha"}>
           {capitalizar(formatFecha(item.fecha, "EEEE d 'de' MMMM, yyyy"))}
         </Row>

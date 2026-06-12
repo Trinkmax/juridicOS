@@ -132,9 +132,9 @@ export function EscritoEnFormacion() {
   };
 
   return (
-    <div className="grid gap-5 lg:grid-cols-[1.5fr_1fr] lg:items-start">
+    <div className="grid gap-5 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] lg:items-start">
       {/* ── Pieza central: el escrito en formación ─────────────────────── */}
-      <div className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+      <div className="min-w-0 overflow-hidden rounded-xl border border-border bg-card shadow-sm">
         {/* Cabecera tipo barra de documento */}
         <div className="flex items-center justify-between border-b border-border bg-muted/40 px-4 py-2.5">
           <span className="inline-flex items-center gap-1.5 font-mono text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
@@ -261,14 +261,14 @@ export function EscritoEnFormacion() {
       </div>
 
       {/* ── Columna lateral: plantillas + caveat ───────────────────────── */}
-      <div className="space-y-4">
+      <div className="min-w-0 space-y-4">
         <div>
-          <span className="font-mono text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+          <span className="text-xs font-medium text-muted-foreground">
             18 plantillas forenses
           </span>
-          <div className="mask-fade-edges mt-2 flex gap-1.5 overflow-x-auto pb-1 no-scrollbar">
+          <div className="mt-2.5 flex flex-wrap gap-1.5">
             {PLANTILLAS.map((p) => (
-              <Badge key={p} tone="muted" className="shrink-0 font-mono text-[10px]">
+              <Badge key={p} tone="muted" className="text-[11px] font-normal">
                 {p}
               </Badge>
             ))}

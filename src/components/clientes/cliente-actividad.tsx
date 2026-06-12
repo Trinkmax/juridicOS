@@ -107,10 +107,8 @@ function Row({
     <div className="flex items-start gap-3">
       <Icon className="mt-0.5 size-4 shrink-0 text-muted-foreground" />
       <div className="min-w-0 flex-1">
-        <dt className="text-xs uppercase tracking-wide text-muted-foreground">
-          {label}
-        </dt>
-        <dd className="mt-0.5 text-sm text-foreground">{children}</dd>
+        <dt className="text-xs font-medium text-muted-foreground">{label}</dt>
+        <dd className="mt-1 text-sm text-foreground">{children}</dd>
       </div>
     </div>
   );
@@ -285,7 +283,7 @@ export function ClienteActividad({
 
   return (
     <>
-      <ol className="relative space-y-1 pl-6">
+      <ol className="relative space-y-1.5 pl-6">
         {/* Línea vertical */}
         <span
           aria-hidden
@@ -308,18 +306,18 @@ export function ClienteActividad({
               <button
                 type="button"
                 onClick={() => setSeleccionado(item)}
-                className="block w-full rounded-md px-2 py-2 text-left transition-colors hover:bg-accent/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className="block w-full rounded-md px-3 py-2.5 text-left transition-colors hover:bg-accent/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
                 <div className="flex flex-wrap items-center gap-2">
                   <time className="text-data text-xs font-medium text-muted-foreground">
                     {capitalizar(formatFecha(item.fecha, "d MMM yyyy"))}
                   </time>
-                  <Badge tone={tono} className="text-[0.7rem]">
+                  <Badge tone={tono}>
                     <KindIcon className="size-3" />
                     {KIND_LABEL[item.kind]}
                   </Badge>
                 </div>
-                <p className="mt-0.5 font-medium leading-snug">{item.titulo}</p>
+                <p className="mt-1 font-medium leading-snug">{item.titulo}</p>
                 <p className="mt-0.5 line-clamp-1 text-sm text-muted-foreground">
                   {item.caratula}
                 </p>

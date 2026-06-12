@@ -23,7 +23,7 @@ export function ClientesTabla({ clientes }: { clientes: ClienteConCausas[] }) {
   return (
     <FadeIn>
       {/* Desktop */}
-      <Card className="hidden overflow-hidden p-0 md:block">
+      <Card className="hidden overflow-hidden p-0 shadow-xs md:block">
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent">
@@ -37,7 +37,7 @@ export function ClientesTabla({ clientes }: { clientes: ClienteConCausas[] }) {
           <TableBody>
             {clientes.map((c) => (
               <TableRow key={c.id} className="cursor-pointer">
-                <TableCell>
+                <TableCell className="py-3.5">
                   <Link
                     href={`/clientes/${c.id}`}
                     className="flex items-center gap-3 font-medium"
@@ -84,20 +84,20 @@ export function ClientesTabla({ clientes }: { clientes: ClienteConCausas[] }) {
       <div className="grid gap-3 md:hidden">
         {clientes.map((c) => (
           <Link key={c.id} href={`/clientes/${c.id}`}>
-            <Card className="flex items-center gap-3 p-4 transition-colors hover:border-foreground/20">
+            <Card className="flex items-center gap-3 p-4 shadow-xs transition-colors hover:border-foreground/20">
               <Avatar name={c.nombre} />
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
                   <p className="truncate font-medium">{c.nombre}</p>
                   <OptionBadge option={TIPO_CLIENTE[c.tipo]} />
                 </div>
-                <p className="mt-0.5 truncate text-sm text-muted-foreground">
+                <p className="mt-1 truncate text-sm text-muted-foreground">
                   {c.documento || c.email || c.telefono || "Sin datos de contacto"}
                 </p>
               </div>
-              <span className="flex shrink-0 items-center gap-1 text-sm text-data text-muted-foreground">
+              <span className="flex shrink-0 items-center gap-1.5 text-sm text-muted-foreground">
                 <Folder className="size-4" />
-                {c.causas}
+                <span className="text-data">{c.causas}</span>
               </span>
             </Card>
           </Link>

@@ -269,7 +269,7 @@ export function DocumentoUploader({
                 return (
                   <li
                     key={`${it.file.name}-${i}`}
-                    className="flex items-center gap-3 rounded-lg border border-border bg-card px-3 py-2"
+                    className="flex items-center gap-3 rounded-lg border border-border bg-card px-3 py-2.5"
                   >
                     <Icon className={cn("size-5 shrink-0", className)} />
                     <div className="min-w-0 flex-1">
@@ -285,7 +285,7 @@ export function DocumentoUploader({
                     </div>
                     {it.estado === "subiendo" && <Spinner className="size-4" />}
                     {it.estado === "ok" && (
-                      <CheckCircle2 className="size-4 shrink-0 text-success" />
+                      <CheckCircle2 className="size-4 shrink-0 text-foreground/55" />
                     )}
                     {it.estado === "error" && (
                       <AlertCircle className="size-4 shrink-0 text-destructive" />

@@ -294,7 +294,7 @@ export default async function ReportesPage() {
   ];
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-8">
       <FadeIn>
         <PageHeader
           title="Reportes"
@@ -321,7 +321,7 @@ export default async function ReportesPage() {
             ))}
           </Stagger>
 
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
             <FadeIn delay={0.05}>
               <Card>
                 <CardHeader>
@@ -384,7 +384,7 @@ export default async function ReportesPage() {
                   <CardTitle>Honorarios por estado</CardTitle>
                   <CardDescription>Cartera de honorarios del estudio.</CardDescription>
                 </CardHeader>
-                <CardContent className="flex flex-col gap-3 pt-1">
+                <CardContent className="flex flex-col gap-2.5">
                   <DesgloseHonorario
                     label="Pendientes"
                     value={honPorEstado.pendiente}
@@ -444,12 +444,12 @@ function DesgloseHonorario({
   color: string;
 }) {
   return (
-    <div className="flex items-center justify-between gap-3 rounded-md border border-border bg-muted/40 px-3.5 py-3">
+    <div className="flex items-center justify-between gap-3 rounded-md border border-border bg-muted/30 px-4 py-3 transition-colors hover:border-foreground/15">
       <div className="flex items-center gap-2.5">
-        <span className="size-2.5 shrink-0 rounded-full" style={{ background: color }} />
+        <span className="size-2 shrink-0 rounded-full" style={{ background: color }} />
         <span className="text-sm font-medium text-muted-foreground">{label}</span>
       </div>
-      <span className="text-data text-sm font-semibold">{formatMoney(value)}</span>
+      <span className="text-data text-sm font-semibold tabular-nums">{formatMoney(value)}</span>
     </div>
   );
 }

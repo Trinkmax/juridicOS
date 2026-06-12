@@ -94,7 +94,7 @@ export default async function RedaccionPage() {
   const membrete = construirMembrete(activeEstudio);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <PageHeader
         title="Redacción con IA"
         description="Escribí escritos con asistencia de IA, plantillas reutilizables y datos del expediente."
@@ -105,10 +105,13 @@ export default async function RedaccionPage() {
         <FadeIn>
           <div className="flex items-start gap-3 rounded-lg border border-border bg-muted/40 p-4 text-sm">
             <Info className="mt-0.5 size-4 shrink-0 text-muted-foreground" />
-            <div className="space-y-0.5">
+            <div className="space-y-1">
               <p className="font-medium">La IA está desactivada</p>
-              <p className="text-muted-foreground">
-                Configurá <code className="rounded bg-muted px-1 py-0.5 text-xs">ANTHROPIC_API_KEY</code>{" "}
+              <p className="leading-relaxed text-muted-foreground">
+                Configurá{" "}
+                <code className="rounded-sm bg-muted px-1.5 py-0.5 font-mono text-xs">
+                  ANTHROPIC_API_KEY
+                </code>{" "}
                 en el entorno del servidor para activar el asistente de redacción. La
                 edición manual y las plantillas funcionan igual.
               </p>

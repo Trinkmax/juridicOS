@@ -19,7 +19,6 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import {
   ESTADOS_TAREA,
-  ESTADO_TAREA,
   type EstadoTarea,
 } from "@/lib/constants";
 import type { Tarea } from "@/lib/types/domain";
@@ -58,22 +57,12 @@ function Columna({
   isActiveOver: boolean;
 }) {
   const { setNodeRef, isOver } = useDroppable({ id: estado });
-  const tono = ESTADO_TAREA[estado]?.tone ?? "muted";
   const activo = isOver || isActiveOver;
 
   return (
     <div className="flex w-72 shrink-0 flex-col sm:w-80">
-      <div className="mb-3 flex items-center justify-between px-1">
+      <div className="mb-3 flex items-center justify-between px-1.5">
         <div className="flex items-center gap-2">
-          <span
-            className={cn(
-              "size-2 rounded-full",
-              tono === "muted" && "bg-muted-foreground/40",
-              tono === "info" && "bg-info",
-              tono === "warning" && "bg-warning",
-              tono === "success" && "bg-success",
-            )}
-          />
           <h2 className="font-display text-sm font-semibold text-foreground">{label}</h2>
           <Badge tone="muted" className="text-data">
             {tareas.length}
@@ -84,12 +73,12 @@ function Columna({
       <div
         ref={setNodeRef}
         className={cn(
-          "flex min-h-32 flex-1 flex-col gap-2.5 rounded-lg border border-dashed border-transparent p-2 transition-colors",
-          activo && "border-primary/40 bg-primary-soft/40",
+          "flex min-h-32 flex-1 flex-col gap-3 rounded-lg border border-dashed border-border/60 p-2 transition-colors",
+          activo && "border-primary/50 bg-primary-soft/40",
         )}
       >
         {tareas.length === 0 ? (
-          <div className="flex flex-1 items-center justify-center rounded-md py-8 text-center text-xs text-muted-foreground/70">
+          <div className="flex flex-1 items-center justify-center rounded-md px-3 py-10 text-center text-xs text-muted-foreground/70">
             {activo ? "Soltá acá" : "Sin tareas"}
           </div>
         ) : (
@@ -196,7 +185,7 @@ export function KanbanBoard({
         setOverEstado(over && COLUMNAS.some((c) => c.value === over) ? over : null);
       }}
     >
-      <div className="-mx-1 flex gap-4 overflow-x-auto px-1 pb-4">
+      <div className="-mx-1 flex gap-5 overflow-x-auto px-1 pb-4">
         {COLUMNAS.map((c) => (
           <Columna
             key={c.value}

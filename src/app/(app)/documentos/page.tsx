@@ -44,7 +44,7 @@ export default async function DocumentosPage({
   const hayFiltros = Boolean(q || expediente);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <PageHeader
         title="Documentos"
         description="El archivo digital del estudio: subí, organizá y compartí con tus clientes."
@@ -53,31 +53,33 @@ export default async function DocumentosPage({
         <DocumentoUploader estudioId={activeEstudio.id} expedientes={expedientes} />
       </PageHeader>
 
-      <DocumentosFiltros expedientes={expedientes} />
+      <div className="space-y-5">
+        <DocumentosFiltros expedientes={expedientes} />
 
-      {documentos.length === 0 ? (
-        hayFiltros ? (
-          <EmptyState
-            icon={FileSearch}
-            title="Sin resultados"
-            description="No encontramos documentos con esos filtros. Probá ajustar la búsqueda."
-          />
+        {documentos.length === 0 ? (
+          hayFiltros ? (
+            <EmptyState
+              icon={FileSearch}
+              title="Sin resultados"
+              description="No encontramos documentos con esos filtros. Probá ajustar la búsqueda."
+            />
+          ) : (
+            <EmptyState
+              icon={FileText}
+              title="Todavía no hay documentos"
+              description="Subí escritos, contratos, pruebas y cualquier archivo de tus causas. Quedan guardados de forma segura."
+              action={
+                <DocumentoUploader
+                  estudioId={activeEstudio.id}
+                  expedientes={expedientes}
+                />
+              }
+            />
+          )
         ) : (
-          <EmptyState
-            icon={FileText}
-            title="Todavía no hay documentos"
-            description="Subí escritos, contratos, pruebas y cualquier archivo de tus causas. Quedan guardados de forma segura."
-            action={
-              <DocumentoUploader
-                estudioId={activeEstudio.id}
-                expedientes={expedientes}
-              />
-            }
-          />
-        )
-      ) : (
-        <DocumentosLista documentos={documentos} />
-      )}
+          <DocumentosLista documentos={documentos} />
+        )}
+      </div>
     </div>
   );
 }

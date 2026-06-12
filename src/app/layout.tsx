@@ -1,17 +1,24 @@
 import type { Metadata, Viewport } from "next";
-import { Source_Serif_4, Inter, JetBrains_Mono } from "next/font/google";
+import { Source_Serif_4, Inter, JetBrains_Mono, Outfit } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
 import { APP_NAME, APP_TAGLINE } from "@/lib/constants";
 
-// Tipografía "Tinta": serif editorial en títulos, sans limpia en cuerpo/datos,
-// monoespaciada para identificadores (nº SAC, CAE, variables de plantilla).
+// Tipografía juridicOS: display geométrico que conversa con el wordmark del logo
+// (Outfit) en títulos; Inter en cuerpo/datos; serif (Source Serif) reservada al
+// "escrito" que simula un documento; mono para identificadores (nº SAC, artículos).
 const fontSans = Inter({
   variable: "--font-inter",
   subsets: ["latin", "latin-ext"],
   display: "swap",
+});
+const fontDisplay = Outfit({
+  variable: "--font-outfit",
+  subsets: ["latin", "latin-ext"],
+  display: "swap",
+  weight: ["400", "500", "600", "700"],
 });
 const fontSerif = Source_Serif_4({
   variable: "--font-source-serif",
@@ -42,7 +49,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html
       lang="es"
       suppressHydrationWarning
-      className={`${fontSans.variable} ${fontSerif.variable} ${fontMono.variable} h-full`}
+      className={`${fontSans.variable} ${fontDisplay.variable} ${fontSerif.variable} ${fontMono.variable} h-full`}
     >
       <body className="min-h-full">
         <ThemeProvider

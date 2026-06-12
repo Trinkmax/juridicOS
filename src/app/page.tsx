@@ -78,9 +78,9 @@ export default async function LandingPage() {
       <main className="flex-1">
         {/* ── FOJA 01 — Hero ─────────────────────────────────────────────── */}
         <section className="relative mx-auto max-w-5xl px-6 pt-14 pb-16 sm:pt-20 sm:pb-24">
-          <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12">
+          <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-12">
             {/* Columna editorial */}
-            <div className="relative">
+            <div className="relative min-w-0">
               {/* Filete de margen reglamentario */}
               <div className="pointer-events-none absolute -left-4 top-1 hidden h-full w-px bg-border/70 sm:block" />
 
@@ -141,7 +141,7 @@ export default async function LandingPage() {
             </div>
 
             {/* Columna demo viva */}
-            <FadeIn delay={0.4} className="w-full">
+            <FadeIn delay={0.4} className="w-full min-w-0">
               <div className="relative">
                 <Badge
                   tone="primary"

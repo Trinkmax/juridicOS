@@ -88,23 +88,23 @@ function AudienciaItem({
   }
 
   return (
-    <div className="flex items-start gap-3 rounded-md border border-border bg-card p-4 transition-colors hover:border-foreground/20">
-      <div className="flex w-14 shrink-0 flex-col items-center rounded-md bg-muted/60 py-1.5 text-center">
-        <span className="text-[0.7rem] font-medium uppercase text-muted-foreground">
-          {formatFecha(a.fecha_hora, "MMM")}
+    <div className="flex items-start gap-3.5 rounded-md border border-border bg-card p-4 transition-colors hover:border-foreground/20">
+      <div className="flex w-14 shrink-0 flex-col items-center rounded-md bg-muted/60 py-2 text-center">
+        <span className="text-data text-[0.7rem] font-medium text-muted-foreground">
+          {capitalizar(formatFecha(a.fecha_hora, "MMM"))}
         </span>
         <span className="text-data text-lg font-semibold leading-none">
           {formatFecha(a.fecha_hora, "d")}
         </span>
       </div>
 
-      <div className="min-w-0 flex-1 space-y-1">
+      <div className="min-w-0 flex-1 space-y-1.5">
         <div className="flex flex-wrap items-center gap-2">
           <span className="font-medium">{a.titulo}</span>
           <Badge tone={est.tone}>{est.label}</Badge>
         </div>
         <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-xs text-muted-foreground">
-          <span>
+          <span className="text-data">
             {capitalizar(formatFecha(a.fecha_hora))} · {formatHora(a.fecha_hora)}
           </span>
           {a.tipo && <span>{capitalizar(a.tipo)}</span>}
@@ -208,9 +208,9 @@ export function AudienciasPanel({
   audiencias: Audiencia[];
 }) {
   return (
-    <Card className="p-5 space-y-4">
-      <div className="flex items-center justify-between gap-2">
-        <div>
+    <Card className="p-6 space-y-5 shadow-xs">
+      <div className="flex items-center justify-between gap-3">
+        <div className="space-y-0.5">
           <h3 className="font-display text-base font-semibold">Audiencias</h3>
           <p className="text-sm text-muted-foreground">
             {audiencias.length}{" "}

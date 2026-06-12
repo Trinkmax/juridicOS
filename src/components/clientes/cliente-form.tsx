@@ -77,7 +77,7 @@ export function ClienteForm({
   }, [state, modo, onSuccess, router]);
 
   return (
-    <form action={action} className="space-y-5">
+    <form action={action} className="space-y-6">
       {cliente && <input type="hidden" name="id" value={cliente.id} />}
       <input type="hidden" name="tipo" value={tipo} />
 

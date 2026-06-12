@@ -43,7 +43,7 @@ export function AgendaWidget({ audiencias }: { audiencias: AudienciaConExpedient
   const [sel, setSel] = React.useState<AgendaItem | null>(null);
 
   return (
-    <Card className="flex h-[22rem] flex-col">
+    <Card className="flex h-[22rem] flex-col shadow-xs">
       <CardHeader className="flex-row items-center justify-between gap-2 space-y-0">
         <CardTitle className="flex items-center gap-2">
           <CalendarDays className="size-4 text-primary" />
@@ -74,14 +74,14 @@ export function AgendaWidget({ audiencias }: { audiencias: AudienciaConExpedient
                   <button
                     type="button"
                     onClick={() => setSel(audienciaToItem(a))}
-                    className="group w-full rounded-lg border border-border bg-card p-3 text-left transition-colors hover:border-foreground/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    className="group w-full rounded-lg border border-border bg-card p-3.5 text-left transition-colors hover:border-foreground/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   >
                     <div className="flex items-center justify-between gap-2">
-                      <span className="text-xs font-medium tabular-nums text-primary">
+                      <span className="text-data text-xs font-medium text-primary">
                         {capitalizar(formatFechaHora(a.fecha_hora))}
                       </span>
                       {a.tipo && (
-                        <span className="shrink-0 rounded-sm bg-muted px-2 py-0.5 text-[0.6875rem] font-medium text-muted-foreground">
+                        <span className="shrink-0 rounded-sm bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
                           {capitalizar(a.tipo)}
                         </span>
                       )}

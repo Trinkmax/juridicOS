@@ -69,7 +69,7 @@ export default async function PlazosPage({
   ).length;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <PageHeader
         title="Plazos"
         description="Vencimientos procesales del estudio, ordenados por urgencia."
@@ -83,19 +83,21 @@ export default async function PlazosPage({
         </Button>
       </PageHeader>
 
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <PlazosFiltros responsables={responsables} />
         <PlazosVistaToggle vista={vista} />
       </div>
 
       {requierenAtencion > 0 && (
-        <Card className="flex items-center gap-3 border-destructive/25 bg-destructive-soft p-4">
+        <Card className="flex items-center gap-3.5 border-destructive/25 bg-destructive-soft p-4 shadow-xs">
           <div className="flex size-9 shrink-0 items-center justify-center rounded-md bg-destructive/15 text-destructive">
             <AlertTriangle className="size-5" />
           </div>
-          <div className="text-sm">
-            <p className="font-semibold text-destructive">
-              Tenés {requierenAtencion} plazo{requierenAtencion === 1 ? "" : "s"} que
+          <div className="space-y-0.5 text-sm">
+            <p className="font-medium text-destructive">
+              Tenés{" "}
+              <span className="text-data font-semibold">{requierenAtencion}</span> plazo
+              {requierenAtencion === 1 ? "" : "s"} que
               {requierenAtencion === 1 ? " requiere" : " requieren"} atención
             </p>
             <p className="text-destructive/80">
@@ -122,7 +124,7 @@ export default async function PlazosPage({
       ) : vista === "tablero" ? (
         <PlazosTablero plazos={plazos} />
       ) : (
-        <Stagger className="space-y-3">
+        <Stagger className="space-y-2.5">
           {plazos.map((p) => (
             <StaggerItem key={p.id}>
               <PlazoCard plazo={p} quickAction />

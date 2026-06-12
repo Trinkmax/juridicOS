@@ -2,7 +2,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function LoadingPlazos() {
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="flex items-center gap-3">
         <Skeleton className="size-10 rounded-md" />
         <div className="space-y-2">
@@ -18,15 +18,15 @@ export default function LoadingPlazos() {
         <Skeleton className="h-9 w-44 rounded-md" />
       </div>
       {/* Tablero por urgencia (vista por defecto): secciones con encabezado. */}
-      <div className="space-y-8">
+      <div className="space-y-10">
         {Array.from({ length: 3 }).map((_, s) => (
-          <div key={s} className="space-y-3">
-            <div className="flex items-center gap-3">
-              <Skeleton className="h-5 w-1 rounded-full" />
+          <div key={s} className="space-y-3.5">
+            <div className="flex items-center gap-2.5">
+              <Skeleton className="h-4 w-1 rounded-full" />
               <Skeleton className="h-5 w-40" />
               <Skeleton className="h-5 w-8 rounded-sm" />
             </div>
-            <div className="space-y-3">
+            <div className="space-y-2.5">
               {Array.from({ length: 2 }).map((_, i) => (
                 <Skeleton key={i} className="h-24 rounded-lg" />
               ))}

@@ -105,7 +105,7 @@ export default async function PortalCausaPage({
   const documentos = (documentosData ?? []) as Documento[];
 
   return (
-    <div className="space-y-7">
+    <div className="space-y-10">
       <Button
         variant="ghost"
         size="sm"
@@ -120,41 +120,41 @@ export default async function PortalCausaPage({
 
       {/* Encabezado */}
       <FadeIn>
-        <Card className="p-6">
+        <Card className="p-6 shadow-xs sm:p-7">
           <div className="flex flex-wrap items-center gap-2">
             <OptionBadge option={FUERO[expediente.fuero]} />
             <OptionBadge option={ESTADO_EXPEDIENTE[expediente.estado]} dot />
           </div>
-          <h1 className="mt-3 font-display text-xl font-semibold tracking-tight text-balance sm:text-2xl">
+          <h1 className="mt-4 font-display text-xl font-semibold tracking-tight text-balance sm:text-2xl">
             {expediente.caratula}
           </h1>
-          <dl className="mt-4 grid gap-x-6 gap-y-3 text-sm sm:grid-cols-2">
+          <dl className="mt-6 grid gap-x-6 gap-y-4 text-sm sm:grid-cols-2">
             {expediente.nro_sac && (
-              <div>
+              <div className="space-y-0.5">
                 <dt className="text-xs text-muted-foreground">Nº de expediente (SAC)</dt>
                 <dd className="font-mono text-data font-medium">{expediente.nro_sac}</dd>
               </div>
             )}
             {expediente.juzgado && (
-              <div>
+              <div className="space-y-0.5">
                 <dt className="text-xs text-muted-foreground">Juzgado</dt>
                 <dd className="font-medium">{expediente.juzgado}</dd>
               </div>
             )}
             {expediente.secretaria && (
-              <div>
+              <div className="space-y-0.5">
                 <dt className="text-xs text-muted-foreground">Secretaría</dt>
                 <dd className="font-medium">{expediente.secretaria}</dd>
               </div>
             )}
             {expediente.etapa && (
-              <div>
+              <div className="space-y-0.5">
                 <dt className="text-xs text-muted-foreground">Etapa</dt>
                 <dd className="font-medium">{capitalizar(expediente.etapa)}</dd>
               </div>
             )}
           </dl>
-          <p className="mt-5 flex items-start gap-2 rounded-lg bg-muted/50 p-3 text-xs text-muted-foreground">
+          <p className="mt-6 flex items-start gap-2.5 rounded-md border border-border bg-muted/40 p-3.5 text-xs text-muted-foreground">
             <Scale className="mt-0.5 size-3.5 shrink-0 text-primary" />
             <span>
               Tu estudio mantiene esta causa al día. Si tenés dudas sobre algún paso,
@@ -166,7 +166,7 @@ export default async function PortalCausaPage({
 
       {/* Próximas audiencias */}
       <FadeIn delay={0.05}>
-        <section className="space-y-3">
+        <section className="space-y-4">
           <SectionTitle icon={CalendarDays}>Próximas audiencias</SectionTitle>
           {audiencias.length === 0 ? (
             <EmptyState
@@ -176,23 +176,23 @@ export default async function PortalCausaPage({
               className="py-10"
             />
           ) : (
-            <div className="space-y-2.5">
+            <div className="space-y-3">
               {audiencias.map((a) => {
                 const virtual = ES_VIRTUAL.has(a.modalidad?.toLowerCase() ?? "");
                 return (
-                  <Card key={a.id} className="flex items-start gap-3 p-4">
-                    <div className="flex w-14 shrink-0 flex-col items-center rounded-md border border-border bg-muted py-1.5 text-center">
-                      <span className="text-[0.7rem] font-medium uppercase text-muted-foreground">
+                  <Card key={a.id} className="flex items-start gap-4 p-4 shadow-xs sm:p-5">
+                    <div className="flex w-14 shrink-0 flex-col items-center rounded-md border border-border bg-muted py-2 text-center">
+                      <span className="text-[0.7rem] font-medium capitalize text-muted-foreground">
                         {formatFecha(a.fecha_hora, "MMM")}
                       </span>
-                      <span className="font-display text-data text-lg font-semibold leading-none">
+                      <span className="font-display text-data text-xl font-semibold leading-none">
                         {formatFecha(a.fecha_hora, "d")}
                       </span>
                     </div>
-                    <div className="min-w-0 flex-1 space-y-1">
-                      <p className="font-medium">{a.titulo}</p>
+                    <div className="min-w-0 flex-1 space-y-1.5">
+                      <p className="font-medium leading-snug">{a.titulo}</p>
                       <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-xs text-muted-foreground">
-                        <span>
+                        <span className="text-data">
                           {capitalizar(formatFecha(a.fecha_hora))} ·{" "}
                           {formatHora(a.fecha_hora)} hs
                         </span>
@@ -214,7 +214,7 @@ export default async function PortalCausaPage({
                           href={a.enlace}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
+                          className="inline-flex items-center gap-1 pt-0.5 text-xs font-medium text-primary hover:underline"
                         >
                           <ExternalLink className="size-3" />
                           Enlace para conectarse
@@ -231,7 +231,7 @@ export default async function PortalCausaPage({
 
       {/* Novedades / movimientos */}
       <FadeIn delay={0.1}>
-        <section className="space-y-3">
+        <section className="space-y-4">
           <SectionTitle icon={History}>Novedades</SectionTitle>
           {movimientos.length === 0 ? (
             <EmptyState
@@ -241,8 +241,8 @@ export default async function PortalCausaPage({
               className="py-10"
             />
           ) : (
-            <Card className="p-5">
-              <ol className="relative space-y-6 pl-6">
+            <Card className="p-6 shadow-xs">
+              <ol className="relative space-y-7 pl-6">
                 <span
                   aria-hidden
                   className="absolute left-[5px] top-2 bottom-2 w-px bg-border"
@@ -254,7 +254,7 @@ export default async function PortalCausaPage({
                       className="absolute -left-[1.4rem] top-1 size-2.5 rounded-full border-2 border-card bg-primary ring-2 ring-primary/20"
                     />
                     <div className="flex flex-wrap items-center gap-2">
-                      <time className="text-xs font-medium text-muted-foreground">
+                      <time className="text-data text-xs font-medium text-muted-foreground">
                         {capitalizar(formatFecha(m.fecha))}
                       </time>
                       {m.tipo && (
@@ -263,9 +263,9 @@ export default async function PortalCausaPage({
                         </Badge>
                       )}
                     </div>
-                    <p className="mt-0.5 font-medium leading-snug">{m.titulo}</p>
+                    <p className="mt-1 font-medium leading-snug">{m.titulo}</p>
                     {m.descripcion && (
-                      <p className="mt-1 text-sm whitespace-pre-line text-muted-foreground">
+                      <p className="mt-1.5 text-sm whitespace-pre-line text-muted-foreground">
                         {m.descripcion}
                       </p>
                     )}
@@ -279,7 +279,7 @@ export default async function PortalCausaPage({
 
       {/* Documentos compartidos */}
       <FadeIn delay={0.15}>
-        <section className="space-y-3">
+        <section className="space-y-4">
           <SectionTitle icon={FileText}>Documentos compartidos</SectionTitle>
           {documentos.length === 0 ? (
             <EmptyState
@@ -289,7 +289,7 @@ export default async function PortalCausaPage({
               className="py-10"
             />
           ) : (
-            <div className="space-y-2.5">
+            <div className="space-y-3">
               {documentos.map((d) => (
                 <DocumentoDescarga
                   key={d.id}

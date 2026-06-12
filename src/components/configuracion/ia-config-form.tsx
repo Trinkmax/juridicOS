@@ -73,10 +73,10 @@ export function IaConfigForm({
   }
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center gap-2">
+    <div className="space-y-5">
+      <div className="flex flex-wrap items-center gap-2.5">
         {configurada ? (
-          <Badge tone="success">
+          <Badge tone="default">
             <CheckCircle2 className="size-3.5" /> IA configurada
           </Badge>
         ) : (
@@ -84,10 +84,14 @@ export function IaConfigForm({
             <Sparkles className="size-3.5" /> IA no configurada
           </Badge>
         )}
-        {configurada && <span className="text-xs text-muted-foreground">Modelo: {modelo}</span>}
+        {configurada && (
+          <span className="text-xs text-muted-foreground">
+            Modelo <span className="text-data text-foreground">{modelo}</span>
+          </span>
+        )}
       </div>
 
-      <form action={action} className="space-y-4">
+      <form action={action} className="space-y-5">
         {state && !state.ok && <FormError>{state.error}</FormError>}
         <Field
           label="API key de Anthropic"

@@ -36,7 +36,8 @@ import { type AgendaItem } from "./tipos";
 
 const LEYENDA: { dot: string; label: string }[] = [
   { dot: "bg-info", label: "Audiencia" },
-  { dot: "bg-destructive", label: "Plazo" },
+  // El plazo toma color de su urgencia (ámbar/rojo); en reposo es tinta sobria.
+  { dot: "bg-foreground/55", label: "Plazo" },
   { dot: "bg-primary", label: "Evento" },
 ];
 
@@ -123,10 +124,10 @@ export function AgendaVista({
   }
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-2">
-          <h2 className="min-w-[8.5rem] font-display text-lg font-semibold capitalize">
+    <div className="space-y-5">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center gap-3">
+          <h2 className="min-w-[8.5rem] font-display text-xl font-semibold capitalize">
             {titulo}
           </h2>
           <div className="flex items-center gap-1">
@@ -153,8 +154,8 @@ export function AgendaVista({
           </div>
         </div>
 
-        <div className="flex items-center justify-between gap-3 sm:justify-end">
-          <div className="hidden items-center gap-3 md:flex">
+        <div className="flex items-center justify-between gap-4 sm:justify-end">
+          <div className="hidden items-center gap-4 md:flex">
             {LEYENDA.map((l) => (
               <span
                 key={l.label}
@@ -165,12 +166,12 @@ export function AgendaVista({
               </span>
             ))}
           </div>
-          <div className="flex items-center rounded-md border border-border p-0.5">
+          <div className="flex items-center rounded-md border border-border bg-card p-0.5 shadow-xs">
             <Link
               href={href(mes, "mes")}
               scroll={false}
               className={cn(
-                "flex items-center gap-1.5 rounded-sm px-2.5 py-2 text-sm transition-colors sm:py-1",
+                "flex items-center gap-1.5 rounded-sm px-3 py-2 text-sm transition-colors sm:py-1.5",
                 vista === "mes"
                   ? "bg-secondary font-medium text-foreground"
                   : "text-muted-foreground hover:text-foreground",
@@ -183,7 +184,7 @@ export function AgendaVista({
               href={href(mes, "lista")}
               scroll={false}
               className={cn(
-                "flex items-center gap-1.5 rounded-sm px-2.5 py-2 text-sm transition-colors sm:py-1",
+                "flex items-center gap-1.5 rounded-sm px-3 py-2 text-sm transition-colors sm:py-1.5",
                 vista === "lista"
                   ? "bg-secondary font-medium text-foreground"
                   : "text-muted-foreground hover:text-foreground",

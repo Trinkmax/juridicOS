@@ -155,6 +155,7 @@
   --color-sidebar-border: var(--sidebar-border);
 
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-outfit), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-source-serif), ui-serif, Georgia, "Times New Roman", serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, "SFMono-Regular", monospace;
 
@@ -276,11 +277,16 @@
 }
 
 @layer utilities {
-  /* Serif editorial para títulos / números grandes (gravitas de documento). */
+  /* Display geométrico (conversa con el wordmark del logo) para títulos y
+     números grandes. Tracking ajustado para que respire en tamaños grandes. */
   .font-display {
+    font-family: var(--font-display);
+    letter-spacing: -0.021em;
+  }
+  /* Serif editorial, reservada al "escrito" que simula un documento real. */
+  .font-serif-doc {
     font-family: var(--font-serif);
-    font-feature-settings: "ss01";
-    letter-spacing: -0.015em;
+    letter-spacing: -0.003em;
   }
   /* Numerales tabulares para datos (montos, plazos, contadores). */
   .text-data {

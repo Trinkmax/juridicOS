@@ -53,10 +53,10 @@ export function MembreteForm({ valores }: { valores: MembreteFormValues }) {
   }, [state, router]);
 
   return (
-    <form action={action} className="space-y-5">
+    <form action={action} className="space-y-6">
       {state && !state.ok && <FormError>{state.error}</FormError>}
 
-      <div className="flex items-start gap-2 rounded-md border border-border bg-muted/30 p-3 text-xs text-muted-foreground">
+      <div className="flex items-start gap-2.5 rounded-md border border-border bg-muted/30 p-3.5 text-xs leading-relaxed text-muted-foreground">
         <Stamp className="mt-0.5 size-3.5 shrink-0" />
         <p>
           Estos datos forman el encabezado de los escritos que generás en PDF en
@@ -65,7 +65,7 @@ export function MembreteForm({ valores }: { valores: MembreteFormValues }) {
         </p>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-5 sm:grid-cols-2">
         <Field label="Nombre del estudio" htmlFor="nombre" error={fieldErrors?.nombre} required>
           <Input
             id="nombre"
@@ -164,12 +164,12 @@ export function MembreteForm({ valores }: { valores: MembreteFormValues }) {
         </Field>
       </div>
 
-      <label className="flex items-center justify-between gap-4 rounded-md border border-border bg-muted/40 px-3 py-2.5">
-        <span className="min-w-0">
+      <label className="flex items-center justify-between gap-4 rounded-md border border-border bg-muted/40 px-3.5 py-3">
+        <span className="min-w-0 space-y-0.5">
           <span className="block text-sm font-medium">
             Incluir logo en los documentos
           </span>
-          <span className="block text-xs text-muted-foreground">
+          <span className="block text-xs leading-relaxed text-muted-foreground">
             Si está activo y hay URL de logo, aparece en el encabezado del PDF. El
             estándar forense es sobrio; muchos escritos van sin logo.
           </span>

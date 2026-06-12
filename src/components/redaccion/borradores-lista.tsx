@@ -21,17 +21,17 @@ export function BorradoresLista({ borradores }: { borradores: BorradorItem[] }) 
   }
 
   return (
-    <Stagger className="space-y-2">
+    <Stagger className="space-y-2.5">
       {borradores.map((b) => (
         <StaggerItem key={b.id}>
           <Link href={`/redaccion/${b.id}`} className="block">
-            <Card className="group flex items-center gap-4 p-4 transition-colors hover:border-foreground/20 hover:bg-accent/60">
+            <Card className="group flex items-center gap-4 p-4 shadow-xs transition-colors hover:border-foreground/20 hover:bg-accent/60">
               <div className="flex size-10 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground">
                 <FileSignature className="size-5" />
               </div>
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
-                  <h3 className="truncate text-sm font-semibold group-hover:text-primary">
+                  <h3 className="truncate text-sm font-medium group-hover:text-primary">
                     {b.titulo}
                   </h3>
                   {b.generado_por_ia && (
@@ -42,12 +42,12 @@ export function BorradoresLista({ borradores }: { borradores: BorradorItem[] }) 
                   )}
                   {b.tipo && <Badge tone="muted">{b.tipo}</Badge>}
                 </div>
-                <p className="mt-0.5 truncate text-xs text-muted-foreground">
+                <p className="mt-1 truncate text-xs text-muted-foreground">
                   {b.expedientes?.caratula
                     ? b.expedientes.caratula
                     : "Sin expediente vinculado"}
                   {" · "}
-                  {formatFechaHora(b.updated_at)}
+                  <span className="text-data">{formatFechaHora(b.updated_at)}</span>
                 </p>
               </div>
               <ChevronRight className="size-4 shrink-0 text-muted-foreground transition-colors group-hover:text-primary" />

@@ -38,19 +38,20 @@ function CargaChip({
   label: string;
   destacar?: boolean;
 }) {
+  // Ámbar solo cuando hay plazos pendientes (urgencia real); el resto, tinta.
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium tabular-nums",
+        "inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-xs font-medium",
         value > 0 && destacar
-          ? "bg-warning-soft text-warning-foreground"
+          ? "border-warning/40 bg-warning-soft text-warning-foreground"
           : value > 0
-            ? "bg-muted text-foreground"
-            : "bg-muted/60 text-muted-foreground",
+            ? "border-border bg-muted text-foreground"
+            : "border-transparent bg-muted/50 text-muted-foreground",
       )}
     >
-      <Icon className="size-3.5" />
-      {value} {label}
+      <Icon className="size-3.5 shrink-0" />
+      <span className="text-data tabular-nums">{value}</span> {label}
     </span>
   );
 }
@@ -71,15 +72,17 @@ export function MiembroCard({
   return (
     <Card
       className={cn(
-        "flex flex-col gap-4 p-4 transition-colors hover:border-foreground/20 lg:flex-row lg:items-center",
+        "flex flex-col gap-5 p-5 shadow-xs transition-colors hover:border-foreground/20 lg:flex-row lg:items-center lg:gap-6",
         !miembro.activo && "opacity-60",
       )}
     >
-      <div className="flex min-w-0 flex-1 items-center gap-3">
-        <Avatar name={nombre} src={usuario.avatar_url} />
-        <div className="min-w-0">
+      <div className="flex min-w-0 flex-1 items-center gap-3.5">
+        <Avatar name={nombre} src={usuario.avatar_url} size="lg" />
+        <div className="min-w-0 space-y-1">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="truncate font-medium">{nombre}</span>
+            <span className="truncate font-display text-base font-semibold">
+              {nombre}
+            </span>
             {miembro.esYo && (
               <Badge tone="primary">
                 <BadgeCheck className="size-3" />
@@ -88,7 +91,7 @@ export function MiembroCard({
             )}
             {!miembro.activo && <Badge tone="muted">Inactivo</Badge>}
           </div>
-          <div className="mt-0.5 flex flex-col gap-0.5 text-sm text-muted-foreground">
+          <div className="flex flex-col gap-0.5 text-sm text-muted-foreground">
             {usuario.email && <span className="truncate">{usuario.email}</span>}
             {subtitulo && (
               <span className="flex items-center gap-1.5 truncate">
@@ -114,7 +117,7 @@ export function MiembroCard({
         />
       </div>
 
-      <div className="lg:ml-2 lg:shrink-0">
+      <div className="lg:shrink-0">
         {puedeGestionar ? (
           <CambiarRolControl
             miembroId={miembro.id}

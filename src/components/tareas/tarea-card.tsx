@@ -109,8 +109,8 @@ export function TareaCard({
       {...listeners}
       {...attributes}
       className={cn(
-        "group rounded-lg border border-border bg-card p-3 transition-colors",
-        "hover:border-foreground/20 hover:bg-accent/60",
+        "group rounded-lg border border-border bg-card p-3.5 shadow-xs transition-colors",
+        "hover:border-foreground/20 hover:bg-accent/50",
         dragging ? "cursor-grabbing shadow-lg" : "cursor-grab",
       )}
     >
@@ -128,12 +128,12 @@ export function TareaCard({
           </p>
 
           {tarea.descripcion && (
-            <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">
+            <p className="mt-1.5 line-clamp-2 text-xs leading-relaxed text-muted-foreground">
               {tarea.descripcion}
             </p>
           )}
 
-          <div className="mt-2.5 flex flex-wrap items-center gap-2">
+          <div className="mt-3 flex flex-wrap items-center gap-2">
             {prioridad && <OptionBadge option={prioridad} dot />}
 
             {tarea.vencimiento && (
@@ -142,7 +142,7 @@ export function TareaCard({
                   <span
                     className={cn(
                       "inline-flex items-center gap-1 text-data text-xs",
-                      vencido ? "text-destructive font-medium" : "text-muted-foreground",
+                      vencido ? "font-medium text-destructive" : "text-muted-foreground",
                     )}
                   >
                     <CalendarClock className="size-3" />
@@ -158,7 +158,7 @@ export function TareaCard({
             <Link
               href={`/expedientes/${tarea.expediente_id}`}
               onPointerDown={(e) => e.stopPropagation()}
-              className="mt-2 inline-flex max-w-full items-center gap-1 text-xs text-primary hover:underline"
+              className="mt-2.5 inline-flex max-w-full items-center gap-1 text-xs text-primary hover:underline"
             >
               <FileText className="size-3 shrink-0" />
               <span className="truncate">{tarea.expediente.caratula}</span>
